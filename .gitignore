@@ -1,0 +1,25 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+xkedule/node_modules
+xkedule/.pnp
+xkedule/.pnp.js
+
+# testing
+xkedule//coverage
+
+# production
+xkedule/build
+
+# misc
+xkedule/.DS_Store
+xkedule/.env.local
+xkedule/.env.development.local
+xkedule/.env.test.local
+xkedule/.env.production.local
+
+xkedule/npm-debug.log*
+xkedule/yarn-debug.log*
+xkedule/yarn-error.log*
+
+xkedule/README.md
