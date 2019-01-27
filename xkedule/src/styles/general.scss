@@ -1,0 +1,176 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Lato", sans-serif;
+    color: #333333;
+    overflow: hidden;
+}
+
+.background{
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    background-color: #170f0a;
+    background-size: cover;
+    background-repeat: repeat;
+    background-position: right;
+    #background_image{
+        content: url("deer_DA.PNG");
+        width:50%;
+        position: absolute;
+        left: 700px;
+        top: -50px;
+
+    }
+}
+
+.content_container{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    transition: all 0.5s ease;
+    overflow-x: hidden;
+}
+
+.large_content_container{
+    width: 1300px;
+}
+
+
+.content_card{
+    display: grid;
+    grid-template-rows: 6fr 22fr;
+    height: 100vh;
+    width: inherit;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+
+.content_header{
+    width: inherit;
+    background-color: #FFFFFF;
+    div{
+        padding-left: 50px;
+        width: 1300px;
+    }
+    strong{
+        color: #E7042D;
+    }
+}
+
+.expand{
+    z-index: 1;
+    position: absolute;
+    top: 20px;
+    left: 550px;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    .expand_button{
+        border-radius: 50px;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(180deg, #DF0F98 0%, #E7042D 100%);
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        transform: matrix(-1, 0, 0, 1, 0, 0);
+    }
+    .expand_arrow{
+        position: absolute;
+        top: 28px;
+        left: 25px;
+        fill: #FFFFFF;
+    }
+}
+
+.reversed_expand{
+    left: 1250px;
+    transform: rotate(-180deg);
+}
+
+.content{
+    background-color: #E4E4E4;
+    overflow-y: scroll;
+}
+
+.text_15{
+    font-size: 15px;
+}
+
+.text_20{
+    font-size: 20px;
+}
+
+.text_30{
+    font-size: 30px;
+}
+
+#this_is_you_line{
+    margin-top: 10px;
+}
+
+.text_bold_title{
+    font-size: 70px;
+    font-weight: 600;
+    background: linear-gradient(180deg, #DF0F98 0%, #E7042D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.task_card{
+    background: #FFFFFF;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.switch_week_month{
+    cursor: pointer;
+    position: absolute;
+    left: 1070px;
+    top: 100px;
+    height: 40px;
+    font-weight: 200;
+    text-transform: capitalize;
+    font-size: 20px;
+    text-align: center;
+
+    .switch_to_week{
+        position: absolute;
+        width: 75px;
+        height: inherit;
+        margin-top:8px;
+        color: #FFFFFF;
+        transition: color 0.5s;
+
+    }
+    .switch_to_month{
+        position: absolute;
+        width: 75px;
+        left: 75px;
+        height: inherit;
+        margin-top:8px;
+        transition: color 0.5s;
+    }
+    .switch_week_month_background{
+        position: absolute;
+        background-color: #C4C4C4;
+        width: 150px;
+        height: inherit;
+        border-radius: 50px;
+        box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .switch_week_month_button{
+        position: absolute;
+        background: linear-gradient(180deg, #E7042D 0%, #DF0F98 100%);
+        width: 80px;
+        height: inherit;
+        left: 0px;
+        border-radius: 50px;
+        transition: left 0.25s ease-out;
+    }
+
+}

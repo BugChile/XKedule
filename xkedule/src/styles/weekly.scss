@@ -1,0 +1,25 @@
+.weekly_schedule{
+    margin: 10px 20px;
+    display: grid;
+    grid-template-columns: repeat(7, 165px);
+    grid-gap: 10px;
+    grid-template-rows: 50px;
+    grid-auto-rows: 80px;
+
+}
+
+.day_name_cell_weekly{
+    vertical-align: middle;
+    margin-left: 10px;
+    .day_name{
+        text-align: center;
+        text-transform: capitalize;
+        font-size: 20px;
+    }
+
+    .day_date{
+        text-align: center;
+        font-size: 12px;
+        font-weight: 100;
+    }
+}
