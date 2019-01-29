@@ -1,6 +1,6 @@
 import React from "react"
 
-export default class ExpandButton extends React.Component {
+export default class ExpandButton extends React.PureComponent {
   render() {
       return(
           <div id="expand" className="expand" onClick={this.props.expandCB}>

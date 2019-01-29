@@ -28,20 +28,19 @@ export default class MonthlyCard extends React.Component {
             day_cells[i] = <div className="day_cell_monthly" key={i}>
                                {day_info}
                                <div className="day_cell_task_container">
-                                   <div className="task_card monthly_task_card">
-                                        <div className="monthly_task_text">
-                                            Universidad
-                                        </div>
-                                   </div>
-                                   <div className="task_card monthly_task_card">
-                                        <div className="monthly_task_text">
-                                            Universidad
-                                        </div>
-                                   </div>
+
                                </div>
                            </div>
         }
         return day_cells;
+    }
+    
+    shouldComponentUpdate(nextProps, nextState) {
+      if (this.props.events === nextProps.events) {
+        return false;
+      } else {
+        return true;
+      }
     }
 
 

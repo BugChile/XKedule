@@ -1,6 +1,6 @@
 import React from "react"
 
-export default class SwitchWeekMonth extends React.Component {
+export default class SwitchWeekMonth extends React.PureComponent {
   render() {
       return(
           <div id="switch_week_month" className="switch_week_month" onClick={this.props.switchWeekMonthCB}>

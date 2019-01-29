@@ -18,6 +18,15 @@ export default class WeeklyCard extends React.Component {
       }
       return day_cells;
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.events === nextProps.events) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   render() {
       return(
          <div className="content_card">

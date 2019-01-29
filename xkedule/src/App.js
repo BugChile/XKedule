@@ -5,14 +5,21 @@ import MonthlyCard from './components/monthlyCard'
 import WeeklyCard from './components/weeklyCard'
 import ExpandButton from './components/expandButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
-import logo from './logo.svg';
+import logo from './assets/logo.svg';
 import './App.css';
+
+
+// development
+
+import { events }  from './js_helpers/dev_data';
 
 class App extends Component {
     constructor(props){
         super(props)
         this.state = {
             mode: "daily",
+            events: {},
+            current_time: new Date().getTime(),
         }
 
         //STATE SETTERS
@@ -36,6 +43,23 @@ class App extends Component {
 
     changeMode(mode){
         this.setState({mode})
+    }
+
+    setEvents(events){
+        this.setState({events: this.parseLoadedEvents(events)})
+    }
+
+    //CONTENT GENERATORS
+    parseLoadedEvents(events){
+        for (var key in events) {
+            events[key].date_start = new Date(events[key].date_start)
+            events[key].date_end = new Date(events[key].date_end)
+        }
+        return events;
+    }
+
+    tick(){
+        this.setState({current_time: new Date().getTime()})
     }
 
     //HTML HANDLERS
@@ -70,18 +94,13 @@ class App extends Component {
     switchCard(mode){
         switch (mode) {
             case "daily":
-                return <DailyCard />;
-                break;
+                return <DailyCard events={this.state.events}/>;
             case "weekly":
-                return <WeeklyCard />;
-                break;
+                return <WeeklyCard events={this.state.events}/>;
             case "monthly":
-                return <MonthlyCard />;
-                break;
+                return <MonthlyCard events={this.state.events}/>;
             default:
-                return <DailyCard />;
-                break;
-
+                return <DailyCard events={this.state.events}/>;
         }
     }
 
@@ -131,6 +150,20 @@ class App extends Component {
             this.setSwitchWeekMonth("monthly")
 
         }
+    }
+
+    //LIFE CICLE
+
+    componentDidMount(){
+        this.setEvents(events);
+        this.intervalID = setInterval(
+            () => this.tick(),
+            1000
+        );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalID);
     }
 
     render() {
