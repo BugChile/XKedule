@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import DailyCard from './components/dailyCard'
-import MonthlyCard from './components/monthlyCard'
-import WeeklyCard from './components/weeklyCard'
+import DailyCard from './components/content_layouts/dailyCard'
+import MonthlyCard from './components/content_layouts/monthlyCard'
+import WeeklyCard from './components/content_layouts/weeklyCard'
 import ExpandButton from './components/expandButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
 import logo from './assets/logo.svg';

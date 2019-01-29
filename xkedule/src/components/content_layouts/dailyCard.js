@@ -1,5 +1,6 @@
 import React from "react"
 import DailyTaskCard from './dailyTaskCard'
+import HeaderDate from './headerDate'
 
 export default class DailyCard extends React.Component {
 
@@ -65,14 +66,19 @@ export default class DailyCard extends React.Component {
         )
     }
 
-    processEvents(events){
-        var processed = []
+    getHeaderDate(date){
+        var date_dict = {};
+        date_dict["main"] = date.toLocaleDateString();
+    }
+
+    generateEvents(events){
+        var generated = []
         for (var key in events) {
-            processed.push(
+            generated.push(
                 <DailyTaskCard event={events[key]} key={events[key].id}/>
                 )
             }
-        return processed;
+        return generated;
     }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -90,19 +96,14 @@ export default class DailyCard extends React.Component {
              <div id="this_is_you_line" className="text_15" key="this_is_you_line">
                  this is <strong>your</strong> day
              </div>
-             <div className="text_bold_title" key="date_indicator1">
-                 Monday 14th
-             </div>
-             <div className="text_30" key="date_indicator2">
-                 January, 2019
-             </div>
+             <HeaderDate date={getHeaderDate(this.props.current_time)}/>
          </div>
          <div className="content" key="content">
              <div className="daily_tasks" key="daily_tasks">
                  {this.hourTicks()}
                  {this.lines()}
                  <div className="tasks_container" key="tasks_container">
-                    {this.processEvents(this.props.events)}
+                    {this.generateEvents(this.props.events)}
                  </div>
              </div>
          </div>
