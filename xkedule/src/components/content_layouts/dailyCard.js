@@ -66,10 +66,10 @@ export default class DailyCard extends React.Component {
         )
     }
 
-    getHeaderDate(date){
+    getHeaderDate(current_time){
         var date_dict = {};
-        date_dict["main"] = date.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
-        date_dict["sub"] = date.toLocaleString('en-GB', {month:"long", year: "numeric"});
+        date_dict["main"] = current_time.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
+        date_dict["sub"] = current_time.toLocaleString('en-GB', {month:"long", year: "numeric"});
         return date_dict;
     }
 

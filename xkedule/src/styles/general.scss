@@ -123,7 +123,10 @@ a:visited{
 .text_bold_title{
     font-size: 70px;
     font-weight: 600;
-    background: linear-gradient(180deg, #DF0F98 0%, #E7042D 100%);
+}
+
+.color_text{
+    background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }

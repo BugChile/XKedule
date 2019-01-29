@@ -25,6 +25,9 @@ class App extends Component {
         //STATE SETTERS
         this.changeMode = this.changeMode.bind(this)
 
+        //CONTENT GENERATORS
+        this.tick = this.tick.bind(this);
+
         //HTML HANDLERS
         this.changeHTMLProperty = this.changeHTMLProperty.bind(this);
         this.setSwitchWeekMonth = this.setSwitchWeekMonth.bind(this);
@@ -36,6 +39,8 @@ class App extends Component {
         //CALLBACKS
         this.expand = this.expand.bind(this);
         this.switchWeekMonth = this.switchWeekMonth.bind(this);
+
+        //LIFE CYCLE
 
     };
 
@@ -59,6 +64,8 @@ class App extends Component {
     }
 
     tick(){
+        var date = new Date();
+        date.setTime(this.state.current_time.getTime() + 86400000 / 2);
         this.setState({current_time: new Date()});
     }
 
@@ -157,7 +164,7 @@ class App extends Component {
     componentDidMount(){
         this.setEvents(events);
         this.intervalID = setInterval(
-            () => this.tick(),
+            () => this.tick(this),
             1000
         );
     }
