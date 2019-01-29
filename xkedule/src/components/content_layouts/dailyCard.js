@@ -68,7 +68,7 @@ export default class DailyCard extends React.Component {
 
     getHeaderDate(date){
         var date_dict = {};
-        date_dict["main"] = date.toLocaleDateString();
+        return {"main": "Monday 14th", "sub": "January, 2019"}
     }
 
     generateEvents(events){
@@ -96,7 +96,7 @@ export default class DailyCard extends React.Component {
              <div id="this_is_you_line" className="text_15" key="this_is_you_line">
                  this is <strong>your</strong> day
              </div>
-             <HeaderDate date={getHeaderDate(this.props.current_time)}/>
+             <HeaderDate date={this.getHeaderDate(this.props.current_time)}/>
          </div>
          <div className="content" key="content">
              <div className="daily_tasks" key="daily_tasks">
