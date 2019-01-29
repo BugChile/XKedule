@@ -19,7 +19,7 @@ class App extends Component {
         this.state = {
             mode: "daily",
             events: {},
-            current_time: new Date().getTime(),
+            current_time: new Date(),
         }
 
         //STATE SETTERS
@@ -59,7 +59,7 @@ class App extends Component {
     }
 
     tick(){
-        this.setState({current_time: new Date().getTime()})
+        this.setState({current_time: new Date()});
     }
 
     //HTML HANDLERS
@@ -94,13 +94,13 @@ class App extends Component {
     switchCard(mode){
         switch (mode) {
             case "daily":
-                return <DailyCard events={this.state.events}/>;
+                return <DailyCard events={this.state.events} current_time={this.state.current_time}/>;
             case "weekly":
-                return <WeeklyCard events={this.state.events}/>;
+                return <WeeklyCard events={this.state.events} current_time={this.state.current_time}/>;
             case "monthly":
-                return <MonthlyCard events={this.state.events}/>;
+                return <MonthlyCard events={this.state.events} current_time={this.state.current_time}/>;
             default:
-                return <DailyCard events={this.state.events}/>;
+                return <DailyCard events={this.state.events} current_time={this.state.current_time}/>;
         }
     }
 

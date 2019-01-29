@@ -68,7 +68,9 @@ export default class DailyCard extends React.Component {
 
     getHeaderDate(date){
         var date_dict = {};
-        return {"main": "Monday 14th", "sub": "January, 2019"}
+        date_dict["main"] = date.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
+        date_dict["sub"] = date.toLocaleString('en-GB', {month:"long", year: "numeric"});
+        return date_dict;
     }
 
     generateEvents(events){
@@ -82,7 +84,8 @@ export default class DailyCard extends React.Component {
     }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.events === nextProps.events) {
+    if (this.props.events === nextProps.events &&
+        this.props.current_time.getDay() === nextProps.current_time.getDay()) {
       return false;
     } else {
       return true;
