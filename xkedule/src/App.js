@@ -64,8 +64,8 @@ class App extends Component {
     }
 
     tick(){
-        var date = new Date();
-        date.setTime(this.state.current_time.getTime() + 86400000 / 2);
+        var date = new Date(this.state.current_time);
+        date.setDate(this.state.current_time.getDate() + 1);
         this.setState({current_time: new Date()});
     }
 

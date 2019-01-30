@@ -24,7 +24,7 @@ export default class WeeklyCard extends React.Component {
                                  {day_date.toLocaleDateString('en-GB', {day:"2-digit", month:"2-digit", year:"numeric"})}
                              </div>
                          </div>
-          day_date.setTime(day_date.getTime() + 86400000);
+            day_date.setDate(day_date.getDate() + 1);
       }
       return day_cells;
   }
