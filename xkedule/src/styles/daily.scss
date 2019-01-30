@@ -38,6 +38,11 @@
                 grid-row: 2;
                 font-weight: bold;
                 font-size: 20px;
+                margin-left:30px;
+                margin-right:30px;
+                text-overflow: ellipsis;
+                overflow-x: hidden; 
+                white-space: nowrap;
             }
             .task_date{
                 text-align: center;

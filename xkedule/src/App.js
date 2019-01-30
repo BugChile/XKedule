@@ -20,6 +20,7 @@ class App extends Component {
             mode: "daily",
             events: {},
             current_time: new Date().getTime(),
+            dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
         }
 
         //STATE SETTERS
@@ -36,6 +37,8 @@ class App extends Component {
         //CALLBACKS
         this.expand = this.expand.bind(this);
         this.switchWeekMonth = this.switchWeekMonth.bind(this);
+        this.listenScrollEvent = this.listenScrollEvent.bind(this);
+        this.scrollDailyEvent = this.scrollDailyEvent.bind(this);
 
     };
 
@@ -81,6 +84,14 @@ class App extends Component {
 
     }
 
+    listenScrollEvent(){
+        this.setState({dailyComponentScroll:document.getElementById('content').scrollTop});
+    }
+
+    scrollDailyEvent(){
+        document.getElementById('content').scrollTop = this.state.dailyComponentScroll;
+    }
+
     expandContentContainer(){
         document.getElementById("expand").classList.add("reversed_expand");
         document.getElementById("content_container").classList.add("large_content_container");
@@ -94,13 +105,13 @@ class App extends Component {
     switchCard(mode){
         switch (mode) {
             case "daily":
-                return <DailyCard events={this.state.events}/>;
+            return <DailyCard events={this.state.events} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent}/>;
             case "weekly":
                 return <WeeklyCard events={this.state.events}/>;
             case "monthly":
                 return <MonthlyCard events={this.state.events}/>;
             default:
-                return <DailyCard events={this.state.events}/>;
+                return <DailyCard events={this.state.events} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent}/>;
         }
     }
 
@@ -155,6 +166,7 @@ class App extends Component {
     //LIFE CICLE
 
     componentDidMount(){
+        // this.scrollDailyEvent();
         this.setEvents(events);
         this.intervalID = setInterval(
             () => this.tick(),
