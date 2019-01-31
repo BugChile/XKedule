@@ -1,11 +1,28 @@
 import React from "react"
 import HeaderDate from './headerDate'
 import MonthlyCardCell from './monthlyCardCell'
+import MonthlyTaskCard from './monthlyTaskCard'
 
 export default class MonthlyCard extends React.Component {
 
+    generateTaskCards(day, events, current_time){
+        // day is a Date object
+        var task_cards = []
+        const day_events = events[day.toLocaleDateString()];
+        if (day_events) {
+            day_events.forEach((event) => {
+                task_cards.push(
+                    <MonthlyTaskCard event={event}/>
+                )
+            })
+        }
 
-    generateDayCells(current_time){
+        return task_cards
+    }
+
+
+
+    generateDayCells(current_time, events){
         var day_cells = [];
         const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
         var day_date = new Date(current_time.getFullYear(), current_time.getMonth(), 1); //first day of month
@@ -13,6 +30,7 @@ export default class MonthlyCard extends React.Component {
 
         var i = 0;
         var day_info = [];
+        var day_tasks;
         var cell_class_list = "day_cell_monthly";
         var cell_number_class_list = "day_cell_number";
 
@@ -35,8 +53,9 @@ export default class MonthlyCard extends React.Component {
                               {day_date.getDate()}
                           </div>)
 
-
-            day_cells[i] = <MonthlyCardCell cell_key={"monthly_cell"+day_date.getTime()}
+            day_tasks = this.generateTaskCards(day_date, events, current_time);
+            day_cells[i] = <MonthlyCardCell day_tasks={day_tasks}
+                                            cell_key={"monthly_cell"+day_date.getTime()}
                                             day_info={day_info}
                                             cell_tasks={[]}
                                             cell_class_list={cell_class_list}
@@ -61,7 +80,7 @@ export default class MonthlyCard extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
       if (this.props.events === nextProps.events &&
-          this.props.current_time.getDay() === nextProps.current_time.getDay()) {
+          this.props.current_time.toLocaleDateString() === nextProps.current_time.toLocaleDateString()) {
         return false;
       } else {
         return true;
@@ -80,7 +99,8 @@ export default class MonthlyCard extends React.Component {
             </div>
             <div className="content">
                  <div className="monthly_schedule">
-                     {this.generateDayCells(this.props.current_time)}
+                     {this.generateDayCells(this.props.current_time,
+                                            this.props.events)}
 
                  </div>
             </div>

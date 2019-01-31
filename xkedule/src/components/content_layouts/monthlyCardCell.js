@@ -9,7 +9,7 @@ export default class MonthlyCardCell extends React.Component {
                        {this.props.day_info}
                    </div>
                <div className="day_cell_task_container">
-                   {this.props.cell_tasks}
+                   {this.props.day_tasks}
                </div>
            </div>
     )
