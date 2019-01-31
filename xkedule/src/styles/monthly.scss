@@ -1,10 +1,11 @@
 .monthly_schedule{
     margin: 0px 0px;
     display: grid;
-    grid-template-columns: repeat(7, 183.3px);
-    grid-auto-rows: 92px;
+    grid-template-columns: repeat(7, 183px);
+    grid-auto-rows: 2fr;
     border-top: 2px solid #FFFFFF;
     width: 1282px;
+    height: 99%;
 
 }
 
@@ -22,24 +23,36 @@
     border-bottom: 2px solid #FFFFFF;
     border-left: 2px solid #FFFFFF;
     .day_cell_info{
-        color: #828282;
         font-size: 14px;
         display: grid;
-        grid-template-columns: 82px 82px;
+        grid-template-columns: 83px 83px;
         height: 20px;
         margin-left: 5px;
         margin-top: 5px;
         .day_cell_number{
             text-align: right;
             grid-column-start: 2;
+            color: #999999;
         }
         .day_cell_name{
             text-transform: capitalize;
+            color: #333333;
         }
 
     }
 
 }
+
+.day_cell_monthly.month_day{
+    .day_cell_number{
+        color: #333333;
+    }
+}
+
+.day_cell_number.current_day{
+        font-weight: bold;
+        font-size: 20px;
+    }
 
 .day_cell_monthly:nth-of-type(7n){
     border-right: 2px solid #FFFFFF;
@@ -54,22 +67,23 @@
 .day_cell_task_container{
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin-top: 5px;
+    margin-left: 5px;
 }
 
 .monthly_task_card{
-    width: 165px;
-    height: 20px;
+    width: 170px;
+    height: 25px;
     border-radius: 5px;
     margin-bottom: 2px;
     box-shadow: none;
-}
-
-.monthly_task_text{
-    font-size: 12px;
-    font-weight: bold;
-    font-family: "Roboto", sans-serif;
-    margin-top: 2.5px;
-    margin-left: 2px;
+    .task_title{
+        height: inherit;
+        vertical-align: middle;
+        font-size: 12px;
+        font-weight: bold;
+        font-family: "Roboto", sans-serif;
+        margin-top: 5px;
+        margin-left: 3px;
+    }
 }

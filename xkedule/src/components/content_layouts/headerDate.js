@@ -13,7 +13,7 @@ export default class HeaderDate extends React.Component {
 
   render() {
       return(
-          [<div className="text_bold_title" key="date_indicator1">
+          [<div className="text_bold_title color_text" key="date_indicator1">
               {this.props.date["main"]}
           </div>,
           <div className="text_30" key="date_indicator2">

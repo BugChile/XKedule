@@ -19,11 +19,19 @@ class App extends Component {
         this.state = {
             mode: "daily",
             events: {},
-            current_time: new Date().getTime(),
+            hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
+            current_time: new Date(),
+            loading: true,
         }
 
         //STATE SETTERS
-        this.changeMode = this.changeMode.bind(this)
+        this.changeMode = this.changeMode.bind(this);
+        this.setEvents = this.setEvents.bind(this);
+        this.setHashedEvents = this.setHashedEvents.bind(this);
+
+        //CONTENT GENERATORS
+        this.tick = this.tick.bind(this);
+        this.hashEvents = this.hashEvents.bind(this);
 
         //HTML HANDLERS
         this.changeHTMLProperty = this.changeHTMLProperty.bind(this);
@@ -37,6 +45,8 @@ class App extends Component {
         this.expand = this.expand.bind(this);
         this.switchWeekMonth = this.switchWeekMonth.bind(this);
 
+        //LIFE CYCLE
+
     };
 
     //STATE SETTERS
@@ -49,6 +59,10 @@ class App extends Component {
         this.setState({events: this.parseLoadedEvents(events)})
     }
 
+    setHashedEvents(events){
+        this.setState({hashed_by_date: this.hashEvents(events)})
+    }
+
     //CONTENT GENERATORS
     parseLoadedEvents(events){
         for (var key in events) {
@@ -58,9 +72,26 @@ class App extends Component {
         return events;
     }
 
-    tick(){
-        this.setState({current_time: new Date().getTime()})
+    hashEvents(events){
+        var hashed = {};
+        var hashed_date = "";
+        for (var key in events) {
+            hashed_date = events[key].date_start.toLocaleDateString();
+            if (hashed_date in hashed) {
+                hashed[hashed_date].push(events[key])
+            } else {
+                hashed[hashed_date] = [events[key]]
+            }
+        }
+        return hashed;
     }
+
+    tick(){
+        var date = new Date(this.state.current_time);
+        date.setDate(this.state.current_time.getDate() + 1);
+        this.setState({current_time: new Date()});
+    }
+
 
     //HTML HANDLERS
 
@@ -94,13 +125,13 @@ class App extends Component {
     switchCard(mode){
         switch (mode) {
             case "daily":
-                return <DailyCard events={this.state.events}/>;
+                return <DailyCard events={this.state.hashed_by_date} current_time={this.state.current_time}/>;
             case "weekly":
-                return <WeeklyCard events={this.state.events}/>;
+                return <WeeklyCard events={this.state.hashed_by_date} current_time={this.state.current_time}/>;
             case "monthly":
-                return <MonthlyCard events={this.state.events}/>;
+                return <MonthlyCard events={this.state.hashed_by_date} current_time={this.state.current_time}/>;
             default:
-                return <DailyCard events={this.state.events}/>;
+                return <DailyCard events={this.state.hashed_by_date} current_time={this.state.current_time}/>;
         }
     }
 
@@ -156,10 +187,12 @@ class App extends Component {
 
     componentDidMount(){
         this.setEvents(events);
+        this.setHashedEvents(events);
         this.intervalID = setInterval(
-            () => this.tick(),
+            () => this.tick(this),
             1000
         );
+        this.setState({loading: false})
     }
 
     componentWillUnmount() {
@@ -168,8 +201,10 @@ class App extends Component {
 
     render() {
         return(
+            this.state.loading ? <div> loading </div>
+            :
             <div>
-            {this.generateComponents(this.state.mode)}
+                {this.generateComponents(this.state.mode)}
             </div>
 
         )
