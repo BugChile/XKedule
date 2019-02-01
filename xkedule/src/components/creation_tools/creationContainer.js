@@ -1,4 +1,5 @@
 import React from "react"
+import EventForm from './eventForm'
 
 export default class CreationContainer extends React.PureComponent {
 
@@ -13,6 +14,17 @@ export default class CreationContainer extends React.PureComponent {
       }
   }
 
+  generateContent(creation_mode){
+      switch (creation_mode) {
+          case "create_event":
+              return <EventForm />;
+          case "edit_event":
+              return <EventForm />;
+          case "schedule":
+              return "Manage schedule"
+      }
+  }
+
   render() {
       return(
           <div id = "creation_container" className="creation_container" key="creation_container">
@@ -21,6 +33,7 @@ export default class CreationContainer extends React.PureComponent {
                       <span> {this.generateHeader(this.props.creation_mode)} </span>
                   </div>
                   <div className="creation_content">
+                      {this.generateContent(this.props.creation_mode)}
                   </div>
               </div>
           </div>
