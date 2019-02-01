@@ -23,7 +23,7 @@
     border-bottom: 2px solid #FFFFFF;
     border-left: 2px solid #FFFFFF;
     .day_cell_info{
-        font-size: 14px;
+        font-size: 16px;
         display: grid;
         grid-template-columns: 83px 83px;
         height: 20px;
@@ -51,7 +51,6 @@
 
 .day_cell_number.current_day{
         font-weight: bold;
-        font-size: 20px;
     }
 
 .day_cell_monthly:nth-of-type(7n){
@@ -80,10 +79,9 @@
     .task_title{
         height: inherit;
         vertical-align: middle;
-        font-size: 12px;
-        font-weight: bold;
-        font-family: "Roboto", sans-serif;
+        font-size: 14px;
         margin-top: 5px;
         margin-left: 3px;
+        color: #4f4f4f;
     }
 }

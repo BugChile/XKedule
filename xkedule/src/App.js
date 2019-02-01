@@ -5,6 +5,7 @@ import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
 import ExpandButton from './components/expandButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
+import CreationContainer from './components/creation_tools/creationContainer'
 import logo from './assets/logo.svg';
 import './App.css';
 
@@ -18,6 +19,7 @@ class App extends Component {
         super(props)
         this.state = {
             mode: "daily",
+            creation_mode: "create_event",
             events: {},
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
             current_time: new Date(),
@@ -40,6 +42,10 @@ class App extends Component {
         this.shrinkContentContainer = this.shrinkContentContainer.bind(this);
         this.switchCard = this.switchCard.bind(this);
         this.generateComponents = this.generateComponents.bind(this);
+        this.showSmallCreationCard = this.showSmallCreationCard.bind(this);
+        this.hideSmallCreationCard = this.hideSmallCreationCard.bind(this);
+        this.showLargeCreationCard = this.showLargeCreationCard.bind(this);
+        this.hideLargeCreationCard = this.hideLargeCreationCard.bind(this);
 
         //CALLBACKS
         this.expand = this.expand.bind(this);
@@ -114,12 +120,57 @@ class App extends Component {
 
     expandContentContainer(){
         document.getElementById("expand").classList.add("reversed_expand");
-        document.getElementById("content_container").classList.add("large_content_container");
+        document.getElementById("expand").style.left = "1250px";
+        document.getElementById("content_container").style.width = "1300px";
+        document.getElementById("content_container").style.left = "0px";
+        document.getElementById("creation_container").style.width = "1300px";
     }
 
     shrinkContentContainer(){
         document.getElementById("expand").classList.remove("reversed_expand");
-        document.getElementById("content_container").classList.remove("large_content_container");
+        document.getElementById("expand").style.left = "550px";
+        document.getElementById("content_container").style.width = "600px";
+        document.getElementById("content_container").style.left = "0px";
+        document.getElementById("creation_container").style.width = "600px";
+
+    }
+
+    showSmallCreationCard(){
+        if (this.state.mode === "daily") {
+            document.getElementById("creation_container").style.width = "1000px";
+            document.getElementById("expand").style.left = "950px";
+        } else {
+            document.getElementById("content_container").style.left = "-400px";
+        }
+    }
+
+    hideSmallCreationCard(){
+        if (this.state.mode === "daily") {
+            document.getElementById("creation_container").style.width = "600px";
+            document.getElementById("expand").style.left = "550px";
+        } else {
+            document.getElementById("content_container").style.left = "0px";
+        }
+    }
+
+    showLargeCreationCard(){
+        if (this.state.mode === "daily") {
+            document.getElementById("creation_container").style.width = "1300px";
+            document.getElementById("expand").style.left = "1250px";
+            document.getElementById("content_container").style.left = "-400px";
+        } else {
+            document.getElementById("content_container").style.left = "-1100px";
+        }
+    }
+
+    hideLargeCreationCard(){
+        if (this.state.mode === "daily") {
+            document.getElementById("creation_container").style.width = "600px";
+            document.getElementById("expand").style.left = "550px";
+            document.getElementById("content_container").style.left = "0px";
+        } else {
+            document.getElementById("content_container").style.left = "0px";
+        }
     }
 
     switchCard(mode){
@@ -135,13 +186,14 @@ class App extends Component {
         }
     }
 
-    generateComponents(mode){
+    generateComponents(mode, creation_mode){
         var components = [];
 
-        components.push(<ExpandButton expandCB={this.expand} key="expand_button"/>);
-
+        // Main card:
         var content_container_components = []
         content_container_components.push(this.switchCard(this.state.mode))
+
+        // Switch button for week and month
         if (mode != "daily") {
             content_container_components.push(<SwitchWeekMonth key="switch_week_month"
                                              switchWeekMonthCB={this.switchWeekMonth}/>)
@@ -151,6 +203,16 @@ class App extends Component {
                 {content_container_components}
             </div>
         )
+
+
+        // Creating and editing content container:
+        components.push(
+                <CreationContainer creation_mode = {creation_mode}/>
+            )
+
+        // Expand/Accept button:
+        components.push(<ExpandButton expandCB={this.expand} key="expand_button"/>);
+
 
 
         return components;
@@ -204,7 +266,13 @@ class App extends Component {
             this.state.loading ? <div> loading </div>
             :
             <div>
-                {this.generateComponents(this.state.mode)}
+                {this.generateComponents(this.state.mode, this.state.creation_mode)}
+                <div className="placeholder_button" onClick={this.showSmallCreationCard}>
+                 1
+                </div>
+                <div className="placeholder_button" onClick={this.hideSmallCreationCard} style={{top: "150px"}}>
+                 2
+                </div>
             </div>
 
         )
