@@ -5,6 +5,7 @@ import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
 import ExpandButton from './components/expandButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
+import InfoCard from './components/content_layouts/infoCard'
 import logo from './assets/logo.svg';
 import './App.css';
 
@@ -21,6 +22,8 @@ class App extends Component {
             events: {},
             current_time: new Date().getTime(),
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
+            infoDaily: null,
+            classesInfoCard:'hidden info_daily_task',
         }
 
         //STATE SETTERS
@@ -39,6 +42,9 @@ class App extends Component {
         this.switchWeekMonth = this.switchWeekMonth.bind(this);
         this.listenScrollEvent = this.listenScrollEvent.bind(this);
         this.scrollDailyEvent = this.scrollDailyEvent.bind(this);
+        this.clickEvent = this.clickEvent.bind(this);
+        this.closeEvent = this.closeEvent.bind(this);
+        // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
     };
 
@@ -88,6 +94,19 @@ class App extends Component {
         this.setState({dailyComponentScroll:document.getElementById('content').scrollTop});
     }
 
+    clickEvent(event){
+       this.setState({infoDaily:event, classesInfoCard:'info_daily_task'})
+    }
+    
+    closeEvent(){
+        this.setState({infoDaily:null, classesInfoCard:'hidden info_daily_task'})
+    }
+
+    // onClickAnywhereEvent(event, data){
+    //     alert(event.target.type);
+    //     // this.setState({infoDaily:null, classesInfoCard:'hidden info_daily_task'})
+    // }
+
     scrollDailyEvent(){
         document.getElementById('content').scrollTop = this.state.dailyComponentScroll;
     }
@@ -105,13 +124,13 @@ class App extends Component {
     switchCard(mode){
         switch (mode) {
             case "daily":
-            return <DailyCard events={this.state.events} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent}/>;
+            return <DailyCard events={this.state.events} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent}/>;
             case "weekly":
                 return <WeeklyCard events={this.state.events}/>;
             case "monthly":
                 return <MonthlyCard events={this.state.events}/>;
             default:
-                return <DailyCard events={this.state.events} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent}/>;
+                return <DailyCard events={this.state.events} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent}/>;
         }
     }
 
@@ -180,8 +199,11 @@ class App extends Component {
 
     render() {
         return(
-            <div>
+            <div 
+            // onClick={this.onClickAnywhereEvent}
+            >
             {this.generateComponents(this.state.mode)}
+            {<InfoCard classesInfoCard={this.state.classesInfoCard} event={this.state.infoDaily} functionClose={this.closeEvent}/>}
             </div>
 
         )

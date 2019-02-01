@@ -3,7 +3,7 @@ body {
     margin: 0;
     font-family: "Lato", sans-serif;
     color: #333333;
-    overflow: hidden;
+    // overflow: hidden;
 }
 
 .background{
@@ -57,7 +57,10 @@ a:visited{
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-
+.task_card:hover{
+    color:#E7042D;
+    cursor: pointer;
+}
 
 .content_header{
     width: inherit;
@@ -181,4 +184,23 @@ a:visited{
         transition: left 0.25s ease-out;
     }
 
+}
+.hidden{
+    display: none;
+}
+.button_min{
+    display: block;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    margin: 5px;
+    width: (13px!important);
+    text-align: center;
+    border-radius: 20px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.1);
+    border-width: 2px;
+    &:hover{
+        cursor: pointer;
+        border-color: rgba(255, 255, 255, .7);
+    }
 }

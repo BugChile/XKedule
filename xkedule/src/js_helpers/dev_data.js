@@ -11,8 +11,16 @@ export const events = {
     "2" : {
         "id": "2",
         "title": "Final AOasdasdasasdasdasdasdadasdasdkasjdlkasjdlkdasdasdasdasdasd",
+        "date_start": new Date('August 19, 1975 02:00:00'),
+        "date_end": new Date('August 19, 1975 04:59:00')
+
+    },
+
+    "3" : {
+        "id": "3",
+        "title": "Final AOasdasdasasdasdasdasdadasdasdkasjdlkasjdlkdasdasdasdasdasd",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('August 19, 1975 03:00:00'),
+        "date_start": new Date('August 19, 1975 01:00:00'),
         "date_end": new Date('August 19, 1975 04:59:00')
 
     }

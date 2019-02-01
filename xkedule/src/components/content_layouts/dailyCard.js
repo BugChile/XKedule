@@ -75,7 +75,7 @@ export default class DailyCard extends React.Component {
         var generated = []
         for (var key in events) {
             generated.push(
-                <DailyTaskCard event={events[key]} key={events[key].id}/>
+                <DailyTaskCard event={events[key]} key={events[key].id} clickEvent={this.props.clickEvent}/>
                 )
             }
         return generated;
