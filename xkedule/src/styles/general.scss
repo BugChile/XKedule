@@ -34,6 +34,7 @@ a:visited{
 }
 
 .content_container{
+    z-index: 1;
     display: flex;
     flex-direction: row;
     position: absolute;
@@ -42,10 +43,6 @@ a:visited{
     width: 600px;
     transition: all 0.5s ease;
     overflow-x: hidden;
-}
-
-.large_content_container{
-    width: 1300px;
 }
 
 
@@ -72,7 +69,7 @@ a:visited{
 }
 
 .expand{
-    z-index: 1;
+    z-index: 2;
     position: absolute;
     top: 20px;
     left: 550px;
@@ -95,7 +92,6 @@ a:visited{
 }
 
 .reversed_expand{
-    left: 1250px;
     transform: rotate(-180deg);
 }
 
@@ -184,4 +180,15 @@ a:visited{
         transition: left 0.25s ease-out;
     }
 
+}
+
+.placeholder_button{
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100px;
+    width: 100px;
+    z-index: 3;
+    background: white;
+    cursor: pointer;
 }
