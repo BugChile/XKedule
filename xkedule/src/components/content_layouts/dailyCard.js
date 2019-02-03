@@ -34,7 +34,7 @@ export default class DailyCard extends React.Component {
         </div> )
     }
 
-    lines(){
+  lines(){
         return (
             <div className="line-subgrid" key="line_subgrid">
                 <div className="line" key="daily_hour_line_00"></div>
@@ -66,23 +66,38 @@ export default class DailyCard extends React.Component {
         )
     }
 
-    getHeaderDate(date){
+  getHeaderDate(current_time){
         var date_dict = {};
-        return {"main": "Monday 14th", "sub": "January, 2019"}
+        date_dict["main"] = current_time.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
+        date_dict["sub"] = current_time.toLocaleString('en-GB', {month:"long", year: "numeric"});
+        return date_dict;
     }
 
-    generateEvents(events){
+  generateEvents(events, current_time){
         var generated = []
+<<<<<<< HEAD
         for (var key in events) {
             generated.push(
                 <DailyTaskCard event={events[key]} key={events[key].id} clickEvent={this.props.clickEvent}/>
                 )
             }
+=======
+        const day_events = events[current_time.toLocaleDateString()]
+        if (day_events) {
+            day_events.forEach((event) => {
+                generated.push(
+                    <DailyTaskCard event={event} key={event.id}/>
+                    )
+                }
+            )
+        }
+>>>>>>> dev
         return generated;
     }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.events === nextProps.events) {
+    if (this.props.events === nextProps.events &&
+        this.props.current_time.toLocaleDateString() === nextProps.current_time.toLocaleDateString()) {
       return false;
     } else {
       return true;
@@ -106,7 +121,8 @@ export default class DailyCard extends React.Component {
                  {this.hourTicks()}
                  {this.lines()}
                  <div className="tasks_container" key="tasks_container">
-                    {this.generateEvents(this.props.events)}
+                    {this.generateEvents(this.props.events,
+                                         this.props.current_time)}
                  </div>
              </div>
          </div>

@@ -4,7 +4,6 @@ export default class DailyTaskCard extends React.Component {
   getGridPlacement(event){
      var grid_start = Math.floor((event.date_start.getHours()*60 + event.date_start.getMinutes())/2)+1
      var grid_end = Math.floor((event.date_end.getHours()*60 + event.date_end.getMinutes())/2)+1
-     console.log({"gridRow": grid_start+"/"+grid_end})
      return {"gridRow": grid_start+"/"+grid_end}
   }
 

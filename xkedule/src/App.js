@@ -6,6 +6,7 @@ import WeeklyCard from './components/content_layouts/weeklyCard'
 import ExpandButton from './components/expandButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
 import InfoCard from './components/content_layouts/infoCard'
+import CreationContainer from './components/creation_tools/creationContainer'
 import logo from './assets/logo.svg';
 import './App.css';
 
@@ -19,15 +20,24 @@ class App extends Component {
         super(props)
         this.state = {
             mode: "daily",
+            creation_mode: "create_event",
             events: {},
-            current_time: new Date().getTime(),
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
             infoDaily: null,
             classesInfoCard:'hidden info_daily_task',
+            hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
+            current_time: new Date(),
+            loading: true,
         }
 
         //STATE SETTERS
-        this.changeMode = this.changeMode.bind(this)
+        this.changeMode = this.changeMode.bind(this);
+        this.setEvents = this.setEvents.bind(this);
+        this.setHashedEvents = this.setHashedEvents.bind(this);
+
+        //CONTENT GENERATORS
+        this.tick = this.tick.bind(this);
+        this.hashEvents = this.hashEvents.bind(this);
 
         //HTML HANDLERS
         this.changeHTMLProperty = this.changeHTMLProperty.bind(this);
@@ -36,6 +46,10 @@ class App extends Component {
         this.shrinkContentContainer = this.shrinkContentContainer.bind(this);
         this.switchCard = this.switchCard.bind(this);
         this.generateComponents = this.generateComponents.bind(this);
+        this.showSmallCreationCard = this.showSmallCreationCard.bind(this);
+        this.hideSmallCreationCard = this.hideSmallCreationCard.bind(this);
+        this.showLargeCreationCard = this.showLargeCreationCard.bind(this);
+        this.hideLargeCreationCard = this.hideLargeCreationCard.bind(this);
 
         //CALLBACKS
         this.expand = this.expand.bind(this);
@@ -45,6 +59,8 @@ class App extends Component {
         this.clickEvent = this.clickEvent.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
+
+        //LIFE CYCLE
 
     };
 
@@ -58,6 +74,10 @@ class App extends Component {
         this.setState({events: this.parseLoadedEvents(events)})
     }
 
+    setHashedEvents(events){
+        this.setState({hashed_by_date: this.hashEvents(events)})
+    }
+
     //CONTENT GENERATORS
     parseLoadedEvents(events){
         for (var key in events) {
@@ -67,9 +87,26 @@ class App extends Component {
         return events;
     }
 
-    tick(){
-        this.setState({current_time: new Date().getTime()})
+    hashEvents(events){
+        var hashed = {};
+        var hashed_date = "";
+        for (var key in events) {
+            hashed_date = events[key].date_start.toLocaleDateString();
+            if (hashed_date in hashed) {
+                hashed[hashed_date].push(events[key])
+            } else {
+                hashed[hashed_date] = [events[key]]
+            }
+        }
+        return hashed;
     }
+
+    tick(){
+        var date = new Date(this.state.current_time);
+        date.setDate(this.state.current_time.getDate() + 1);
+        this.setState({current_time: new Date()});
+    }
+
 
     //HTML HANDLERS
 
@@ -113,34 +150,80 @@ class App extends Component {
 
     expandContentContainer(){
         document.getElementById("expand").classList.add("reversed_expand");
-        document.getElementById("content_container").classList.add("large_content_container");
+        document.getElementById("expand").style.left = "1250px";
+        document.getElementById("content_container").style.width = "1300px";
+        document.getElementById("content_container").style.left = "0px";
+        document.getElementById("creation_container").style.width = "1300px";
     }
 
     shrinkContentContainer(){
         document.getElementById("expand").classList.remove("reversed_expand");
-        document.getElementById("content_container").classList.remove("large_content_container");
+        document.getElementById("expand").style.left = "550px";
+        document.getElementById("content_container").style.width = "600px";
+        document.getElementById("content_container").style.left = "0px";
+        document.getElementById("creation_container").style.width = "600px";
+
+    }
+
+    showSmallCreationCard(){
+        if (this.state.mode === "daily") {
+            document.getElementById("creation_container").style.width = "1000px";
+            document.getElementById("expand").style.left = "950px";
+        } else {
+            document.getElementById("content_container").style.left = "-400px";
+        }
+    }
+
+    hideSmallCreationCard(){
+        if (this.state.mode === "daily") {
+            document.getElementById("creation_container").style.width = "600px";
+            document.getElementById("expand").style.left = "550px";
+        } else {
+            document.getElementById("content_container").style.left = "0px";
+        }
+    }
+
+    showLargeCreationCard(){
+        if (this.state.mode === "daily") {
+            document.getElementById("creation_container").style.width = "1300px";
+            document.getElementById("expand").style.left = "1250px";
+            document.getElementById("content_container").style.left = "-400px";
+        } else {
+            document.getElementById("content_container").style.left = "-1100px";
+        }
+    }
+
+    hideLargeCreationCard(){
+        if (this.state.mode === "daily") {
+            document.getElementById("creation_container").style.width = "600px";
+            document.getElementById("expand").style.left = "550px";
+            document.getElementById("content_container").style.left = "0px";
+        } else {
+            document.getElementById("content_container").style.left = "0px";
+        }
     }
 
     switchCard(mode){
         switch (mode) {
             case "daily":
-            return <DailyCard events={this.state.events} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent}/>;
+            return <DailyCard events={this.state.hashed_by_date} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent} current_time={this.state.current_time}/>;
             case "weekly":
-                return <WeeklyCard events={this.state.events}/>;
+                return <WeeklyCard events={this.state.hashed_by_date} current_time={this.state.current_time}/>;
             case "monthly":
-                return <MonthlyCard events={this.state.events}/>;
+                return <MonthlyCard events={this.state.hashed_by_date} current_time={this.state.current_time}/>;
             default:
-                return <DailyCard events={this.state.events} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent}/>;
+                return <DailyCard events={this.state.hashed_by_date} current_time={this.state.current_time} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent}/>;
         }
     }
 
-    generateComponents(mode){
+    generateComponents(mode, creation_mode){
         var components = [];
 
-        components.push(<ExpandButton expandCB={this.expand} key="expand_button"/>);
-
+        // Main card:
         var content_container_components = []
         content_container_components.push(this.switchCard(this.state.mode))
+
+        // Switch button for week and month
         if (mode != "daily") {
             content_container_components.push(<SwitchWeekMonth key="switch_week_month"
                                              switchWeekMonthCB={this.switchWeekMonth}/>)
@@ -150,6 +233,16 @@ class App extends Component {
                 {content_container_components}
             </div>
         )
+
+
+        // Creating and editing content container:
+        components.push(
+                <CreationContainer creation_mode = {creation_mode}/>
+            )
+
+        // Expand/Accept button:
+        components.push(<ExpandButton expandCB={this.expand} key="expand_button"/>);
+
 
 
         return components;
@@ -187,10 +280,12 @@ class App extends Component {
     componentDidMount(){
         // this.scrollDailyEvent();
         this.setEvents(events);
+        this.setHashedEvents(events);
         this.intervalID = setInterval(
-            () => this.tick(),
+            () => this.tick(this),
             1000
         );
+        this.setState({loading: false})
     }
 
     componentWillUnmount() {
@@ -199,11 +294,17 @@ class App extends Component {
 
     render() {
         return(
-            <div 
-            // onClick={this.onClickAnywhereEvent}
-            >
-            {this.generateComponents(this.state.mode)}
-            {<InfoCard classesInfoCard={this.state.classesInfoCard} event={this.state.infoDaily} functionClose={this.closeEvent}/>}
+            this.state.loading ? <div> loading </div>
+            :
+            <div>
+                {this.generateComponents(this.state.mode, this.state.creation_mode)}
+                {<InfoCard classesInfoCard={this.state.classesInfoCard} event={this.state.infoDaily} functionClose={this.closeEvent}/>}
+                <div className="placeholder_button" onClick={this.showSmallCreationCard}>
+                 1
+                </div>
+                <div className="placeholder_button" onClick={this.hideSmallCreationCard} style={{top: "150px"}}>
+                 2
+                </div>
             </div>
 
         )
