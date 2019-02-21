@@ -17,7 +17,7 @@ export default class WeeklyCard extends React.Component {
       if (day_events) {
           day_events.forEach((event) => {
               task_cards.push(
-                  <WeeklyTaskCard event={event}/>
+                  <WeeklyTaskCard event={event} clickEvent={this.props.clickEvent}/>
               )
           })
       }

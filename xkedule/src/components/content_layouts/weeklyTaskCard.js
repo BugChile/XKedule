@@ -4,7 +4,8 @@ export default class WeeklyTaskCard extends React.Component {
   render() {
       return(
           <a className="task_card weekly_task_card"
-             key={this.props.event.id}>
+             key={this.props.event.id}
+             onClick={()=> this.props.clickEvent(this.props.event, 'position_'.concat(this.props.event.date_start.getDay()))}>
               <div className="task_title">
                   {this.props.event.title}
               </div>

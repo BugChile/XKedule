@@ -4,7 +4,9 @@ export default class MonthlyCardCell extends React.Component {
 
   render() {
       return(
-          <div className={this.props.cell_class_list} key={this.props.cell_key}>
+          <div 
+          className={this.props.cell_class_list} 
+          key={this.props.cell_key}>
                    <div className="day_cell_info">
                        {this.props.day_info}
                    </div>

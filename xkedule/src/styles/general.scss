@@ -62,7 +62,10 @@ a:visited{
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-
+.task_card:hover{
+    color:#E7042D;
+    cursor: pointer;
+}
 
 .content_header{
     width: inherit;
@@ -141,6 +144,11 @@ a:visited{
     border-radius: 10px;
 }
 
+.task_card_past{
+    background: rgba(255,255,255,0.4);
+    border-radius: 10px;
+}
+
 .switch_week_month{
     cursor: pointer;
     position: absolute;
@@ -189,7 +197,25 @@ a:visited{
     }
 
 }
-
+.hidden{
+    display: none;
+}
+.button_min{
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    margin: 5px;
+    width: (13px!important);
+    text-align: center;
+    border-radius: 20px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.1);
+    border-width: 2px;
+    &:hover{
+        cursor: pointer;
+        border-color: rgba(255, 255, 255, .7);
+    }
+}
 .placeholder_button{
     position: absolute;
     right: 0;
@@ -199,4 +225,44 @@ a:visited{
     z-index: 3;
     background: white;
     cursor: pointer;
+}
+
+// general information card daily - wekkly- monthly
+.info_daily_task{
+    position: absolute;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 4;
+    color: white;
+    padding: 30px;
+    width: 300px;
+    box-shadow: 7px 10px 30px rgba(0, 0, 0, .4);
+    min-height: 100px;
+    word-wrap: break-word;
+    border-radius: 10px;
+    -webkit-transition: left 0.3s ease;
+    top: 41%;
+}
+.position_daily{
+    left: 150px;
+}
+.position_1{
+    left: 5px;
+}
+.position_2{
+    left: 165+10-150+82px;
+}
+.position_3{
+    left: 165+20-150+82+165px;
+}
+.position_4{
+    left: 165+30-150+82+165+165px;
+}
+.position_5{
+    left: 165+40-150+82+165+165+165px;
+}
+.position_6{
+    left: 165+50-150+82+165+165+165+165px;
+}
+.position_0{
+    left: 920px;
 }

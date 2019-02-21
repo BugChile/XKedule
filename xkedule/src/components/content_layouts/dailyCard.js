@@ -79,7 +79,7 @@ export default class DailyCard extends React.Component {
         if (day_events) {
             day_events.forEach((event) => {
                 generated.push(
-                    <DailyTaskCard event={event} key={event.id}/>
+                    <DailyTaskCard event={event} key={event.id} clickEvent={this.props.clickEvent}/>
                     )
                 }
             )
@@ -95,6 +95,9 @@ export default class DailyCard extends React.Component {
       return true;
     }
   }
+  componentDidMount(){
+    this.props.scrollDailyEvent();
+  }
 
   render() {
       return(
@@ -105,7 +108,7 @@ export default class DailyCard extends React.Component {
              </div>
              <HeaderDate date={this.getHeaderDate(this.props.current_time)}/>
          </div>
-         <div className="content" key="content">
+         <div className="content" key="content" id='content' onScroll={this.props.scrollEvent}>
              <div className="daily_tasks" key="daily_tasks">
                  {this.hourTicks()}
                  {this.lines()}

@@ -11,8 +11,9 @@ export default class DailyTaskCard extends React.Component {
       return(
           <a className="task_card daily_task_card"
              key={this.props.event.id}
-             href={this.props.event.link}
-             style={this.getGridPlacement(this.props.event)}>
+             style={this.getGridPlacement(this.props.event)}
+             title={this.props.event.title}
+             onClick={()=> this.props.clickEvent(this.props.event, 'position_daily')}>
               <div className="task_title">
                   {this.props.event.title}
               </div>
