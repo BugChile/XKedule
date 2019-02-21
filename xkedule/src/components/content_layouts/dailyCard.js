@@ -75,23 +75,15 @@ export default class DailyCard extends React.Component {
 
   generateEvents(events, current_time){
         var generated = []
-<<<<<<< HEAD
-        for (var key in events) {
-            generated.push(
-                <DailyTaskCard event={events[key]} key={events[key].id} clickEvent={this.props.clickEvent}/>
-                )
-            }
-=======
         const day_events = events[current_time.toLocaleDateString()]
         if (day_events) {
             day_events.forEach((event) => {
                 generated.push(
-                    <DailyTaskCard event={event} key={event.id}/>
+                    <DailyTaskCard event={event} key={event.id} clickEvent={this.props.clickEvent}/>
                     )
                 }
             )
         }
->>>>>>> dev
         return generated;
     }
 

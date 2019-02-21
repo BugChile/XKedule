@@ -12,7 +12,8 @@ export default class MonthlyCard extends React.Component {
         if (day_events) {
             day_events.forEach((event) => {
                 task_cards.push(
-                    <MonthlyTaskCard event={event}/>
+                    <MonthlyTaskCard event={event}
+                    clickEvent={this.props.clickEvent}/>
                 )
             })
         }

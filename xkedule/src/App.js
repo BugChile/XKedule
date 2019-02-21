@@ -25,6 +25,7 @@ class App extends Component {
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
             infoDaily: null,
             classesInfoCard:'hidden info_daily_task',
+            infoDailyTop: null,
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
             current_time: new Date(),
             loading: true,
@@ -131,8 +132,8 @@ class App extends Component {
         this.setState({dailyComponentScroll:document.getElementById('content').scrollTop});
     }
 
-    clickEvent(event){
-       this.setState({infoDaily:event, classesInfoCard:'info_daily_task'})
+    clickEvent(event, type, top=null){
+       this.setState({infoDaily:event, classesInfoCard:'info_daily_task '.concat(type), infoDailyTop:top})
     }
     
     closeEvent(){
@@ -208,9 +209,9 @@ class App extends Component {
             case "daily":
             return <DailyCard events={this.state.hashed_by_date} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent} current_time={this.state.current_time}/>;
             case "weekly":
-                return <WeeklyCard events={this.state.hashed_by_date} current_time={this.state.current_time}/>;
+                return <WeeklyCard events={this.state.hashed_by_date} current_time={this.state.current_time} clickEvent={this.clickEvent}/>;
             case "monthly":
-                return <MonthlyCard events={this.state.hashed_by_date} current_time={this.state.current_time}/>;
+                return <MonthlyCard events={this.state.hashed_by_date} current_time={this.state.current_time} clickEvent={this.clickEvent}/>;
             default:
                 return <DailyCard events={this.state.hashed_by_date} current_time={this.state.current_time} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent}/>;
         }
@@ -298,13 +299,18 @@ class App extends Component {
             :
             <div>
                 {this.generateComponents(this.state.mode, this.state.creation_mode)}
-                {<InfoCard classesInfoCard={this.state.classesInfoCard} event={this.state.infoDaily} functionClose={this.closeEvent}/>}
+               
                 <div className="placeholder_button" onClick={this.showSmallCreationCard}>
                  1
                 </div>
                 <div className="placeholder_button" onClick={this.hideSmallCreationCard} style={{top: "150px"}}>
                  2
                 </div>
+                {<InfoCard 
+                classesInfoCard={this.state.classesInfoCard} 
+                event={this.state.infoDaily} 
+                topValue={this.state.infoDailyTop} 
+                functionClose={this.closeEvent}/>}
             </div>
 
         )

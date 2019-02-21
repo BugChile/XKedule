@@ -13,7 +13,7 @@ export default class DailyTaskCard extends React.Component {
              key={this.props.event.id}
              style={this.getGridPlacement(this.props.event)}
              title={this.props.event.title}
-             onClick={()=> this.props.clickEvent(this.props.event)}>
+             onClick={()=> this.props.clickEvent(this.props.event, 'position_daily')}>
               <div className="task_title">
                   {this.props.event.title}
               </div>
