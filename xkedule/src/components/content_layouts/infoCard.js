@@ -1,5 +1,6 @@
 import React from "react"
 import ButtonFunction from '../buttonFunction'
+
 export default class InfoCard extends React.Component {
     render() {
         return (
@@ -7,7 +8,10 @@ export default class InfoCard extends React.Component {
           switch (this.props.event) {
           case null:   return (<div>asd</div>) ;
           default:  return (
-            <div value='1' className={''.concat(this.props.classesInfoCard).concat(' ').concat(this.props.topValue)}>
+            <div value='1'
+                 className={''.concat(this.props.classesInfoCard).concat(' ').concat(this.props.topValue)}
+                 style={{left: this.props.left, top: this.props.top}}
+            >
             <ButtonFunction function={this.props.functionClose} text='X'/>
             {/* <ButtonFunction function={this.props.functionClose} text='X'/> */}
             <h3>Event: {this.props.event.title}</h3>
@@ -16,7 +20,8 @@ export default class InfoCard extends React.Component {
             </div>
           );
           }
-      })())}
-      
-    
+      })()
+    )
   }
+
+}

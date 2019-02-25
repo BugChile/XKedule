@@ -52,7 +52,6 @@ export default class WeeklyCard extends React.Component {
           day_date.setDate(day_date.getDate() + 1);
       }
       const all_elements = day_name_cells.concat(week_tasks);
-      console.log(all_elements);
       return all_elements;
   }
 
@@ -95,7 +94,7 @@ export default class WeeklyCard extends React.Component {
              </div>
              <HeaderDate date={this.getHeaderDate(this.props.current_time)}/>
          </div>
-         <div className="content">
+         <div className="content" id="content">
               <div className="weekly_schedule">
                   {this.generateDayCells(this.props.current_time, this.props.events)}
 

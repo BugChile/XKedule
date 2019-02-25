@@ -24,8 +24,10 @@ class App extends Component {
             events: {},
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
             infoDaily: null,
-            classesInfoCard:'hidden info_daily_task',
+            classesInfoCard:'hidden event_info_card',
             infoDailyTop: null,
+            eventInfoCardLeft: null,
+            eventInfoCardTop:null,
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
             current_time: new Date(),
             loading: true,
@@ -132,17 +134,60 @@ class App extends Component {
         this.setState({dailyComponentScroll:document.getElementById('content').scrollTop});
     }
 
-    clickEvent(event, type, top=null){
-       this.setState({infoDaily:event, classesInfoCard:'info_daily_task '.concat(type), infoDailyTop:top})
+    clickEvent(event, card_id=null){
+       const content_div = document.getElementById("content")
+       if (content_div) {
+           content_div.style["overflow-y"] = "hidden";
+       }
+       const eventCardCoordinates = document.getElementById(card_id).getBoundingClientRect();
+       var left = 0;
+       var top = 0;
+       switch (this.state.mode) {
+           case 'monthly':
+               if (eventCardCoordinates.left <= 700 ) {
+                   left = eventCardCoordinates.left + 175
+               } else {
+                   left = eventCardCoordinates.left - 415
+               }
+               top = Math.min(eventCardCoordinates.top, 460)
+               break;
+           case 'weekly':
+               if (eventCardCoordinates.left <= 700 ) {
+                   left = eventCardCoordinates.left + 170
+               } else {
+                   left = eventCardCoordinates.left - 415
+               }
+               top = Math.min(eventCardCoordinates.top, 460)
+               break;
+           case 'daily':
+               left = eventCardCoordinates.left
+               top = Math.min(eventCardCoordinates.top + eventCardCoordinates.height + 5)
+               if (document.body.getBoundingClientRect().height - top < 250) {
+                   top = eventCardCoordinates.top - 265;
+               }
+
+               break;
+
+       }
+       left += "px"
+       top += "px"
+       this.setState({infoDaily:event,
+                      classesInfoCard:'event_info_card '.concat(this.state.mode),
+                      eventInfoCardLeft:left,
+                      eventInfoCardTop:top})
     }
-    
+
     closeEvent(){
-        this.setState({infoDaily:null, classesInfoCard:'hidden info_daily_task'})
+        this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
+        const content_div = document.getElementById("content")
+        if (content_div) {
+            content_div.style["overflow-y"] = "scroll";
+        }
     }
 
     // onClickAnywhereEvent(event, data){
     //     alert(event.target.type);
-    //     // this.setState({infoDaily:null, classesInfoCard:'hidden info_daily_task'})
+    //     // this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
     // }
 
     scrollDailyEvent(){
@@ -207,13 +252,25 @@ class App extends Component {
     switchCard(mode){
         switch (mode) {
             case "daily":
-            return <DailyCard events={this.state.hashed_by_date} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent} current_time={this.state.current_time}/>;
+            return <DailyCard events={this.state.hashed_by_date}
+                              scrollEvent={this.listenScrollEvent}
+                              scrollDailyEvent={this.scrollDailyEvent}
+                              clickEvent={this.clickEvent}
+                              current_time={this.state.current_time}/>;
             case "weekly":
-                return <WeeklyCard events={this.state.hashed_by_date} current_time={this.state.current_time} clickEvent={this.clickEvent}/>;
+                return <WeeklyCard events={this.state.hashed_by_date}
+                                   current_time={this.state.current_time}
+                                   clickEvent={this.clickEvent}/>;
             case "monthly":
-                return <MonthlyCard events={this.state.hashed_by_date} current_time={this.state.current_time} clickEvent={this.clickEvent}/>;
+                return <MonthlyCard events={this.state.hashed_by_date}
+                                    current_time={this.state.current_time}
+                                    clickEvent={this.clickEvent}/>;
             default:
-                return <DailyCard events={this.state.hashed_by_date} current_time={this.state.current_time} scrollEvent={this.listenScrollEvent} scrollDailyEvent={this.scrollDailyEvent} clickEvent={this.clickEvent}/>;
+                return <DailyCard events={this.state.hashed_by_date}
+                                  current_time={this.state.current_time}
+                                  scrollEvent={this.listenScrollEvent}
+                                  scrollDailyEvent={this.scrollDailyEvent}
+                                  clickEvent={this.clickEvent}/>;
         }
     }
 
@@ -263,6 +320,7 @@ class App extends Component {
             this.changeMode("daily");
             this.shrinkContentContainer();
         }
+        this.closeEvent();
     }
 
     switchWeekMonth(){
@@ -272,8 +330,8 @@ class App extends Component {
         } else if (this.state.mode == "weekly"){
             this.changeMode("monthly");
             this.setSwitchWeekMonth("monthly")
-
         }
+        this.closeEvent();
     }
 
     //LIFE CICLE
@@ -299,18 +357,20 @@ class App extends Component {
             :
             <div>
                 {this.generateComponents(this.state.mode, this.state.creation_mode)}
-               
+
                 <div className="placeholder_button" onClick={this.showSmallCreationCard}>
                  1
                 </div>
                 <div className="placeholder_button" onClick={this.hideSmallCreationCard} style={{top: "150px"}}>
                  2
                 </div>
-                {<InfoCard 
-                classesInfoCard={this.state.classesInfoCard} 
-                event={this.state.infoDaily} 
-                topValue={this.state.infoDailyTop} 
-                functionClose={this.closeEvent}/>}
+                {<InfoCard
+                classesInfoCard={this.state.classesInfoCard}
+                event={this.state.infoDaily}
+                topValue={this.state.infoDailyTop}
+                functionClose={this.closeEvent}
+                left={this.state.eventInfoCardLeft}
+                top={this.state.eventInfoCardTop}/>}
             </div>
 
         )
