@@ -19,16 +19,16 @@ export const events = {
         "id": "3",
         "title": "Fake3",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 02, 2019 05:00:00'),
-        "date_end": new Date('February 02, 2019 06:59:00')
+        "date_start": new Date('February 25, 2019 05:00:00'),
+        "date_end": new Date('February 25, 2019 06:59:00')
 
     },
     "4" : {
         "id": "4",
         "title": "Fake4",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 24, 2019 05:00:00'),
-        "date_end": new Date('February 24, 2019 06:59:00')
+        "date_start": new Date('February 27, 2019 05:00:00'),
+        "date_end": new Date('February 27, 2019 06:59:00')
 
     },
     "5" : {
@@ -59,8 +59,8 @@ export const events = {
         "id": "8",
         "title": "Fake8",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('January 29, 2019 05:00:00'),
-        "date_end": new Date('January 29, 2019 06:59:00')
+        "date_start": new Date('March 01, 2019 05:00:00'),
+        "date_end": new Date('March 01, 2019 06:59:00')
 
     },
     "9" : {

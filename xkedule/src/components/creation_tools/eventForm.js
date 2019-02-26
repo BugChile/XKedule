@@ -1,5 +1,6 @@
 import React from "react"
 import InputForm from "./inputForm";
+import EventTag from "./eventTag"
 import TimeInputForm from "./timeInputForm";
 import SelectInputForm from "./selectInputForm";
 import OptionsInputForm from "./optionsRepeatInput";
@@ -28,7 +29,11 @@ export default class EventForm extends React.PureComponent {
           lastDayRepeat: [0],
           hiddenCalendarEvent: "hidden",
           hiddenCalendarRepeat: "hidden",
-          tag:"",
+          add_tag:"",
+          tags: [
+              {"name": "IIC2233 - Inteligencia Artificial", "style": "ocean_tag"},
+              {"name": "Gym", "style": "lilac_tag"}
+          ],
           hiddenRepeat:"hidden",
       };
       this.setValue = this.setValue.bind(this);
@@ -40,6 +45,7 @@ export default class EventForm extends React.PureComponent {
       this.onChangeCalendar = this.onChangeCalendar.bind(this);
       this.onChangeCalendarRepeat = this.onChangeCalendarRepeat.bind(this);
       this.toggleHiddenElement = this.toggleHiddenElement.bind(this);
+      this.getTags = this.getTags.bind(this);
 
   };
 
@@ -53,9 +59,9 @@ export default class EventForm extends React.PureComponent {
         }
       }else if(target ==="to"){
         this.setState({to: event.target.value})
-        
+
       }else{
-        this.setState({tag: event.target.value})
+        this.setState({add_tag: event.target.value})
       }
   }
 
@@ -86,7 +92,7 @@ export default class EventForm extends React.PureComponent {
     })
     if (!isRepeating){
       this.setState({lastDayRepeat:[0], lastDayRepeatDate:new Date()})
-    } 
+    }
 
   }
   handleClickDayRepeat(day){
@@ -99,12 +105,12 @@ export default class EventForm extends React.PureComponent {
       newOptionsValues[this.dayDict[day]] = 0;
     }
     this.setState({repeat:newOptions, repeatDays:newOptionsValues})
-    
+
   }
 
   displayCalendar(){
     if (!this.state.date[0]){
-      this.setState({date:[this.state.fromDayDate.toLocaleDateString("en-US")]})
+      this.setState({date:[this.state.fromDayDate.toLocaleDateString("en-GB")]})
     }
     if(this.state.hiddenCalendarEvent){
       this.setState({hiddenCalendarEvent:""})
@@ -128,7 +134,7 @@ export default class EventForm extends React.PureComponent {
     }else{
       this.setState({hiddenCalendarEvent:"hidden"})
     }
-    this.setState({date:[newDate.toLocaleDateString("en-US")], fromDayDate:newDate, minDateRepeat:newDate})
+    this.setState({date:[newDate.toLocaleDateString("en-GB")], fromDayDate:newDate, minDateRepeat:newDate})
 
   }
 
@@ -141,68 +147,78 @@ export default class EventForm extends React.PureComponent {
   }
 
   onChangeCalendarRepeat(newDate){
-    
+
     if(this.state.hiddenCalendarRepeat){
       this.setState({hiddenCalendarRepeat:""})
     }else{
       this.setState({hiddenCalendarRepeat:"hidden"})
     }
-    this.setState({lastDayRepeat:[newDate.toLocaleDateString("en-US")], lastDayRepeatDate:newDate})
+    this.setState({lastDayRepeat:[newDate.toLocaleDateString("en-GB")], lastDayRepeatDate:newDate})
+  }
+
+  getTags(tags){
+      var tag_divs = [];
+      tags.forEach((tag) => {
+          tag_divs.push(<EventTag  classesCss={`event_form_tag ${tag.style}`}
+                     tag_name={tag.name}/>
+                 );
+      })
+      return tag_divs;
   }
 
   render() {
       return(
           <div id = "event_form" className="event_form" key="event_form">
               <span> Title: </span>
-              <InputForm 
-                classesCss='input big_input' 
-                value={this.state.title} 
-                onChange={this.setValue} 
+              <InputForm
+                classesCss='input big_input'
+                value={this.state.title}
+                onChange={this.setValue}
                 type="title"
               />
 
               <span> Date: </span>
 
-              <SelectInputForm 
-                classesCss='input big_input div_input' 
-                iterValues={this.state.date} 
+              <SelectInputForm
+                classesCss='input big_input div_input'
+                iterValues={this.state.date}
                 defaultValue="Select Date"
                 onClick={this.displayCalendar}
               />
-              
+
               <span> From: </span>
-              <TimeInputForm 
-                min="00:00" 
-                isDisabled={false} 
-                classesCss='input small_input' 
-                value={this.state.from} 
-                onChange={this.setValue} 
-                type="from" 
+              <TimeInputForm
+                min="00:00"
+                isDisabled={false}
+                classesCss='input small_input'
+                value={this.state.from}
+                onChange={this.setValue}
+                type="from"
                 functionCheck={()=>{}}
               />
 
               <span> To: </span>
-              <TimeInputForm 
-                min={this.state.minTo} 
-                isDisabled={this.state.isDisabled} 
-                classesCss='input small_input' 
-                value={this.state.to} 
-                onChange={this.setValue} 
-                type="to" 
+              <TimeInputForm
+                min={this.state.minTo}
+                isDisabled={this.state.isDisabled}
+                classesCss='input small_input'
+                value={this.state.to}
+                onChange={this.setValue}
+                type="to"
                 functionCheck={this.checkTime}
               />
 
               <span> Repeat: </span>
 
-              <SelectInputForm 
-                classesCss='input big_input div_input' 
-                iterValues={this.state.repeatDays} 
+              <SelectInputForm
+                classesCss='input big_input div_input'
+                iterValues={this.state.repeatDays}
                 defaultValue="Never"
                 onClick={this.displayOptions}
               />
               {this.toggleHiddenElement(
                 this.state.hiddenRepeat,
-                <OptionsInputForm 
+                <OptionsInputForm
                   dayIndex={this.dayDict}
                   classesCss={'options_container'}
                   onClick={this.displayOptions}
@@ -213,30 +229,40 @@ export default class EventForm extends React.PureComponent {
                   />
               )}
 
-              <span> Tag: </span>
+              <span> Tags: </span>
+              <div className="event_form_tag_container">
+                  {this.getTags(this.state.tags)}
 
-              <InputForm classesCss='input big_input' value={this.state.tag} onChange={this.setValue} type="tag"/>
-              
+                  <InputForm classesCss='input big_input'
+                             value={this.state.add_tag}
+                             placeholder="+ Add tag"
+                             onChange={this.setValue}
+                             type="add_tag"/>
+              </div>
+
+
+
+
               {this.toggleHiddenElement(
-                this.state.hiddenCalendarEvent, 
-                <MyCalendar 
-                  value={this.state.fromDayDate} 
-                  onChange={this.onChangeCalendar} 
-                  minDate={this.state.today} 
+                this.state.hiddenCalendarEvent,
+                <MyCalendar
+                  value={this.state.fromDayDate}
+                  onChange={this.onChangeCalendar}
+                  minDate={this.state.today}
                   classesCss={"calendar_container"}
                 />
               )}
 
               {this.toggleHiddenElement(
-                this.state.hiddenCalendarRepeat, 
-                <MyCalendar 
-                  value={this.state.lastDayRepeatDate} 
-                  onChange={this.onChangeCalendarRepeat} 
-                  minDate={this.state.minDateRepeat} 
+                this.state.hiddenCalendarRepeat,
+                <MyCalendar
+                  value={this.state.lastDayRepeatDate}
+                  onChange={this.onChangeCalendarRepeat}
+                  minDate={this.state.minDateRepeat}
                   classesCss={"calendar_container_repeat"}
                 />
               )}
-      
+
           </div>
     )
   }

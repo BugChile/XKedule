@@ -8,7 +8,7 @@
     --main-bg-w-o-opa1: rgb(42, 97, 60);
     --main-bg-w-o-opa: rgb(25, 61, 43);
   }
-  
+
 .creation_container{
     width: 600px;
     height: 100vh;
@@ -57,7 +57,7 @@
     }
 
     .input{
-        &:hover{   
+        &:hover{
         box-shadow: 0 1px 1px var(--main-bg-color1) inset, 0 0 3px var(--main-bg-color2);
         outline: 0 none;
         }
@@ -79,7 +79,7 @@
         &:hover{
             cursor: pointer;
         }
-        &:focus, &:hover{   
+        &:focus, &:hover{
             box-shadow: 0 1px 1px var(--main-bg-color1) inset, 0 0 3px var(--main-bg-color2);
             outline: 0 none;
         }
@@ -89,7 +89,7 @@
     }
     .focus_input{
         background-color: rgb(65, 64, 64);
-        &:focus{   
+        &:focus{
             border-color: rgba(229, 103, 23, 0.8);
             box-shadow: 0 1px 1px var(--main-bg-color1) inset, 0 0 3px var(--main-bg-color2);
             outline: 0 none;
@@ -108,16 +108,49 @@
     .time_select{
         display: flex;
     }
+
+    .event_form_tag_container{
+        grid-column: 2/5;
+    }
+
+    .event_form_tag{
+        padding-left: 10px;
+        grid-column-start: 2;
+        grid-column-end: 5;
+        height: 30px;
+        width: 100%;
+        border-radius: 10px;
+        margin-top: 10px;
+        font-size: 15px;
+        vertical-align: middle;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        span{
+            padding: 0;
+            margin: 0;
+        }
+        i{
+            margin-right: 10px;
+            padding: 5px 6px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        i:hover{
+            background: #0000004d;
+        }
+    }
 }
 
 .caret {
-    width: 0; 
+    width: 0;
     height: 0;
     position: absolute;
     transform: translate(250px, -8px);
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    
+
     border-top: 5px solid #fff;
   }
 .options_container{

@@ -1,6 +1,6 @@
 import React from "react"
 
-export default class InputForm extends React.PureComponent {
+export default class EventTag extends React.PureComponent {
   constructor(props){
       super(props)
       this.blurCss = this.props.classesCss
@@ -23,16 +23,17 @@ export default class InputForm extends React.PureComponent {
   }
   render() {
       return(
-              <input
+              <div
                 className={this.state.actualCss}
-                value={this.props.value}
                 onFocus={this.onFocusInput}
                 onBlur={this.onBlurInput}
-                onChange={(event)=>{this.props.onChange(event, this.props.type)}}
-                required={true}
-                placeholder={this.props.placeholder}
               >
-              </input>
+                <span>
+                    {this.props.tag_name}
+                </span>
+                <i className='fas fa-times'></i>
+
+              </div>
 
     )
   }
