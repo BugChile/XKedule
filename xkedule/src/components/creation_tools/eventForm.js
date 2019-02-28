@@ -4,6 +4,7 @@ import EventTag from "./eventTag"
 import TimeInputForm from "./timeInputForm";
 import SelectInputForm from "./selectInputForm";
 import OptionsInputForm from "./optionsRepeatInput";
+import TagTool from "./tagTool"
 import MyCalendar from "./myCalendar";
 import Calendar from 'react-calendar';
 
@@ -21,7 +22,7 @@ export default class EventForm extends React.PureComponent {
           minTo:"00:00",
           today: new Date(),
           minDateRepeat: new Date(),
-          isDisabled:true,
+          isToTimeDisabled:true,
           repeat:[0,0,0,0,0,0,0],
           repeatDays:[0,0,0,0,0,0,0],
           fromDayDate: new Date(),
@@ -29,39 +30,58 @@ export default class EventForm extends React.PureComponent {
           lastDayRepeat: [0],
           hiddenCalendarEvent: "hidden",
           hiddenCalendarRepeat: "hidden",
-          add_tag:"",
-          tags: [
-              {"name": "IIC2233 - Inteligencia Artificial", "style": "ocean_tag"},
-              {"name": "Gym", "style": "lilac_tag"}
-          ],
+          hiddenTagTool: "hidden",
+          addTag:"",
+          eventTags: {},
           hiddenRepeat:"hidden",
       };
+
+      this.updatedEventTags = {} //required for stacked setState calls, all
+      // eventTags updated should be done on updatedEventTags before a call of
+      // this.setState({eventTags: this.updatedEventTags})
+
+      this.setTitle = this.setTitle.bind(this);
+      this.setFrom = this.setFrom.bind(this);
       this.setValue = this.setValue.bind(this);
       this.checkTime = this.checkTime.bind(this);
       this.displayOptions = this.displayOptions.bind(this);
       this.handleClickDayRepeat = this.handleClickDayRepeat.bind(this);
       this.displayCalendar = this.displayCalendar.bind(this);
       this.displayCalendarRepeat = this.displayCalendarRepeat.bind(this);
+      this.toggleTagTool = this.toggleTagTool.bind(this);
       this.onChangeCalendar = this.onChangeCalendar.bind(this);
       this.onChangeCalendarRepeat = this.onChangeCalendarRepeat.bind(this);
       this.toggleHiddenElement = this.toggleHiddenElement.bind(this);
-      this.getTags = this.getTags.bind(this);
+      this.getEventTagDivs = this.getEventTagDivs.bind(this);
+      this.loadEvent = this.loadEvent.bind(this);
+      this.loadEventTags = this.loadEventTags.bind(this);
+      this.addEventTag = this.addEventTag.bind(this);
 
   };
 
+  setTitle(title){
+      this.setState({title})
+  }
+
+  setFrom(from){
+      this.setState({from, isToTimeDisabled:false, minTo: from, to:""})
+  }
+
+
+
   setValue(event, target){
       if(target ==="title"){
-        this.setState({title: event.target.value})
+        this.setTitle(event.target.value)
       }else if(target ==="from"){
-            this.setState({from: event.target.value, isDisabled:true, minTo:event.target.value, to:""})
+            this.setState({from: event.target.value, isToTimeDisabled:true, minTo:event.target.value, to:""})
         if (event.target.value){
-        this.setState({from: event.target.value, isDisabled:false, minTo:event.target.value})
+        this.setFrom(event.target.value)
         }
       }else if(target ==="to"){
         this.setState({to: event.target.value})
 
       }else{
-        this.setState({add_tag: event.target.value})
+        this.setState({addTag: event.target.value})
       }
   }
 
@@ -119,6 +139,14 @@ export default class EventForm extends React.PureComponent {
     }
   }
 
+  toggleTagTool(){
+      if (this.state.hiddenTagTool === "") {
+          this.setState({hiddenTagTool: "hidden"});
+      } else {
+          this.setState({hiddenTagTool: ""});
+      }
+  }
+
   toggleHiddenElement(current_mode, element){
     switch (current_mode) {
         case "hidden":
@@ -156,14 +184,40 @@ export default class EventForm extends React.PureComponent {
     this.setState({lastDayRepeat:[newDate.toLocaleDateString("en-GB")], lastDayRepeatDate:newDate})
   }
 
-  getTags(tags){
+  getEventTagDivs(event_tags){
       var tag_divs = [];
-      tags.forEach((tag) => {
-          tag_divs.push(<EventTag  classesCss={`event_form_tag ${tag.style}`}
-                     tag_name={tag.name}/>
+      const event_tags_list = Object.values(event_tags)
+      event_tags_list.forEach((tag) => {
+          tag_divs.push(<EventTag  classesCss={`event_form_event_tag ${tag.style}_tag`}
+                     tag_name={tag.name}
+                     canDelete={true}/>
                  );
       })
       return tag_divs;
+  }
+
+  loadEvent(_event){
+      this.setTitle(_event["title"])
+  }
+
+  loadEventTags(editing_event, user_tags){
+      editing_event["tag_ids"].forEach((tag_id) => {
+          this.addEventTag(user_tags[tag_id]);
+      })
+  }
+
+  addEventTag(tag){
+      this.updatedEventTags[tag.id] = tag;
+      // above update is instantaneus instead of setState, so if react stacks
+      // setState calls we use the updatedEventTags as a reference
+      this.setState({ eventTags : this.updatedEventTags})
+  }
+
+  componentDidMount(){
+      if (this.props.event) {
+          this.loadEvent(this.props.event);
+          this.loadEventTags(this.props.event, this.props.user_tags);
+      }
   }
 
   render() {
@@ -200,7 +254,7 @@ export default class EventForm extends React.PureComponent {
               <span> To: </span>
               <TimeInputForm
                 min={this.state.minTo}
-                isDisabled={this.state.isDisabled}
+                isDisabled={this.state.isToTimeDisabled}
                 classesCss='input small_input'
                 value={this.state.to}
                 onChange={this.setValue}
@@ -231,13 +285,23 @@ export default class EventForm extends React.PureComponent {
 
               <span> Tags: </span>
               <div className="event_form_tag_container">
-                  {this.getTags(this.state.tags)}
+                  {this.getEventTagDivs(this.state.eventTags)}
 
                   <InputForm classesCss='input big_input'
-                             value={this.state.add_tag}
+                             value={this.state.addTag}
                              placeholder="+ Add tag"
                              onChange={this.setValue}
-                             type="add_tag"/>
+                             onFocus={this.toggleTagTool}
+                             onFocusOut={this.toggleTagTool}
+                             type="addTag"/>
+                {this.toggleHiddenElement(
+                        this.state.hiddenTagTool,
+                        <TagTool
+                            classesCss='event_form_tag_tool'
+                            user_tags={this.props.user_tags}
+                            event_tags={this.state.eventTags}
+                        />
+                )}
               </div>
 
 

@@ -16,11 +16,18 @@ export default class InputForm extends React.PureComponent {
   };
 
   onFocusInput(){
-    this.setState({actualCss: this.focusCss})
-}
+    this.setState({actualCss: this.focusCss});
+    if (this.props.onFocus) {
+        this.props.onFocus();
+        }
+    }
+
   onBlurInput(){
       this.setState({actualCss: this.blurCss})
-  }
+      if (this.props.onFocusOut) {
+          this.props.onFocusOut();
+          }
+   }
   render() {
       return(
               <input

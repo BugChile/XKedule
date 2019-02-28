@@ -13,15 +13,17 @@ import './App.css';
 
 // development
 
-import { events }  from './js_helpers/dev_data';
+import { events, user_tags }  from './js_helpers/dev_data';
 
 class App extends Component {
     constructor(props){
         super(props)
         this.state = {
             mode: "daily",
-            creation_mode: "create_event",
+            creation_mode: "edit_event",
+            editing_event_id: "2", //id of the event that's being edited, if any, else null
             events: {},
+            user_tags: {},
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
             infoDaily: null,
             classesInfoCard:'hidden event_info_card',
@@ -37,6 +39,7 @@ class App extends Component {
         this.changeMode = this.changeMode.bind(this);
         this.setEvents = this.setEvents.bind(this);
         this.setHashedEvents = this.setHashedEvents.bind(this);
+        this.setUserTags = this.setUserTags.bind(this);
 
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
@@ -75,6 +78,10 @@ class App extends Component {
 
     setEvents(events){
         this.setState({events: this.parseLoadedEvents(events)})
+    }
+
+    setUserTags(user_tags){
+        this.setState({user_tags})
     }
 
     setHashedEvents(events){
@@ -295,8 +302,11 @@ class App extends Component {
 
         // Creating and editing content container:
         components.push(
-                <CreationContainer creation_mode = {creation_mode}/>
-            )
+            <CreationContainer creation_mode = {creation_mode}
+                               events = {this.state.events}
+                               user_tags = {this.state.user_tags}
+                               editing_event_id = {this.state.editing_event_id}/>
+        )
 
         // Expand/Accept button:
         components.push(<ExpandButton expandCB={this.expand} key="expand_button"/>);
@@ -338,6 +348,7 @@ class App extends Component {
 
     componentDidMount(){
         // this.scrollDailyEvent();
+        this.setUserTags(user_tags);
         this.setEvents(events);
         this.setHashedEvents(events);
         this.intervalID = setInterval(

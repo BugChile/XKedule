@@ -21,6 +21,12 @@ export default class EventTag extends React.PureComponent {
   onBlurInput(){
       this.setState({actualCss: this.blurCss})
   }
+
+  getTagOptions(){
+      if (this.props.canDelete) {
+          return <i className='fas fa-times'></i>
+      }
+  }
   render() {
       return(
               <div
@@ -31,7 +37,7 @@ export default class EventTag extends React.PureComponent {
                 <span>
                     {this.props.tag_name}
                 </span>
-                <i className='fas fa-times'></i>
+                {this.getTagOptions()}
 
               </div>
 
