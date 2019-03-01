@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom';
 import DailyCard from './components/content_layouts/dailyCard'
 import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
-import ExpandButton from './components/expandButton'
+import MainButton from './components/mainButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
 import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
+import {save_event, load_event}  from './js_helpers/data_handling';
 import logo from './assets/logo.svg';
 import './App.css';
 
 
 // development
-
 import { events, user_tags }  from './js_helpers/dev_data';
 
 class App extends Component {
@@ -33,6 +33,8 @@ class App extends Component {
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
             current_time: new Date(),
             loading: true,
+            main_button_function: null,
+            main_button_icon: "expand",
         }
 
         //STATE SETTERS
@@ -40,6 +42,8 @@ class App extends Component {
         this.setEvents = this.setEvents.bind(this);
         this.setHashedEvents = this.setHashedEvents.bind(this);
         this.setUserTags = this.setUserTags.bind(this);
+        this.setMainButtonIcon = this.setMainButtonIcon.bind(this);
+        this.setMainButtonFunction = this.setMainButtonFunction.bind(this);
 
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
@@ -86,6 +90,14 @@ class App extends Component {
 
     setHashedEvents(events){
         this.setState({hashed_by_date: this.hashEvents(events)})
+    }
+
+    setMainButtonFunction(main_button_function){
+        this.setState({main_button_function})
+    }
+
+    setMainButtonIcon(main_button_icon){
+        this.setState({main_button_icon})
     }
 
     //CONTENT GENERATORS
@@ -202,16 +214,16 @@ class App extends Component {
     }
 
     expandContentContainer(){
-        document.getElementById("expand").classList.add("reversed_expand");
-        document.getElementById("expand").style.left = "1250px";
+        document.getElementById("main_button_container").classList.add("reversed");
+        document.getElementById("main_button_container").style.left = "1250px";
         document.getElementById("content_container").style.width = "1300px";
         document.getElementById("content_container").style.left = "0px";
         document.getElementById("creation_container").style.width = "1300px";
     }
 
     shrinkContentContainer(){
-        document.getElementById("expand").classList.remove("reversed_expand");
-        document.getElementById("expand").style.left = "550px";
+        document.getElementById("main_button_container").classList.remove("reversed");
+        document.getElementById("main_button_container").style.left = "550px";
         document.getElementById("content_container").style.width = "600px";
         document.getElementById("content_container").style.left = "0px";
         document.getElementById("creation_container").style.width = "600px";
@@ -219,27 +231,35 @@ class App extends Component {
     }
 
     showSmallCreationCard(){
+        document.getElementById("main_button_container").classList.add("full_loop");
+        this.setMainButtonIcon("save")
+        this.setMainButtonFunction(save_event)
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "1000px";
-            document.getElementById("expand").style.left = "950px";
+            document.getElementById("main_button_container").style.left = "950px";
         } else {
             document.getElementById("content_container").style.left = "-400px";
         }
     }
 
     hideSmallCreationCard(){
+        document.getElementById("main_button_container").classList.remove("full_loop");
+        this.setMainButtonIcon("expand")
+        this.setMainButtonFunction(this.expand)
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "600px";
-            document.getElementById("expand").style.left = "550px";
+            document.getElementById("main_button_container").style.left = "550px";
         } else {
             document.getElementById("content_container").style.left = "0px";
         }
     }
 
     showLargeCreationCard(){
+        document.getElementById("main_button_container").classList.add("full_loop");
+        this.setMainButtonIcon("save")
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "1300px";
-            document.getElementById("expand").style.left = "1250px";
+            document.getElementById("main_button_container").style.left = "1250px";
             document.getElementById("content_container").style.left = "-400px";
         } else {
             document.getElementById("content_container").style.left = "-1100px";
@@ -247,9 +267,11 @@ class App extends Component {
     }
 
     hideLargeCreationCard(){
+        document.getElementById("main_button_container").classList.remove("full_loop");
+        this.setMainButtonIcon("expand")
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "600px";
-            document.getElementById("expand").style.left = "550px";
+            document.getElementById("main_button_container").style.left = "550px";
             document.getElementById("content_container").style.left = "0px";
         } else {
             document.getElementById("content_container").style.left = "0px";
@@ -305,11 +327,14 @@ class App extends Component {
             <CreationContainer creation_mode = {creation_mode}
                                events = {this.state.events}
                                user_tags = {this.state.user_tags}
-                               editing_event_id = {this.state.editing_event_id}/>
+                               editing_event_id = {this.state.editing_event_id}
+                               close_event_form = {this.hideSmallCreationCard}/>
         )
 
         // Expand/Accept button:
-        components.push(<ExpandButton expandCB={this.expand} key="expand_button"/>);
+        components.push(<MainButton function={this.state.main_button_function}
+                                    key="main_button"
+                                    icon_mode={this.state.main_button_icon}/>);
 
 
 
@@ -355,6 +380,7 @@ class App extends Component {
             () => this.tick(this),
             1000
         );
+        this.setMainButtonFunction(this.expand)
         this.setState({loading: false})
     }
 

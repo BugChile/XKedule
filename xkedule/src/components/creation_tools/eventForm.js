@@ -289,7 +289,13 @@ export default class EventForm extends React.PureComponent {
   render() {
       return(
           <div id = "event_form" className="event_form" key="event_form">
-              <span> Title: </span>
+              <div  className="event_form_whole_row right_aligned_text">
+                    <span id="event_form_discard"
+                          onClick={this.props.close_event_form}>
+                    Cancel
+                    </span>
+              </div>
+              <span> title: </span>
               <InputForm
                 classesCss='input big_input'
                 value={this.state.title}
@@ -297,7 +303,7 @@ export default class EventForm extends React.PureComponent {
                 type="title"
               />
 
-              <span> Date: </span>
+              <span> date: </span>
 
               <SelectInputForm
                 classesCss='input big_input div_input'
@@ -306,7 +312,7 @@ export default class EventForm extends React.PureComponent {
                 onClick={this.displayCalendar}
               />
 
-              <span> From: </span>
+              <span> from: </span>
               <TimeInputForm
                 min="00:00"
                 isDisabled={false}
@@ -317,7 +323,7 @@ export default class EventForm extends React.PureComponent {
                 functionCheck={()=>{}}
               />
 
-              <span> To: </span>
+              <span> to: </span>
               <TimeInputForm
                 min={this.state.minTo}
                 isDisabled={this.state.isToTimeDisabled}
@@ -328,7 +334,7 @@ export default class EventForm extends React.PureComponent {
                 functionCheck={this.checkTime}
               />
 
-              <span> Repeat: </span>
+              <span> repeat: </span>
 
               <SelectInputForm
                 classesCss='input big_input div_input'
@@ -349,7 +355,7 @@ export default class EventForm extends React.PureComponent {
                   />
               )}
 
-              <span> Tags: </span>
+              <span> tags: </span>
               <div className="event_form_values_container">
                   {this.getEventTagDivs(this.state.eventTags)}
                   <SelectInputForm
@@ -369,7 +375,7 @@ export default class EventForm extends React.PureComponent {
                 )}
                 </div>
 
-                <span> Links: </span>
+                <span> links: </span>
                 <div className="event_form_values_container">
                     {this.getEventLinkDivs(this.state.eventLinks)}
                     <SelectInputForm

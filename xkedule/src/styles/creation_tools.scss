@@ -46,7 +46,7 @@
     margin: 0px 20px;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 2fr;
-    grid-row-gap: 20px;
+    grid-row-gap: 15px;
     font-size: 15px;
     font-weight: lighter;
 
@@ -107,6 +107,19 @@
         text-align: center;
         grid-column: span 1;
     }
+
+    .event_form_whole_row{
+        grid-column-start: 1;
+        grid-column-end: 5;
+    }
+
+    #event_form_discard{
+        color: #9D9D9D;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 1px;
+    }
+
     .time_select{
         display: flex;
     }
