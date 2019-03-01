@@ -2,9 +2,12 @@ const events = {
     "1" : {
         "id": "1",
         "title": "Fake1",
-        "link": "https://www.ausopen.com",
-        "date_start": new Date('February 26, 2019 00:00:00'),
-        "date_end": new Date('February 26, 2019 02:59:00'),
+        "links": {
+            "CSS height": {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
+            "CSS width": {"name": "CSS width", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/width#Values"}
+        },
+        "date_start": new Date('March 2, 2019 00:00:00'),
+        "date_end": new Date('March 2, 2019 02:59:00'),
         "tag_ids": ["1", "3"]
 
     },

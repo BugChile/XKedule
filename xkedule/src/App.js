@@ -21,7 +21,7 @@ class App extends Component {
         this.state = {
             mode: "daily",
             creation_mode: "edit_event",
-            editing_event_id: "2", //id of the event that's being edited, if any, else null
+            editing_event_id: "1", //id of the event that's being edited, if any, else null
             events: {},
             user_tags: {},
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después

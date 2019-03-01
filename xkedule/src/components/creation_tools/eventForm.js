@@ -1,10 +1,11 @@
 import React from "react"
 import InputForm from "./inputForm";
-import EventTag from "./eventTag"
+import EventFormCard from "./eventFormCard"
 import TimeInputForm from "./timeInputForm";
 import SelectInputForm from "./selectInputForm";
 import OptionsInputForm from "./optionsRepeatInput";
 import TagTool from "./tagTool"
+import LinkTool from "./linkTool"
 import MyCalendar from "./myCalendar";
 import Calendar from 'react-calendar';
 
@@ -31,14 +32,20 @@ export default class EventForm extends React.PureComponent {
           hiddenCalendarEvent: "hidden",
           hiddenCalendarRepeat: "hidden",
           hiddenTagTool: "hidden",
-          addTag:"",
-          eventTags: {},
+          hiddenLinkTool: "hidden",
           hiddenRepeat:"hidden",
+          eventTags: {},
+          eventLinks: {},
       };
 
+      // the following are used because of stacked setState calls on prevState
+      // based operations
       this.updatedEventTags = {} //required for stacked setState calls, all
-      // eventTags updated should be done on updatedEventTags before a call of
+      // eventTags updates should be done on updatedEventTags before a call of
       // this.setState({eventTags: this.updatedEventTags})
+      this.updatedEventLinks = {} //required for stacked setState calls, all
+      // eventLinks updates should be done on updatedEventTags before a call of
+      // this.setState({eventLinks: this.updatedEventLinks})
 
       this.setTitle = this.setTitle.bind(this);
       this.setFrom = this.setFrom.bind(this);
@@ -49,13 +56,19 @@ export default class EventForm extends React.PureComponent {
       this.displayCalendar = this.displayCalendar.bind(this);
       this.displayCalendarRepeat = this.displayCalendarRepeat.bind(this);
       this.toggleTagTool = this.toggleTagTool.bind(this);
+      this.toggleLinkTool = this.toggleLinkTool.bind(this);
       this.onChangeCalendar = this.onChangeCalendar.bind(this);
       this.onChangeCalendarRepeat = this.onChangeCalendarRepeat.bind(this);
       this.toggleHiddenElement = this.toggleHiddenElement.bind(this);
       this.getEventTagDivs = this.getEventTagDivs.bind(this);
+      this.getEventLinkDivs = this.getEventLinkDivs.bind(this);
       this.loadEvent = this.loadEvent.bind(this);
       this.loadEventTags = this.loadEventTags.bind(this);
       this.addEventTag = this.addEventTag.bind(this);
+      this.removeEventTag = this.removeEventTag.bind(this);
+      this.loadEventLinks = this.loadEventLinks.bind(this);
+      this.addEventLink = this.addEventLink.bind(this);
+      this.removeEventLink = this.removeEventLink.bind(this);
 
   };
 
@@ -80,8 +93,6 @@ export default class EventForm extends React.PureComponent {
       }else if(target ==="to"){
         this.setState({to: event.target.value})
 
-      }else{
-        this.setState({addTag: event.target.value})
       }
   }
 
@@ -139,6 +150,14 @@ export default class EventForm extends React.PureComponent {
     }
   }
 
+  toggleLinkTool(){
+      if (this.state.hiddenLinkTool === "") {
+          this.setState({hiddenLinkTool: "hidden"});
+      } else {
+          this.setState({hiddenLinkTool: ""});
+      }
+  }
+
   toggleTagTool(){
       if (this.state.hiddenTagTool === "") {
           this.setState({hiddenTagTool: "hidden"});
@@ -188,16 +207,30 @@ export default class EventForm extends React.PureComponent {
       var tag_divs = [];
       const event_tags_list = Object.values(event_tags)
       event_tags_list.forEach((tag) => {
-          tag_divs.push(<EventTag  classesCss={`event_form_event_tag ${tag.style}_tag`}
-                     tag_name={tag.name}
-                     canDelete={true}/>
+          tag_divs.push(<EventFormCard  classesCss={`event_form_card ${tag.style}_tag`}
+                     element={tag}
+                     onDelete={this.removeEventTag}/>
                  );
       })
       return tag_divs;
   }
 
+  getEventLinkDivs(event_links){
+      var link_divs = [];
+      const event_links_list = Object.values(event_links)
+      event_links_list.forEach((link) => {
+          link_divs.push(<EventFormCard  classesCss={`event_form_card grey_tag`}
+                     element={link}
+                     onDelete={this.removeEventLink}
+                     onGoTo={link.href}/>
+                 );
+      })
+      return link_divs;
+  }
+
   loadEvent(_event){
       this.setTitle(_event["title"])
+      this.setState({date:[_event["date_start"].toLocaleDateString("en-GB")]})
   }
 
   loadEventTags(editing_event, user_tags){
@@ -207,16 +240,49 @@ export default class EventForm extends React.PureComponent {
   }
 
   addEventTag(tag){
-      this.updatedEventTags[tag.id] = tag;
+      const new_key_value_pair = {};
+      new_key_value_pair[tag.id] = tag;
+      this.updatedEventTags = {...new_key_value_pair, ...this.updatedEventTags};
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventTags as a reference
       this.setState({ eventTags : this.updatedEventTags})
+  }
+
+  removeEventTag(tag){
+      delete this.updatedEventTags[tag.id];
+      this.updatedEventTags = {...this.updatedEventTags}; // deep copy to trigger re-render
+      // above update is instantaneus instead of setState, so if react stacks
+      // setState calls we use the updatedEventTags as a reference
+      this.setState({ eventTags : this.updatedEventTags})
+  }
+
+  loadEventLinks(editing_event){
+      this.updatedEventLinks = {...editing_event["links"]}
+      this.setState({ eventLinks : this.updatedEventLinks})
+  }
+
+  addEventLink(link){
+      const new_key_value_pair = {};
+      new_key_value_pair[link.name] = link;
+      this.updatedEventLinks = {...new_key_value_pair, ...this.updatedEventLinks};
+      // above update is instantaneus instead of setState, so if react stacks
+      // setState calls we use the updatedEventLinks as a reference
+      this.setState({ eventLinks : this.updatedEventLinks})
+  }
+
+  removeEventLink(link){
+      delete this.updatedEventLinks[link.name];
+      this.updatedEventLinks = {...this.updatedEventLinks}; // deep copy to trigger re-render
+      // above update is instantaneus instead of setState, so if react stacks
+      // setState calls we use the updatedEventLinks as a reference
+      this.setState({ eventLinks : this.updatedEventLinks})
   }
 
   componentDidMount(){
       if (this.props.event) {
           this.loadEvent(this.props.event);
           this.loadEventTags(this.props.event, this.props.user_tags);
+          this.loadEventLinks(this.props.event);
       }
   }
 
@@ -236,7 +302,7 @@ export default class EventForm extends React.PureComponent {
               <SelectInputForm
                 classesCss='input big_input div_input'
                 iterValues={this.state.date}
-                defaultValue="Select Date"
+                defaultValue="Select date"
                 onClick={this.displayCalendar}
               />
 
@@ -284,25 +350,43 @@ export default class EventForm extends React.PureComponent {
               )}
 
               <span> Tags: </span>
-              <div className="event_form_tag_container">
+              <div className="event_form_values_container">
                   {this.getEventTagDivs(this.state.eventTags)}
-
-                  <InputForm classesCss='input big_input'
-                             value={this.state.addTag}
-                             placeholder="+ Add tag"
-                             onChange={this.setValue}
-                             onFocus={this.toggleTagTool}
-                             onFocusOut={this.toggleTagTool}
-                             type="addTag"/>
+                  <SelectInputForm
+                    classesCss='input big_input div_input'
+                    iterValues={[]}
+                    defaultValue="+ Add tag"
+                    onClick={this.toggleTagTool}
+                  />
                 {this.toggleHiddenElement(
                         this.state.hiddenTagTool,
                         <TagTool
                             classesCss='event_form_tag_tool'
                             user_tags={this.props.user_tags}
                             event_tags={this.state.eventTags}
+                            add_tag_to_event_callback={this.addEventTag}
                         />
                 )}
-              </div>
+                </div>
+
+                <span> Links: </span>
+                <div className="event_form_values_container">
+                    {this.getEventLinkDivs(this.state.eventLinks)}
+                    <SelectInputForm
+                      classesCss='input big_input div_input'
+                      iterValues={[]}
+                      defaultValue="+ Add link"
+                      onClick={this.toggleLinkTool}
+                    />
+                  {this.toggleHiddenElement(
+                          this.state.hiddenLinkTool,
+                          <LinkTool
+                              classesCss='event_form_tag_tool'
+                              add_link_to_event_callback={this.addEventLink}
+                              close_callback={this.toggleLinkTool}
+                          />
+                  )}
+                </div>
 
 
 
