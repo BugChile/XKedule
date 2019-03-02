@@ -1,0 +1,32 @@
+input {
+    color: inherit;
+    border-radius: inherit;
+    font-size: inherit;
+    background-color: inherit;
+    font-weight: inherit;
+}
+
+.on_off_input_container:focus{
+    outline: 0 none;
+}
+
+.on_off_input_container{
+    font-size: 15px;
+    .text_line_input{
+        width: 90%;
+        height: 100%;
+        padding: 0px 5%;
+        &:focus{
+            outline: 0 none;
+        }
+    }
+}
+
+.simple_input_off_state{
+    width: 90%;
+    height: 100%;
+    padding: 0px 5%;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}

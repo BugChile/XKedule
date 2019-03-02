@@ -57,7 +57,7 @@
     }
 
     .input{
-        &:hover{
+        &:focus, &:hover{
         box-shadow: 0 1px 1px var(--main-bg-color1) inset, 0 0 3px var(--main-bg-color2);
         outline: 0 none;
         }
@@ -96,9 +96,7 @@
             outline: 0 none;
         }
     }
-    .big_input{
-        padding-left: 5%;
-        width: 95%;
+    .event_form_big_input{
         grid-column-start: 2;
         grid-column-end: 5;
     }

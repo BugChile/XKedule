@@ -7,6 +7,9 @@ import OptionsInputForm from "./optionsRepeatInput";
 import TagTool from "./tagTool"
 import LinkTool from "./linkTool"
 import MyCalendar from "./myCalendar";
+import OnOffInputContainer from "../input_components/onOffInputContainer";
+import SimpleInputOffState from "../input_components/simpleInputOffState";
+import TextLineInput from "../input_components/textLineInput";
 import Calendar from 'react-calendar';
 
 export default class EventForm extends React.PureComponent {
@@ -295,12 +298,15 @@ export default class EventForm extends React.PureComponent {
                     Cancel
                     </span>
               </div>
+
               <span> title: </span>
-              <InputForm
-                classesCss='input big_input'
-                value={this.state.title}
-                onChange={this.setValue}
-                type="title"
+              <OnOffInputContainer
+                on_component_value={this.state.title}
+                on_component_save={this.setTitle}
+                off_component={SimpleInputOffState}
+                on_component={TextLineInput}
+                container_style='event_form_big_input grey_tag'
+                on_container_additional_style="white_tag"
               />
 
               <span> date: </span>

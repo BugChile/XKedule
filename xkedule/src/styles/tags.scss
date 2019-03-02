@@ -12,6 +12,9 @@ $color-white: #FFFFFF;
 @mixin tag_palette($tag_color, $font_color){
     background-color: $tag_color;
     color: $font_color;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
 }
 
 .lapis_tag{
