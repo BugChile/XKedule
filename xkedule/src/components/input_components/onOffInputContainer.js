@@ -1,31 +1,48 @@
 import React from "react"
+import PropTypes from 'prop-types';
 
 // This component IS NOT an input, but holds one. It's used to show ("on" state)
 // and hide ("off" state) said input component. The value of the input must be
 // saved on a higher component.
 //
-// It receives:
-//     - props.off_component: component (or div) shown when off.
-//                            this component must receive a "result_sumary" prop, which
+// Required:
+//     - props.off_component: (required) component (or div) shown when off.
+//                            this component must receive a "text" prop, which
 //                            will show the saved value of the on_component
 //
-//     - props.on_component: input, shown when on.
-//                           must receive a "save_value" callback to save partial
-//                           results. Also a "load_value" prop to load results with the
-//                           same format, said format must contain a .result_summary
-//                           property which will be shown on the off component
+//     - props.on_component: (required) input, shown when on.
+//                           must receive a "onChange" callback to save partial
+//                           results, a "value" prop that will be the actual
+//                           value holder.
 //
-//     - props.on_component_value: value holder for the input component
+//     - props.on_component_value: (required) value holder for the input component
 //
-//     - props.on_component_save:  callback to update input component value
+//     - props.on_component_save:  (required) callback to update input component value
+//
+//     - props.value_to_summary:   (required IF) if the raw value of the on component
+//                                 is different from the value summary shown on the
+//                                 off component, a function should be passed on
+//                                 this prop to obtain text from the input value
+//
+// Optional:
+//
+//     - props.off_component_props: (optional) js object, additional props to be passed
+//                                  to the off component
+//
+//     - props.on_component_props: (optional) js object, additional props to be passed
+//                                 to the on component, besides value and onChange
 //
 //     - props.container_style: (optional) additional css class of the div that
 //                              contains both off and on states. Main class is
 //                              .on_off_input_container
 //
 //     - props.on_container_additional_style: (optional) added to the container
-//                                            css classes when on
+//                                            css classes when on component is shown
 //
+//
+//     - props.key_submit_cc: (optional) list of key's charCodes to be used as submit
+//
+//     - props.submit_on_change: (optional) if true, onChange will submit state
 //
 
 export default class OnOffInputContainer extends React.PureComponent {
@@ -43,6 +60,7 @@ export default class OnOffInputContainer extends React.PureComponent {
 
         this.getComponent = this.getComponent.bind(this);
         this.getContainerStyle = this.getContainerStyle.bind(this);
+        this.getOnChange = this.getOnChange.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this._onFocusWrapper = this._onFocusWrapper.bind(this);
         this.onBlur = this.onBlur.bind(this);
@@ -50,14 +68,21 @@ export default class OnOffInputContainer extends React.PureComponent {
         this.onKeyPress = this.onKeyPress.bind(this);
     };
 
-    getComponent(mode, on_component_value, on_component_save){
+    getComponent(mode){
         switch (mode) {
             case "on":
-                return <this.props.on_component id={this.on_component_id}
-                                                value={this.props.on_component_value}
-                                                save_callback={this.props.on_component_save}/>
+                return <this.props.on_component value={this.props.on_component_value}
+                                                onChange={this.getOnChange()}
+                                                {...this.props.on_component_props}/>
             case "off":
-                return <this.props.off_component text={on_component_value}/>
+                var value_summary = "";
+                if (this.props.value_to_summary) {
+                    value_summary = this.props.value_to_summary(this.props.on_component_value)
+                } else {
+                    value_summary = this.props.on_component_value
+                }
+                return <this.props.off_component text={value_summary}
+                                                 {...this.props.off_component_props}/>
         }
     }
 
@@ -72,6 +97,20 @@ export default class OnOffInputContainer extends React.PureComponent {
         return container_style;
     }
 
+    getOnChange(){
+        if (this.props.submit_on_change) {
+            return (
+                (value) => {
+                        this.props.on_component_save(value);
+                        this.setState({isManagingFocus: false});
+                        this.onBlur();
+                    }
+            )
+        } else {
+            return this.props.on_component_save;
+        }
+    }
+
     onFocus(){
         this.setState({mode: "on"});
     }
@@ -81,8 +120,10 @@ export default class OnOffInputContainer extends React.PureComponent {
     }
 
     onKeyPress(event){
-        if (event.charCode == 13) {
-            document.getElementById(this.on_component_id).blur();
+        if (this.props.key_submit_cc &&
+            this.props.key_submit_cc.includes(event.charCode)) {
+                this.setState({isManagingFocus: false});
+                this.onBlur();
         }
     }
 
@@ -95,9 +136,7 @@ export default class OnOffInputContainer extends React.PureComponent {
                onFocus={this._onFocusWrapper}
                onBlur={this._onBlurWrapper}
                onKeyPress={this.onKeyPress}>
-              {this.getComponent(this.state.mode,
-                                 this.props.on_component_value,
-                                 this.props.on_component_save)}
+               {this.getComponent(this.state.mode)}
           </div>
     )
   }
@@ -133,4 +172,19 @@ export default class OnOffInputContainer extends React.PureComponent {
   }
 
 
+}
+
+
+OnOffInputContainer.propTypes = {
+  on_component: PropTypes.func.isRequired,
+  off_component: PropTypes.func.isRequired,
+  on_component_save: PropTypes.func.isRequired,
+  on_component_value: PropTypes.any.isRequired,
+
+  on_component_props: PropTypes.object,
+  off_component_props: PropTypes.object,
+  container_style: PropTypes.string,
+  on_container_additional_style: PropTypes.string,
+  value_to_summary: PropTypes.func,
+  key_submit_cc: PropTypes.array,
 }

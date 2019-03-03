@@ -9,10 +9,8 @@ export default class SimpleInputOffState extends React.PureComponent {
 
    render() {
         return(
-            <div className={"simple_input_off_state "+this.props.css_classes} >
-                <div>
+            <div className={"simple_input_off_state "+this.props.className} >
                     {this.props.text}
-                </div>
             </div>
         )
     }

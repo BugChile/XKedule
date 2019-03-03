@@ -101,7 +101,7 @@
         grid-column-end: 5;
     }
 
-    .small_input{
+    .event_form_small_input{
         text-align: center;
         grid-column: span 1;
     }
@@ -309,7 +309,7 @@
         }
     }
 }
-.calendar_container, .calendar_container_repeat{
+.calendar_container_repeat{
     position: absolute;
     margin-left: 10px;
     top:300px;

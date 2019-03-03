@@ -10,7 +10,9 @@ import MyCalendar from "./myCalendar";
 import OnOffInputContainer from "../input_components/onOffInputContainer";
 import SimpleInputOffState from "../input_components/simpleInputOffState";
 import TextLineInput from "../input_components/textLineInput";
-import Calendar from 'react-calendar';
+import HourMinuteInput from "../input_components/hourMinuteInput";
+import { dateToWritenDate, dateToHourMinute } from "../../js_helpers/parsers";
+import Calendar from 'react-calendar/dist/entry.nostyle';
 
 export default class EventForm extends React.PureComponent {
   constructor(props){
@@ -20,8 +22,8 @@ export default class EventForm extends React.PureComponent {
       this.dictReversed = {1:0, 0:1};
       this.state = {
           title: "",
-          date:[0],
-          from:"",
+          date: new Date(),
+          from: new Date(),
           to:"",
           minTo:"00:00",
           today: new Date(),
@@ -51,6 +53,7 @@ export default class EventForm extends React.PureComponent {
       // this.setState({eventLinks: this.updatedEventLinks})
 
       this.setTitle = this.setTitle.bind(this);
+      this.setDate = this.setDate.bind(this);
       this.setFrom = this.setFrom.bind(this);
       this.setValue = this.setValue.bind(this);
       this.checkTime = this.checkTime.bind(this);
@@ -77,6 +80,10 @@ export default class EventForm extends React.PureComponent {
 
   setTitle(title){
       this.setState({title})
+  }
+
+  setDate(date){
+      this.setState({date})
   }
 
   setFrom(from){
@@ -232,8 +239,9 @@ export default class EventForm extends React.PureComponent {
   }
 
   loadEvent(_event){
-      this.setTitle(_event["title"])
-      this.setState({date:[_event["date_start"].toLocaleDateString("en-GB")]})
+      this.setTitle(_event["title"]);
+      this.setDate(new Date([_event["date_start"]]));
+      this.setFrom(new Date([_event["date_start"]]));
   }
 
   loadEventTags(editing_event, user_tags){
@@ -305,18 +313,37 @@ export default class EventForm extends React.PureComponent {
                 on_component_save={this.setTitle}
                 off_component={SimpleInputOffState}
                 on_component={TextLineInput}
-                container_style='event_form_big_input grey_tag'
+                container_style='event_form_big_input grey_tag event_form_on_off'
                 on_container_additional_style="white_tag"
+                key_submit_cc={[13]}
               />
 
               <span> date: </span>
-
-              <SelectInputForm
-                classesCss='input big_input div_input'
-                iterValues={this.state.date}
-                defaultValue="Select date"
-                onClick={this.displayCalendar}
+              <OnOffInputContainer
+                on_component_value={this.state.date}
+                on_component_save={this.setDate}
+                on_component={Calendar}
+                value_to_summary={dateToWritenDate}
+                off_component={SimpleInputOffState}
+                container_style='event_form_big_input grey_tag event_form_on_off'
+                on_container_additional_style="white_tag"
+                on_component_props={{minDate: this.state.today,
+                                     className: "input_calendar"}}
+                submit_on_change
               />
+
+              <span> from: </span>
+              <OnOffInputContainer
+                on_component_value={this.state.from}
+                on_component_save={this.setFrom}
+                on_component={HourMinuteInput}
+                value_to_summary={dateToHourMinute}
+                off_component={SimpleInputOffState}
+                container_style='event_form_small_input grey_tag event_form_on_off'
+                on_container_additional_style="white_tag"
+              />
+
+
 
               <span> from: </span>
               <TimeInputForm
@@ -403,15 +430,7 @@ export default class EventForm extends React.PureComponent {
 
 
 
-              {this.toggleHiddenElement(
-                this.state.hiddenCalendarEvent,
-                <MyCalendar
-                  value={this.state.fromDayDate}
-                  onChange={this.onChangeCalendar}
-                  minDate={this.state.today}
-                  classesCss={"calendar_container"}
-                />
-              )}
+
 
               {this.toggleHiddenElement(
                 this.state.hiddenCalendarRepeat,

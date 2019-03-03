@@ -1,9 +1,10 @@
 import React from "react"
 
 // Simple input for text, can load and save information. Receives:
-//     - props.id:            (optional) id for main div
+//     - props.id:            (optional) id for input div
+//     - props.placeholder:   (optional) placeholder for input div
 //     - props.value:         (optional) value holder, format bellow
-//     - props.save_callback: (optional) callback to save value changes whith
+//     - props.onChange: (optional) callback to save value changes whith
 //                             same format as value. Needed if props.value is passed
 //     - props.css_classes:   (optional) additional css classes. Main class is
 //                            .text_line_input
@@ -52,7 +53,7 @@ export default class TextLineInput extends React.PureComponent {
 
     handleChange(event){
         if (this.mode === "comunicator") {
-            this.props.save_callback(event.target.value);
+            this.props.onChange(event.target.value);
         } else {
             this.setValue(event.target.value)
         }
@@ -62,6 +63,7 @@ export default class TextLineInput extends React.PureComponent {
        if (this.mode === "comunicator") {
            return(
                <input id={this.props.id}
+                      placeholder={this.props.placeholder}
                       className={"text_line_input "+this.props.css_classes}
                       value={this.props.value}
                       onChange={this.handleChange}
@@ -71,6 +73,7 @@ export default class TextLineInput extends React.PureComponent {
        } else {
            return(
                <input id={this.props.id}
+                      placeholder={this.props.placeholder}
                       className={"text_line_input "+this.props.css_classes}
                       value={this.state.value}
                       onChange={this.handleChange}
