@@ -14,7 +14,7 @@ function dateToHourMinute(date) {
     if (minute < 10) {
         minute = `0${minute}`
     }
-    return `${hour}:${minute}`;
+    return `${hour}\xa0:\xa0${minute}`;
 }
 
 export { dateToWritenDate, dateToHourMinute };

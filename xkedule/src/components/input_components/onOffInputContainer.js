@@ -77,9 +77,9 @@ export default class OnOffInputContainer extends React.PureComponent {
             case "off":
                 var value_summary = "";
                 if (this.props.value_to_summary) {
-                    value_summary = this.props.value_to_summary(this.props.on_component_value)
+                    value_summary = this.props.value_to_summary(this.props.on_component_value);
                 } else {
-                    value_summary = this.props.on_component_value
+                    value_summary = this.props.on_component_value;
                 }
                 return <this.props.off_component text={value_summary}
                                                  {...this.props.off_component_props}/>

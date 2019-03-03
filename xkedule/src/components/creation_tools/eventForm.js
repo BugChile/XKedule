@@ -343,6 +343,17 @@ export default class EventForm extends React.PureComponent {
                 on_container_additional_style="white_tag"
               />
 
+              <span> to: </span>
+              <OnOffInputContainer
+                on_component_value={this.state.from}
+                on_component_save={this.setFrom}
+                on_component={HourMinuteInput}
+                value_to_summary={dateToHourMinute}
+                off_component={SimpleInputOffState}
+                container_style='event_form_small_input grey_tag event_form_on_off'
+                on_container_additional_style="white_tag"
+              />
+
 
 
               <span> from: </span>

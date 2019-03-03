@@ -18,14 +18,27 @@ input {
 
 .event_form_on_off:focus{
     outline: 0 none;
-    z-index: 2;
 }
 
 .event_form_on_off{
     font-size: 15px;
     height: 30px;
-    z-index: 1;
     cursor: pointer;
+
+    // buttons
+    .button{
+        border-radius: 8px;
+        background-color: #4F4F4F;
+        color: white;
+        width: fit-content;
+        padding: 4px 15px;
+        place-self: center;
+        cursor: pointer;
+
+        &:hover{
+            background: linear-gradient(180deg, #E7042D 0%, #DF0F98 100%);
+        }
+    }
 
     //text input
     .text_line_input{
@@ -39,6 +52,8 @@ input {
 
     //calendar input
     .input_calendar {
+        position: relative;
+        z-index: 1;
         border: none;
         border-radius: 10px;
         font-family: "Lato", sans-serif;
@@ -126,6 +141,45 @@ input {
                 }
 
             }
+        }
+    }
+
+    //wheel selector
+    .wheel_selector_container{
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-rows: 20px 20px 20px 20px 20px;
+        .control_container{
+            cursor: pointer;
+            .control_arrow{
+                width: 16px;
+                height: 10px;
+                margin: 0 auto;
+            }
+        }
+
+    }
+
+    //time input
+    .hour_minute_input {
+        border-radius: 10px;
+        background-color: white;
+        position: relative;
+        height: 140px;
+        width: 80%;
+        padding: 0 10%;
+        display: grid;
+        cursor: default;
+
+        .time_slider{
+            height: 100px;
+            display: grid;
+            grid-template-columns: 30px 10px 30px;
+            justify-content: center;
         }
     }
 }
