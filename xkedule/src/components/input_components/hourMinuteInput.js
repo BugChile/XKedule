@@ -1,5 +1,6 @@
 import React from "react"
 import WheelSelector from "./wheelSelector";
+import { stringRange } from "../../js_helpers/helpers"
 
 // Input to set time, specifically hour and minute
 //
@@ -13,24 +14,60 @@ import WheelSelector from "./wheelSelector";
 export default class HourMinuteInput extends React.PureComponent {
     constructor(props){
         super(props)
-        this.state = {
-            hour_options: ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
-                           "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
-            minute_options: ["00", "10", "20", "30", "40", "50"],
+        if (props.value) {
+            this.state = {
+                hour: this.props.value.getHours().toString().padStart(2, "0"),
+                minute: this.props.value.getMinutes().toString().padStart(2, "0"),
+                hour_options: stringRange(0, 24, 2),
+                minute_options: stringRange(0, 60, 2),
+            }
+        } else {
+            this.state = {
+                hour: "00",
+                minute: "00",
+                hour_options: stringRange(0, 24, 2),
+                minute_options: stringRange(0, 60, 2),
+            }
         }
+
+
+        this.setHours = this.setHours.bind(this);
+        this.setMinutes = this.setMinutes.bind(this);
+        this.submitValue = this.submitValue.bind(this);
     };
+
+    setHours(hour){
+        this.setState({hour})
+    }
+
+    setMinutes(minute){
+        this.setState({minute})
+    }
+
+    submitValue(){
+        if (this.props.onChange) {
+            this.props.onChange({hour: parseInt(this.state.hour),
+                                 minute: parseInt(this.state.minute)});
+
+        }
+        this.props.doneEditing();
+    }
 
    render() {
         return(
             <div className={"hour_minute_input "+this.props.className}>
                 <div className="time_slider" >
-                    <WheelSelector options={this.state.hour_options}/>
-                    <div className="" style={{marginTop: "40px"}}>
+                    <WheelSelector options={this.state.hour_options}
+                                   value={this.state.hour}
+                                   onChange={this.setHours}/>
+                    <div className="" style={{marginTop: "50px"}}>
                         :
                     </div>
-                    <WheelSelector options={this.state.minute_options}/>
+                    <WheelSelector options={this.state.minute_options}
+                                   value={this.state.minute}
+                                   onChange={this.setMinutes}/>
                 </div>
-                <div className="button" >
+                <div className="button" onClick={this.submitValue}>
                     Accept
                 </div>
             </div>

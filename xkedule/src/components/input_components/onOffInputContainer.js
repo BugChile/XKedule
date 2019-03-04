@@ -66,6 +66,7 @@ export default class OnOffInputContainer extends React.PureComponent {
         this.onBlur = this.onBlur.bind(this);
         this._onBlurWrapper = this._onBlurWrapper.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
+        this.doneEditing = this.doneEditing.bind(this);
     };
 
     getComponent(mode){
@@ -73,6 +74,7 @@ export default class OnOffInputContainer extends React.PureComponent {
             case "on":
                 return <this.props.on_component value={this.props.on_component_value}
                                                 onChange={this.getOnChange()}
+                                                doneEditing={this.doneEditing}
                                                 {...this.props.on_component_props}/>
             case "off":
                 var value_summary = "";
@@ -95,6 +97,13 @@ export default class OnOffInputContainer extends React.PureComponent {
             container_style += " "+this.props.on_container_additional_style;
         }
         return container_style;
+    }
+
+    // if the component has a "finished" state, it can use doneEditing to close
+    // itself
+    doneEditing(){
+        this.setState({isManagingFocus: false});
+        this.onBlur();
     }
 
     getOnChange(){
@@ -134,6 +143,7 @@ export default class OnOffInputContainer extends React.PureComponent {
                                                  this.props.container_style)}
                tabIndex="-1"
                onFocus={this._onFocusWrapper}
+               onClick={this._onFocusWrapper}
                onBlur={this._onBlurWrapper}
                onKeyPress={this.onKeyPress}>
                {this.getComponent(this.state.mode)}

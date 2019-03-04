@@ -7,13 +7,9 @@ function dateToWritenDate(date) {
 
 function dateToHourMinute(date) {
     var hour = date.getHours();
-    if (hour < 10) {
-        hour = `0${hour}`
-    }
+    hour = hour.toString().padStart(2, "0");
     var minute = date.getMinutes();
-    if (minute < 10) {
-        minute = `0${minute}`
-    }
+    minute = minute.toString().padStart(2, "0");
     return `${hour}\xa0:\xa0${minute}`;
 }
 

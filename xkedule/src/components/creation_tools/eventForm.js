@@ -24,7 +24,7 @@ export default class EventForm extends React.PureComponent {
           title: "",
           date: new Date(),
           from: new Date(),
-          to:"",
+          to: new Date(),
           minTo:"00:00",
           today: new Date(),
           minDateRepeat: new Date(),
@@ -55,6 +55,9 @@ export default class EventForm extends React.PureComponent {
       this.setTitle = this.setTitle.bind(this);
       this.setDate = this.setDate.bind(this);
       this.setFrom = this.setFrom.bind(this);
+      this.setFromHourMinute = this.setFromHourMinute.bind(this);
+      this.setTo = this.setTo.bind(this);
+      this.setToHourMinute = this.setToHourMinute.bind(this);
       this.setValue = this.setValue.bind(this);
       this.checkTime = this.checkTime.bind(this);
       this.displayOptions = this.displayOptions.bind(this);
@@ -87,7 +90,33 @@ export default class EventForm extends React.PureComponent {
   }
 
   setFrom(from){
-      this.setState({from, isToTimeDisabled:false, minTo: from, to:""})
+     this.setState({from}, () => {
+         if (this.state.to < this.state.from) {
+             this.setTo(from);
+         }
+     })
+  }
+
+  setFromHourMinute(from_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
+      var date_from = new Date(this.state.from.getTime());
+      date_from.setHours(from_hour_minute.hour);
+      date_from.setMinutes(from_hour_minute.minute);
+      this.setFrom(date_from);
+  }
+
+  setTo(to){
+      this.setState({to}, () => {
+          if (this.state.to < this.state.from) {
+              this.setFrom(to);
+          }
+      })
+  }
+
+  setToHourMinute(to_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
+      var date_to = new Date(this.state.to.getTime());
+      date_to.setHours(to_hour_minute.hour);
+      date_to.setMinutes(to_hour_minute.minute);
+      this.setTo(date_to);
   }
 
 
@@ -240,8 +269,15 @@ export default class EventForm extends React.PureComponent {
 
   loadEvent(_event){
       this.setTitle(_event["title"]);
-      this.setDate(new Date([_event["date_start"]]));
-      this.setFrom(new Date([_event["date_start"]]));
+      const from_date = new Date([_event["date_start"]]);
+      const from_hour = {hour: from_date.getHours(), minute: from_date.getMinutes()};
+
+      const to_date = new Date([_event["date_end"]]);
+      const to_hour = {hour: to_date.getHours(), minute: to_date.getMinutes()};
+
+      this.setDate(from_date);
+      this.setFrom(from_date);
+      this.setTo(to_date);
   }
 
   loadEventTags(editing_event, user_tags){
@@ -326,7 +362,6 @@ export default class EventForm extends React.PureComponent {
                 value_to_summary={dateToWritenDate}
                 off_component={SimpleInputOffState}
                 container_style='event_form_big_input grey_tag event_form_on_off'
-                on_container_additional_style="white_tag"
                 on_component_props={{minDate: this.state.today,
                                      className: "input_calendar"}}
                 submit_on_change
@@ -335,53 +370,27 @@ export default class EventForm extends React.PureComponent {
               <span> from: </span>
               <OnOffInputContainer
                 on_component_value={this.state.from}
-                on_component_save={this.setFrom}
+                on_component_save={this.setFromHourMinute}
                 on_component={HourMinuteInput}
                 value_to_summary={dateToHourMinute}
                 off_component={SimpleInputOffState}
                 container_style='event_form_small_input grey_tag event_form_on_off'
-                on_container_additional_style="white_tag"
               />
 
               <span> to: </span>
               <OnOffInputContainer
-                on_component_value={this.state.from}
-                on_component_save={this.setFrom}
+                on_component_value={this.state.to}
+                on_component_save={this.setToHourMinute}
                 on_component={HourMinuteInput}
                 value_to_summary={dateToHourMinute}
                 off_component={SimpleInputOffState}
                 container_style='event_form_small_input grey_tag event_form_on_off'
-                on_container_additional_style="white_tag"
-              />
-
-
-
-              <span> from: </span>
-              <TimeInputForm
-                min="00:00"
-                isDisabled={false}
-                classesCss='input small_input'
-                value={this.state.from}
-                onChange={this.setValue}
-                type="from"
-                functionCheck={()=>{}}
-              />
-
-              <span> to: </span>
-              <TimeInputForm
-                min={this.state.minTo}
-                isDisabled={this.state.isToTimeDisabled}
-                classesCss='input small_input'
-                value={this.state.to}
-                onChange={this.setValue}
-                type="to"
-                functionCheck={this.checkTime}
               />
 
               <span> repeat: </span>
 
               <SelectInputForm
-                classesCss='input big_input div_input'
+                classesCss='event_form_big_input grey_tag event_form_on_off'
                 iterValues={this.state.repeatDays}
                 defaultValue="Never"
                 onClick={this.displayOptions}
@@ -399,14 +408,23 @@ export default class EventForm extends React.PureComponent {
                   />
               )}
 
-              <span> tags: </span>
+
+              <span style={{alignSelf: "start",
+                            marginTop: "5px"}}> tags: </span>
               <div className="event_form_values_container">
                   {this.getEventTagDivs(this.state.eventTags)}
-                  <SelectInputForm
-                    classesCss='input big_input div_input'
-                    iterValues={[]}
-                    defaultValue="+ Add tag"
-                    onClick={this.toggleTagTool}
+                  <OnOffInputContainer
+                    on_component_value={this.state.date}
+                    on_component_save={this.setDate}
+                    on_component={TagTool}
+                    value_to_summary={dateToWritenDate}
+                    off_component={SimpleInputOffState}
+                    container_style='event_form_big_input grey_tag event_form_on_off'
+                    on_container_additional_style="white_tag"
+                    on_component_props={{classesCss: "event_form_tag_tool",
+                                         user_tags: this.props.user_tags,
+                                         event_tags: this.state.eventTags,
+                                         add_tag_to_event_callback: this.addEventTag}}
                   />
                 {this.toggleHiddenElement(
                         this.state.hiddenTagTool,

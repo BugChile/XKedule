@@ -328,7 +328,8 @@ class App extends Component {
                                events = {this.state.events}
                                user_tags = {this.state.user_tags}
                                editing_event_id = {this.state.editing_event_id}
-                               close_event_form = {this.hideSmallCreationCard}/>
+                               close_event_form = {this.hideSmallCreationCard}
+                               />
         )
 
         // Expand/Accept button:

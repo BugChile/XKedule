@@ -152,8 +152,9 @@ input {
         width: 100%;
         height: 100%;
         display: grid;
-        grid-template-rows: 20px 20px 20px 20px 20px;
-        .control_container{
+        font-size: 18px;
+        grid-template-rows: auto repeat(3, 23px) auto;
+        .wheel_selector_next_control{
             cursor: pointer;
             .control_arrow{
                 width: 16px;
@@ -162,6 +163,25 @@ input {
             }
         }
 
+        .wheel_selector_option{
+            color: #D4D4D4;
+        }
+
+        .wheel_selector_actual_value{
+            color: #343434;
+            cursor: text;
+            &:focus{
+                outline: 0 none;
+                background-color: #EDEDED;
+                border-radius: 5px;
+            }
+        }
+
+        span.autocomplete{
+            color: #A9A9A9;
+        }
+
+
     }
 
     //time input
@@ -169,14 +189,15 @@ input {
         border-radius: 10px;
         background-color: white;
         position: relative;
-        height: 140px;
+        height: 160px;
         width: 80%;
         padding: 0 10%;
+        padding-bottom: 10px;
         display: grid;
         cursor: default;
 
         .time_slider{
-            height: 100px;
+            height: 120px;
             display: grid;
             grid-template-columns: 30px 10px 30px;
             justify-content: center;

@@ -122,6 +122,12 @@
 
     .event_form_values_container{
         grid-column: 2/5;
+        display: flex;
+        flex-direction: column;
+
+        & > div {
+            margin-bottom: 10px;
+        }
     }
 
     .event_form_unused_tag{
@@ -157,7 +163,6 @@
         height: 30px;
         width: 95%;
         border-radius: 10px;
-        margin-top: 10px;
         font-size: 15px;
         vertical-align: middle;
         display: flex;
@@ -183,7 +188,7 @@
     }
 
     .hour_minute_input{
-        top: -35px;
+        top: -45px;
     }
 }
 
