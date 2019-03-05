@@ -6,9 +6,12 @@ import SelectInputForm from "./selectInputForm";
 import OptionsInputForm from "./optionsRepeatInput";
 import TagTool from "./tagTool"
 import LinkTool from "./linkTool"
+import RepeatTool from "./repeatTool"
 import MyCalendar from "./myCalendar";
 import OnOffInputContainer from "../input_components/onOffInputContainer";
+import MultipleStageInput from "../input_components/multipleStageInput";
 import SimpleInputOffState from "../input_components/simpleInputOffState";
+import SelectInput from "../input_components/selectInput";
 import TextLineInput from "../input_components/textLineInput";
 import HourMinuteInput from "../input_components/hourMinuteInput";
 import { dateToWritenDate, dateToHourMinute } from "../../js_helpers/parsers";
@@ -397,27 +400,16 @@ export default class EventForm extends React.PureComponent {
               />
               <div className="event_form_input_gap"></div>
 
-
               <span> repeat: </span>
-
-              <SelectInputForm
-                classesCss='event_form_big_input grey_tag event_form_on_off'
-                iterValues={this.state.repeatDays}
-                defaultValue="Never"
-                onClick={this.displayOptions}
-              />
-              {this.toggleHiddenElement(
-                this.state.hiddenRepeat,
-                <OptionsInputForm
-                  dayIndex={this.dayDict}
-                  classesCss={'options_container'}
-                  onClick={this.displayOptions}
-                  repeat={this.state.repeat}
-                  onClickDay={this.handleClickDayRepeat}
-                  onClickDate={this.displayCalendarRepeat}
-                  lastDayRepeat={this.state.lastDayRepeat}
-                  />
-              )}
+              <OnOffInputContainer
+                  on_component_value={this.state.eventTags}
+                  on_component_save={this.addEventTag}
+                  on_component={RepeatTool}
+                  off_component={SimpleInputOffState}
+                  container_style='event_form_big_input grey_tag event_form_on_off'
+                  on_component_props={{className: "repeat_tool"}}
+                 off_text="Never"
+                 />
               <div className="event_form_input_gap"></div>
 
 

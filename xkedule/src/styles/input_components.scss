@@ -6,6 +6,16 @@ input {
     font-weight: inherit;
 }
 
+select {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    color: inherit;
+    border-radius: inherit;
+    font-size: inherit;
+    background-color: inherit;
+    font-weight: inherit;
+}
+
 .simple_input_off_state{
     width: 90%;
     height: 100%;
@@ -16,8 +26,23 @@ input {
 }
 
 
-.event_form_on_off:focus{
+*:focus{
     outline: 0 none;
+}
+
+.horizontal_flex{
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 10px;
+
+    &.label_input_combo{
+        grid-template-columns: 1fr 4fr;
+    }
+}
+
+.shrink_row{
+    margin: 0 auto;
+    column-gap: 10px;
 }
 
 //text input
@@ -36,6 +61,22 @@ input {
     font-size: 15px;
     height: 30px;
     cursor: pointer;
+
+    //labels
+    .input_label{
+        align-self: center;
+    }
+
+    // anchor
+    .clickable_anchor{
+        cursor: pointer;
+        text-decoration: underline;
+        place-self: center;
+
+        &:visited{
+            color: #343434;
+        }
+    }
 
     // buttons
     .button{
@@ -228,12 +269,6 @@ input {
             border-radius: 10px;
         }
 
-        .horizontal_flex{
-            display: grid;
-            grid-auto-flow: column;
-            column-gap: 10px;
-        }
-
         .navigation{
             justify-content: space-between;
             font-size: 12px;
@@ -243,16 +278,6 @@ input {
             place-self: center;
             i{
                 color: #9A9A9A;
-            }
-        }
-
-        .clickable_anchor{
-            cursor: pointer;
-            text-decoration: underline;
-            place-self: center;
-
-            &:visited{
-                color: #343434;
             }
         }
 
@@ -302,5 +327,235 @@ input {
             background-color: #D4D4D4;
             border-radius: 10px;
         }
+    }
+
+    // repeat tool
+    .repeat_tool{
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: white;
+        color: #343434;
+        display: grid;
+        row-gap: 10px;
+        cursor: default;
+        margin-bottom: 10px;
+
+        &:focus{
+            outline: 0 none;
+        }
+
+        #custom_row_2{
+            column-gap: 0px;
+        }
+
+        .event_form_big_input{
+            background-color: #D4D4D4;
+            color: #343434;
+            border-radius: 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .select_input{
+            background-color: #D4D4D4;
+            border-radius: 10px;
+            height: 30px;
+            display: grid;
+            align-items: center;
+
+            &:focus{
+                outline: 0 none;
+            }
+
+            .value_container{
+                grid-auto-rows: 30px;
+                align-items: center;
+                display: grid;
+                width: 90%;
+                padding: 0 5%;
+
+            }
+
+            .select_options_container{
+                position: relative;
+                z-index: 2;
+                background-color: #D4D4D4;
+                grid-auto-rows: 30px;
+                align-items: center;
+                display: grid;
+                border-radius: 10px;
+
+                .select_option{
+                    padding: 0 5%;
+                    height: 100%;
+                    display: grid;
+                    align-items: center;
+
+                    &:hover{
+                        color: white;
+                        background-color: #343434;
+                    }
+
+                    &:first-of-type{
+                        border-top-left-radius: 10px;
+                        border-top-right-radius: 10px;
+                    }
+
+                    &:last-of-type{
+                        border-bottom-left-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                    }
+                }
+
+            }
+        }
+
+        .custom_repeat_tool{
+            padding: 10px;
+            background-color: #D4D4D4;
+            border-radius: 10px;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-row-gap: 10px;
+            align-items: center;
+            cursor: default;
+
+            &:focus{
+                outline: 0 none;
+            }
+
+            span{
+                width: 30px;
+            }
+
+            .additional_info{
+                justify-content: center;
+
+                .select_input{
+                    width: 180px;
+                }
+
+                .circle_options_container{
+                    display: grid;
+                    grid-auto-flow: column;
+                    grid-template-rows: 28px;
+                    grid-template-columns: repeat(7, 28px);
+                    grid-column-gap: 2px;
+
+                    .circle_option{
+                        cursor: pointer;
+                        width: 100%;
+                        height: 100%;
+                        display: grid;
+
+                        div{
+                            position: relative;
+                            z-index: 2;
+                            justify-self:center;
+                        }
+
+                        &:hover::after{
+                            content: "";
+                            border-radius: 50%;
+                            background-color: white;
+                            width: 27px;
+                            height: 27px;
+                            position: relative;
+                            z-index: 1;
+                            top: -22px;
+                            left: 1px;
+                        }
+
+                        &.selected_circle_option{
+                            color: white;
+
+                            &::after{
+                                content: "";
+                                border-radius: 50%;
+                                background-color: #4F4F4F;
+                                width: 27px;
+                                height: 27px;
+                                position: relative;
+                                z-index: 1;
+                                top: -22px;
+                                left: 1px;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            #custom_row_1{
+                width: 100%;
+                grid-template-columns: 30px 70px 90px;
+                div{
+                    max-width: 70px;
+                }
+            }
+
+            .wheel_selector_container{
+                place-items: center;
+                display: grid;
+                cursor: default;
+                width: 100%;
+                grid-template-rows: repeat(3, 25px);
+
+                .wheel_selector_next_control{
+                    cursor: pointer;
+                    .control_arrow{
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+
+                .wheel_selector_actual_value{
+                    color: #343434;
+                    cursor: text;
+                    height: 100%;
+                    text-align: center;
+                    &:focus{
+                        outline: 0 none;
+                        background-color: #EDEDED;
+                        border-radius: 5px;
+                        min-width: 20px;
+                        padding: 0 5px;;
+                        position: relative;
+                        z-index: 4;
+                    }
+                }
+            }
+
+            .select_input{
+                background-color: #4F4F4F;
+                color: white;
+                width: 70px;
+                cursor: pointer;
+                align-self: center;
+                position: relative;
+
+                .horizontal_flex{
+                    width: 100%;
+                    grid-template-columns: auto;
+                }
+
+
+                .select_options_container{
+                    background-color: #4F4F4F;
+                    z-index: 3;
+
+                    .select_option:hover{
+                            color: #343434;
+                            background-color: white;
+                    }
+
+            }
+        }
+
+      }
+
     }
 }

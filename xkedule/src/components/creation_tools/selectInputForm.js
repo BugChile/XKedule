@@ -19,14 +19,14 @@ export default class SelectInputForm extends InputForm {
           })
 
       return(
-              <div 
-                className={this.state.actualCss} 
+              <div
+                className={this.state.actualCss}
                 onClick={this.props.onClick}
               >
               <span class="caret"></span>
               {repeatValue}
               </div>
-           
+
     )
   }
   }

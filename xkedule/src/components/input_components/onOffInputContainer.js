@@ -146,7 +146,7 @@ export default class OnOffInputContainer extends React.PureComponent {
     }
 
     onBlur(){
-        this.setState({mode: "off"});
+        this.setState({mode: "on"});
     }
 
     onKeyPress(event){

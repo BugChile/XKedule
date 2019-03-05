@@ -129,7 +129,7 @@ export default class TagTool extends React.Component {
                                            this.state.search_value,
                                            this.state.show_all)}
                   </div>
-                  <div className="horizontal_flex" style={{margin: "0 auto"}}>
+                  <div className="horizontal_flex shrink_row">
                       <div className="button" onClick={() => {this.setMode("create")}}>
                           Create new tag
                       </div>
