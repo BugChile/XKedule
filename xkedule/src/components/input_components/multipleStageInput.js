@@ -97,13 +97,13 @@ export default class MultipleStageInput extends React.PureComponent {
         if (this.props.component_list[this.state.stage].route_values
             && this.props.component_list[this.state.stage].route_values[value]) {
             const action = this.props.component_list[this.state.stage].route_values[value];
-            switch (action) {
-                case "submit":
-                    this.props.onSubmit(this.state.saved_values);
-                    this.onBlur();
-                    break;
-                default:
-                    console.log("not implemented action");
+            if (action === "submit") {
+                this.props.onSubmit(this.state.saved_values);
+                this.onBlur();
+            } else if ("go_to" in action) {
+                this.setState({stage: action["go_to"]});
+            } else {
+                console.log("not implemented action");
             }
         } else {
             if (this.state.stage + 1 === this.props.component_list.length) {
@@ -128,7 +128,7 @@ export default class MultipleStageInput extends React.PureComponent {
     }
 
     onBlur(){
-        this.setState({mode: "on"});
+        this.setState({mode: "off"});
     }
 
 

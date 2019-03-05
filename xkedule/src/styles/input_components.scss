@@ -557,5 +557,22 @@ select {
 
       }
 
+      .input_calendar{
+          color: inherit;
+          margin-bottom: 10px;
+          .react-calendar__month-view {
+              width: 200px;
+              .react-calendar__month-view__weekdays{
+                  font-size: 12px;
+              }
+              .react-calendar__month-view__days{
+                  button {
+                      font-size: 12px;
+                  }
+              }
+
+          }
+      }
+
     }
 }

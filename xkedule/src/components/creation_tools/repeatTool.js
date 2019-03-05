@@ -4,6 +4,8 @@ import OnOffInputContainer from "../input_components/onOffInputContainer";
 import MultipleStageInput from "../input_components/multipleStageInput";
 import SimpleInputOffState from "../input_components/simpleInputOffState";
 import CustomRepeatTool from "./customRepeatTool.js"
+import CustomOcurrencesTool from "./customOcurrencesTool.js"
+import Calendar from 'react-calendar/dist/entry.nostyle';
 
 
 export default class RepeatTool extends React.Component {
@@ -54,7 +56,7 @@ export default class RepeatTool extends React.Component {
                                             onSubmit: (value) => {console.log(value)} }
                                             }
 
-                     off_text="Never"
+                     off_text="Repeats"
                      />
                   </div>
 
@@ -62,10 +64,40 @@ export default class RepeatTool extends React.Component {
                   <div className="input_label">
                     Ending
                   </div>
-                  <SelectInput   value={this.state.new_link_name}
-                                 options={["Hola", "Chao", "Wena"]}
-                                 id="select_input_repeat_input_ending"
-                                 onChange={this.setNewLinkName}/>
+                  <OnOffInputContainer
+                      on_component_value={""}
+                      on_component_save={""}
+                      on_component={MultipleStageInput}
+                      off_component={SimpleInputOffState}
+                      container_style='event_form_big_input event_form_on_off'
+                      on_component_props= {{component_list: [{
+                                                                  input_component: SelectInput,
+                                                                  input_props: {options: ["never",
+                                                                                          "until specific date",
+                                                                                          "after number of ocurrences"
+                                                                                          ], expanded: true
+                                                                  },
+                                                                  route_values: {
+                                                                      "never": "submit",
+                                                                      "until specific date": {"go_to": 1},
+                                                                      "after number of ocurrences": {"go_to": 2}
+                                                                      // custom continues to next input
+                                                                  }
+                                                              },
+                                                              {
+                                                                  input_component: Calendar,
+                                                                  input_props: {className: "input_calendar"},
+                                                              },
+                                                              {
+                                                                  input_component: CustomOcurrencesTool,
+                                                              }
+                                                          ],
+
+                                            onSubmit: (value) => {console.log(value)} }
+                                        }
+
+                     off_text="Ending"
+                     />
                   </div>
                   <div className="button" onClick={this.saveLink}>
                       Accept
