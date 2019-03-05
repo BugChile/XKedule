@@ -39,7 +39,7 @@ export default class EventFormCard extends React.PureComponent {
   render() {
       return(
               <div
-                className={this.props.classesCss}
+                className={this.props.className}
                 onFocus={this.onFocusInput}
                 onBlur={this.onBlurInput}
               >

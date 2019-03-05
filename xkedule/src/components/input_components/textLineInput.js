@@ -1,14 +1,13 @@
 import React from "react"
 
 // Simple input for text, can load and save information. Receives:
-//     - props.id:            (optional) id for input div
-//     - props.placeholder:   (optional) placeholder for input div
 //     - props.value:         (optional) value holder
 //     - props.onChange: (optional) callback to save value changes whith
 //                             same format as value. Needed if props.value is passed
-//     - props.css_classes:   (optional) additional css classes. Main class is
+//     - props.className:   (optional) additional css classes. Main class is
 //                            .text_line_input
 //     - props.placeholder:   (optional) input placeholder
+//     - props.enter_key_submit:   (optional) if true, enter key will submit change
 //
 
 export default class TextLineInput extends React.PureComponent {
@@ -28,9 +27,12 @@ export default class TextLineInput extends React.PureComponent {
             this.auto_complete = props.auto_complete;
         }
 
+        this.id = "text_line_input"
+
 
         this.handleChange = this.handleChange.bind(this);
         this.setValue = this.setValue.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
     };
 
     setValue(value){
@@ -45,25 +47,33 @@ export default class TextLineInput extends React.PureComponent {
         }
     }
 
+    onKeyDown(event){
+        if (event.keyCode == 13) {
+            document.getElementById(this.id).blur()
+        }
+    }
+
    render() {
        if (this.mode === "messenger") {
            return(
-               <input id={this.props.id}
+               <input id={this.id}
                       placeholder={this.props.placeholder}
-                      className={"text_line_input "+this.props.css_classes}
+                      className={"text_line_input "+this.props.className}
                       value={this.props.value}
                       onChange={this.handleChange}
-                      autoComplete={this.auto_complete}>
+                      autoComplete={this.auto_complete}
+                      onKeyDown={this.onKeyDown}>
                </input>
            )
        } else {
            return(
-               <input id={this.props.id}
+               <input id={this.id}
                       placeholder={this.props.placeholder}
-                      className={"text_line_input "+this.props.css_classes}
+                      className={"text_line_input "+this.props.className}
                       value={this.state.value}
                       onChange={this.handleChange}
-                      autoComplete={this.auto_complete}>
+                      autoComplete={this.auto_complete}
+                      onKeyDown={this.onKeyDown}>
                </input>
            )
        }

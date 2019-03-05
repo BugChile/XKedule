@@ -74,6 +74,7 @@ export default class EventForm extends React.PureComponent {
       this.loadEvent = this.loadEvent.bind(this);
       this.loadEventTags = this.loadEventTags.bind(this);
       this.addEventTag = this.addEventTag.bind(this);
+      this.createAndAddNewTag = this.createAndAddNewTag.bind(this);
       this.removeEventTag = this.removeEventTag.bind(this);
       this.loadEventLinks = this.loadEventLinks.bind(this);
       this.addEventLink = this.addEventLink.bind(this);
@@ -246,7 +247,7 @@ export default class EventForm extends React.PureComponent {
       var tag_divs = [];
       const event_tags_list = Object.values(event_tags)
       event_tags_list.forEach((tag) => {
-          tag_divs.push(<EventFormCard  classesCss={`event_form_card ${tag.style}_tag`}
+          tag_divs.push(<EventFormCard  className={`event_form_big_input event_form_card ${tag.style}_tag`}
                      element={tag}
                      onDelete={this.removeEventTag}/>
                  );
@@ -258,7 +259,7 @@ export default class EventForm extends React.PureComponent {
       var link_divs = [];
       const event_links_list = Object.values(event_links)
       event_links_list.forEach((link) => {
-          link_divs.push(<EventFormCard  classesCss={`event_form_card grey_tag`}
+          link_divs.push(<EventFormCard  className={`event_form_big_input event_form_card grey_tag`}
                      element={link}
                      onDelete={this.removeEventLink}
                      onGoTo={link.href}/>
@@ -293,6 +294,15 @@ export default class EventForm extends React.PureComponent {
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventTags as a reference
       this.setState({ eventTags : this.updatedEventTags})
+  }
+
+  createAndAddNewTag(new_tag){ //tag format {name: string, style: string, actual_uses: 0}
+      const new_id = (Object.keys(this.props.user_tags).length + 1).toString();
+      const tag = {
+          id: new_id
+      };
+      Object.assign(tag, new_tag);
+      this.addEventTag(tag);
   }
 
   removeEventTag(tag){
@@ -344,15 +354,13 @@ export default class EventForm extends React.PureComponent {
               </div>
 
               <span> title: </span>
-              <OnOffInputContainer
-                on_component_value={this.state.title}
-                on_component_save={this.setTitle}
-                off_component={SimpleInputOffState}
-                on_component={TextLineInput}
-                container_style='event_form_big_input grey_tag event_form_on_off'
-                on_container_additional_style="white_tag"
-                key_submit_cc={[13]}
+              <TextLineInput
+                value={this.state.title}
+                onChange={this.setTitle}
+                className="event_form_big_input grey_tag"
+                enter_key_submit
               />
+              <div className="event_form_input_gap"></div>
 
               <span> date: </span>
               <OnOffInputContainer
@@ -366,6 +374,7 @@ export default class EventForm extends React.PureComponent {
                                      className: "input_calendar"}}
                 submit_on_change
               />
+              <div className="event_form_input_gap"></div>
 
               <span> from: </span>
               <OnOffInputContainer
@@ -386,6 +395,8 @@ export default class EventForm extends React.PureComponent {
                 off_component={SimpleInputOffState}
                 container_style='event_form_small_input grey_tag event_form_on_off'
               />
+              <div className="event_form_input_gap"></div>
+
 
               <span> repeat: </span>
 
@@ -407,69 +418,39 @@ export default class EventForm extends React.PureComponent {
                   lastDayRepeat={this.state.lastDayRepeat}
                   />
               )}
+              <div className="event_form_input_gap"></div>
 
 
-              <span style={{alignSelf: "start",
-                            marginTop: "5px"}}> tags: </span>
-              <div className="event_form_values_container">
-                  {this.getEventTagDivs(this.state.eventTags)}
-                  <OnOffInputContainer
-                    on_component_value={this.state.date}
-                    on_component_save={this.setDate}
-                    on_component={TagTool}
-                    value_to_summary={dateToWritenDate}
-                    off_component={SimpleInputOffState}
-                    container_style='event_form_big_input grey_tag event_form_on_off'
-                    on_container_additional_style="white_tag"
-                    on_component_props={{classesCss: "event_form_tag_tool",
-                                         user_tags: this.props.user_tags,
-                                         event_tags: this.state.eventTags,
-                                         add_tag_to_event_callback: this.addEventTag}}
-                  />
-                {this.toggleHiddenElement(
-                        this.state.hiddenTagTool,
-                        <TagTool
-                            classesCss='event_form_tag_tool'
-                            user_tags={this.props.user_tags}
-                            event_tags={this.state.eventTags}
-                            add_tag_to_event_callback={this.addEventTag}
-                        />
-                )}
-                </div>
+
+              <span> tags: </span>
+             {this.getEventTagDivs(this.state.eventTags)}
+             <OnOffInputContainer
+                 on_component_value={this.state.eventTags}
+                 on_component_save={this.addEventTag}
+                 on_component={TagTool}
+                 off_component={SimpleInputOffState}
+                 container_style='event_form_big_input grey_tag event_form_on_off'
+                 on_component_props={{className: "tag_tool",
+                                      user_tags: this.props.user_tags,
+                                      onCreateNewTag: this.createAndAddNewTag}}
+                off_text="+ Add tags"
+                />
+                <div className="event_form_input_gap"></div>
+
 
                 <span> links: </span>
-                <div className="event_form_values_container">
                     {this.getEventLinkDivs(this.state.eventLinks)}
-                    <SelectInputForm
-                      classesCss='input big_input div_input'
-                      iterValues={[]}
-                      defaultValue="+ Add link"
-                      onClick={this.toggleLinkTool}
-                    />
-                  {this.toggleHiddenElement(
-                          this.state.hiddenLinkTool,
-                          <LinkTool
-                              classesCss='event_form_tag_tool'
-                              add_link_to_event_callback={this.addEventLink}
-                              close_callback={this.toggleLinkTool}
-                          />
-                  )}
-                </div>
+                    <OnOffInputContainer
+                        on_component_value={this.state.eventLinks}
+                        on_component_save={this.addEventLink}
+                        on_component={LinkTool}
+                        off_component={SimpleInputOffState}
+                        container_style='event_form_big_input grey_tag event_form_on_off'
+                        on_component_props={{className: "link_tool",
+                                             }}
+                       off_text="+ Add links"
+                       />
 
-
-
-
-
-
-              {this.toggleHiddenElement(
-                this.state.hiddenCalendarRepeat,
-                <MyCalendar
-                  value={this.state.lastDayRepeatDate}
-                  onChange={this.onChangeCalendarRepeat}
-                  minDate={this.state.minDateRepeat}
-                  classesCss={"calendar_container_repeat"}
-                />
-              )}
 
           </div>
     )

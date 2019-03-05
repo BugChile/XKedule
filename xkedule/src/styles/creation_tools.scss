@@ -46,9 +46,15 @@
     margin: 0px 20px;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 2fr;
-    grid-row-gap: 15px;
+    grid-row-gap: 5px;
     font-size: 15px;
     font-weight: lighter;
+
+    .event_form_input_gap{
+        height: 5px;
+        grid-column-start: 1;
+        grid-column-end: 5;
+    }
 
     span{
         align-self: center;
@@ -130,36 +136,8 @@
         }
     }
 
-    .event_form_unused_tag{
-        padding-left: 5%;
-        height: 30px;
-        width: 95%;
-        border-radius: 10px;
-        font-size: 15px;
-        vertical-align: middle;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        span{
-            padding: 0;
-            margin: 0;
-        }
-        i{
-            margin-right: 10px;
-            padding: 5px 6px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        i:hover{
-            background: #0000004d;
-        }
-    }
-
     .event_form_card{
         padding-left: 5%;
-        grid-column-start: 2;
-        grid-column-end: 5;
         height: 30px;
         width: 95%;
         border-radius: 10px;
@@ -169,6 +147,8 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        z-index: 0;
+        position: relative;
         span{
             padding: 0;
             margin: 0;
@@ -202,63 +182,6 @@
 
     border-top: 5px solid #fff;
   }
-
-.event_form_tag_tool{
-    background-color: #242424;
-    width: 270px;
-    border-radius: 5px 5px 25px 25px;
-    padding: 0px 10px 10px 10px;
-    box-shadow: 0 10px 5px rgba(0,0,0,0.3) , 0 0 10px rgba(0,0,0,0.3);
-    text-align: center;
-    margin-bottom: 20px;
-
-    h3 {
-        margin: 0px;
-        padding: 10px 0px;
-    }
-}
-
-.existing_tabs_container{
-    display: grid;
-    grid-row-gap: 10px;
-    grid-auto-rows: 30px;
-    padding: 20px 0px 10px 0px;
-}
-
-.tag_color_picker_container{
-    margin: 10px 0px;
-}
-
-.tag_color_picker{
-    margin: 10px 0px;
-    width: 270px;
-    height: 105px;
-    display: grid;
-    grid-template-columns: repeat(5, 50px);
-    grid-column-gap: 5px;
-    grid-template-rows: 50px 50px;
-    grid-row-gap: 5px;
-
-    .color_choice{
-        margin: 3px;
-        border-radius: 10px;
-        cursor: pointer;
-    }
-
-    .chosen_color{
-        border: 3px solid white;
-    }
-}
-
-.clickable_anchor{
-    cursor: pointer;
-    color: white;
-    text-decoration: underline;
-
-    &:visited{
-        color:white;
-    }
-}
 
 .options_container{
     position: absolute;

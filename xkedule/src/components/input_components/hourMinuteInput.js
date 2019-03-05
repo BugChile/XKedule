@@ -45,12 +45,8 @@ export default class HourMinuteInput extends React.PureComponent {
     }
 
     submitValue(){
-        if (this.props.onChange) {
-            this.props.onChange({hour: parseInt(this.state.hour),
-                                 minute: parseInt(this.state.minute)});
-
-        }
-        this.props.doneEditing();
+        this.props.onSubmit({hour: parseInt(this.state.hour),
+                             minute: parseInt(this.state.minute)});
     }
 
    render() {

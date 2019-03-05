@@ -20,6 +20,18 @@ input {
     outline: 0 none;
 }
 
+//text input
+.text_line_input{
+    width: 90%;
+    height: 30px;
+    padding: 0px 5%;
+    &:focus{
+        outline: 0 none;
+        background-color: white;
+        color: #343434;
+    }
+}
+
 .event_form_on_off{
     font-size: 15px;
     height: 30px;
@@ -37,16 +49,6 @@ input {
 
         &:hover{
             background: linear-gradient(180deg, #E7042D 0%, #DF0F98 100%);
-        }
-    }
-
-    //text input
-    .text_line_input{
-        width: 90%;
-        height: 100%;
-        padding: 0px 5%;
-        &:focus{
-            outline: 0 none;
         }
     }
 
@@ -100,6 +102,11 @@ input {
                     height: 35px;
                     background: none;
                     color: black;
+                    abbr {
+                        z-index: 4;
+                        position: relative;
+                    }
+
                     &.react-calendar__tile--active{
                         color: white;
                         font-weight: normal;
@@ -118,15 +125,8 @@ input {
                     }
                     &.react-calendar__tile:disabled{
                         color: #D4D4D4;
-                        &:hover::after{
-                            width: 0px;
-                        }
                     }
-                    abbr {
-                        z-index: 4;
-                        position: relative;
-                    }
-                    &:hover::after{
+                    &.react-calendar__tile:not([disabled]):hover::after{
                             content: "";
                             width: 30px;
                             height: 30px;
@@ -195,12 +195,112 @@ input {
         padding-bottom: 10px;
         display: grid;
         cursor: default;
+        color: #343434;
 
         .time_slider{
             height: 120px;
             display: grid;
             grid-template-columns: 30px 10px 30px;
             justify-content: center;
+        }
+    }
+
+    // tag tool
+    .tag_tool {
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: white;
+        color: #343434;
+        display: grid;
+        row-gap: 10px;
+        cursor: default;
+        margin-bottom: 10px;
+
+        .card_container{
+            display: grid;
+            grid-row-gap: 5px;
+        }
+
+        .text_line_input{
+            background-color: #D4D4D4;
+            border-radius: 10px;
+        }
+
+        .horizontal_flex{
+            display: grid;
+            grid-auto-flow: column;
+            column-gap: 10px;
+        }
+
+        .navigation{
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        span{
+            place-self: center;
+            i{
+                color: #9A9A9A;
+            }
+        }
+
+        .clickable_anchor{
+            cursor: pointer;
+            text-decoration: underline;
+            place-self: center;
+
+            &:visited{
+                color: #343434;
+            }
+        }
+
+        .tag_color_picker{
+            width: 280px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+
+            .color_choice{
+                box-sizing: border-box;
+                width: 40px;
+                height: 40px;
+                margin: 8px;
+                border-radius: 10px;
+                place-self: center;
+                cursor: pointer;
+            }
+
+            .chosen_color{
+                width: 50px;
+                height: 50px;
+                margin: 3px;
+                display: grid;
+
+                svg {
+                    width: 25px;
+                    place-self: center;
+                }
+            }
+        }
+    }
+
+    // link tool
+    .link_tool{
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: white;
+        color: #343434;
+        display: grid;
+        row-gap: 10px;
+        cursor: default;
+        margin-bottom: 10px;
+
+        .text_line_input{
+            background-color: #D4D4D4;
+            border-radius: 10px;
         }
     }
 }

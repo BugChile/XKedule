@@ -13,4 +13,16 @@ function stringRange(start, end, digits){
     return range;
 }
 
-export { stringRange };
+
+// decreasingFunctionCompare and increasingFunctionCompare are to be used inside
+// the array's sort method. They definition follows the following definition:
+//              https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+function decreasingFunctionCompare(a, b){
+    return b - a
+}
+
+function increasingFunctionCompare(a, b){
+    return a - b
+}
+
+export { stringRange, decreasingFunctionCompare, increasingFunctionCompare };

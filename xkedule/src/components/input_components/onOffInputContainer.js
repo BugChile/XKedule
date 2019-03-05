@@ -15,9 +15,10 @@ import PropTypes from 'prop-types';
 //                           results, a "value" prop that will be the actual
 //                           value holder.
 //
-//     - props.on_component_value: (required) value holder for the input component
-//
 //     - props.on_component_save:  (required) callback to update input component value
+//
+//     - props.on_component_value: (required) this should be the value holder
+//                                 for the input component
 //
 //     - props.value_to_summary:   (required IF) if the raw value of the on component
 //                                 is different from the value summary shown on the
@@ -45,6 +46,14 @@ import PropTypes from 'prop-types';
 //     - props.submit_on_change: (optional) if true, onChange will submit state
 //
 
+
+// onChange, onSubmit and doneEditing
+// these are very similar. The difference is:
+//
+// onChange sets the value of the input
+// doneEditing closes the input component, without saving
+// onSubmit is onChange followed by doneEditing
+
 export default class OnOffInputContainer extends React.PureComponent {
 
     _timeoutID;
@@ -66,7 +75,9 @@ export default class OnOffInputContainer extends React.PureComponent {
         this.onBlur = this.onBlur.bind(this);
         this._onBlurWrapper = this._onBlurWrapper.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         this.doneEditing = this.doneEditing.bind(this);
+        this.getOffStateSummary = this.getOffStateSummary.bind(this);
     };
 
     getComponent(mode){
@@ -74,18 +85,25 @@ export default class OnOffInputContainer extends React.PureComponent {
             case "on":
                 return <this.props.on_component value={this.props.on_component_value}
                                                 onChange={this.getOnChange()}
+                                                onSubmit={this.onSubmit}
                                                 doneEditing={this.doneEditing}
                                                 {...this.props.on_component_props}/>
             case "off":
-                var value_summary = "";
-                if (this.props.value_to_summary) {
-                    value_summary = this.props.value_to_summary(this.props.on_component_value);
-                } else {
-                    value_summary = this.props.on_component_value;
-                }
-                return <this.props.off_component text={value_summary}
+                return <this.props.off_component text={this.getOffStateSummary()}
                                                  {...this.props.off_component_props}/>
         }
+    }
+
+    getOffStateSummary(){
+        var value_summary = "";
+        if (this.props.off_text) { // static off text
+            value_summary = this.props.off_text;
+        } else if (this.props.value_to_summary) { // callback to process input value into summary
+            value_summary = this.props.value_to_summary(this.props.on_component_value);
+        } else { // use raw input value
+            value_summary = this.props.on_component_value;
+        }
+        return value_summary;
     }
 
     getContainerStyle(mode, style){
@@ -99,8 +117,13 @@ export default class OnOffInputContainer extends React.PureComponent {
         return container_style;
     }
 
-    // if the component has a "finished" state, it can use doneEditing to close
-    // itself
+    // if the component has a "submit" callback, it can use onSubmit
+    // this will save the value and set mode to off
+    onSubmit(value){
+        this.props.on_component_save(value);
+        this.doneEditing();
+    }
+
     doneEditing(){
         this.setState({isManagingFocus: false});
         this.onBlur();
@@ -110,9 +133,7 @@ export default class OnOffInputContainer extends React.PureComponent {
         if (this.props.submit_on_change) {
             return (
                 (value) => {
-                        this.props.on_component_save(value);
-                        this.setState({isManagingFocus: false});
-                        this.onBlur();
+                        this.onSubmit(value);
                     }
             )
         } else {
@@ -173,10 +194,7 @@ export default class OnOffInputContainer extends React.PureComponent {
   _onBlurWrapper(){
       this._timeoutID = setTimeout(() => {
                             if (this.state.isManagingFocus) {
-                              this.setState({
-                                isManagingFocus: false,
-                              });
-                              this.onBlur();
+                              this.doneEditing();
                             }
                         }, 0);
   }

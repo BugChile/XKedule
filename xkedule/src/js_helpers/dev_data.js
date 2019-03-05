@@ -8,7 +8,7 @@ const events = {
         },
         "date_start": new Date('March 3, 2019 18:09:00'),
         "date_end": new Date('March 3, 2019 19:59:00'),
-        "tag_ids": ["1", "3"]
+        "tag_ids": []
 
     },
     "2" : {
@@ -127,17 +127,56 @@ const user_tags = {
     "1": {
         "id": "1",
         "name": "IIC2233 - Inteligencia Artificial",
-        "style": "ocean"
+        "style": "ocean",
+        actual_uses: 0
     },
     "2": {
         "id": "2",
         "name": "Gym",
-        "style": "rose"
+        "style": "rose",
+        actual_uses: 2
     },
     "3": {
         "id": "3",
         "name": "Reunion",
-        "style": "seafoam"
+        "style": "seafoam",
+        actual_uses: 1
+    },
+    "4": {
+        "id": "4",
+        "name": "Trabajo grupal",
+        "style": "blonde",
+        actual_uses: 3
+    },
+    "5": {
+        "id": "5",
+        "name": "Trabajo opcional",
+        "style": "violet",
+        actual_uses: 0
+    },
+    "6": {
+        "id": "6",
+        "name": "Prueba",
+        "style": "lapis",
+        actual_uses: 4
+    },
+    "7": {
+        "id": "7",
+        "name": "ICS1234 - Microeconomia",
+        "style": "lilac",
+        actual_uses: 0
+    },
+    "8": {
+        "id": "8",
+        "name": "IIC3333 - Capstone",
+        "style": "violet",
+        actual_uses: 0
+    },
+    "9": {
+        "id": "9",
+        "name": "IIC3212",
+        "style": "seafoam",
+        actual_uses: 0
     }
 
 }
