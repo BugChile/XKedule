@@ -1,13 +1,8 @@
 import React from "react"
-import InputForm from "./inputForm";
 import EventFormCard from "./eventFormCard"
-import TimeInputForm from "./timeInputForm";
-import SelectInputForm from "./selectInputForm";
-import OptionsInputForm from "./optionsRepeatInput";
 import TagTool from "./tagTool"
 import LinkTool from "./linkTool"
 import RepeatTool from "./repeatTool"
-import MyCalendar from "./myCalendar";
 import OnOffInputContainer from "../input_components/onOffInputContainer";
 import MultipleStageInput from "../input_components/multipleStageInput";
 import SimpleInputOffState from "../input_components/simpleInputOffState";
@@ -15,33 +10,17 @@ import SelectInput from "../input_components/selectInput";
 import TextLineInput from "../input_components/textLineInput";
 import HourMinuteInput from "../input_components/hourMinuteInput";
 import { dateToWritenDate, dateToHourMinute } from "../../js_helpers/parsers";
-import Calendar from 'react-calendar/dist/entry.nostyle';
+import Calendar from 'react-calendar';
 
 export default class EventForm extends React.PureComponent {
   constructor(props){
       super(props)
-      this.dayDict = { "Mo":0, "Tu":1, "We":2, "Th":3, "Fr":4, "Sa":5, "Su":6 };
-      this.dayWeekDict = { 1:"Mo", 2:"Tu", 3:"We", 4:"Th", 5:"Fr", 6:"Sa", 0:"Su" };
-      this.dictReversed = {1:0, 0:1};
       this.state = {
           title: "",
           date: new Date(),
           from: new Date(),
           to: new Date(),
-          minTo:"00:00",
-          today: new Date(),
-          minDateRepeat: new Date(),
-          isToTimeDisabled:true,
-          repeat:[0,0,0,0,0,0,0],
-          repeatDays:[0,0,0,0,0,0,0],
-          fromDayDate: new Date(),
-          lastDayRepeatDate: new Date(),
-          lastDayRepeat: [0],
-          hiddenCalendarEvent: "hidden",
-          hiddenCalendarRepeat: "hidden",
-          hiddenTagTool: "hidden",
-          hiddenLinkTool: "hidden",
-          hiddenRepeat:"hidden",
+          minDateRepeatEnd: new Date(),
           eventTags: {},
           eventLinks: {},
       };
@@ -61,17 +40,6 @@ export default class EventForm extends React.PureComponent {
       this.setFromHourMinute = this.setFromHourMinute.bind(this);
       this.setTo = this.setTo.bind(this);
       this.setToHourMinute = this.setToHourMinute.bind(this);
-      this.setValue = this.setValue.bind(this);
-      this.checkTime = this.checkTime.bind(this);
-      this.displayOptions = this.displayOptions.bind(this);
-      this.handleClickDayRepeat = this.handleClickDayRepeat.bind(this);
-      this.displayCalendar = this.displayCalendar.bind(this);
-      this.displayCalendarRepeat = this.displayCalendarRepeat.bind(this);
-      this.toggleTagTool = this.toggleTagTool.bind(this);
-      this.toggleLinkTool = this.toggleLinkTool.bind(this);
-      this.onChangeCalendar = this.onChangeCalendar.bind(this);
-      this.onChangeCalendarRepeat = this.onChangeCalendarRepeat.bind(this);
-      this.toggleHiddenElement = this.toggleHiddenElement.bind(this);
       this.getEventTagDivs = this.getEventTagDivs.bind(this);
       this.getEventLinkDivs = this.getEventLinkDivs.bind(this);
       this.loadEvent = this.loadEvent.bind(this);
@@ -121,129 +89,6 @@ export default class EventForm extends React.PureComponent {
       date_to.setHours(to_hour_minute.hour);
       date_to.setMinutes(to_hour_minute.minute);
       this.setTo(date_to);
-  }
-
-
-
-  setValue(event, target){
-      if(target ==="title"){
-        this.setTitle(event.target.value)
-      }else if(target ==="from"){
-            this.setState({from: event.target.value, isToTimeDisabled:true, minTo:event.target.value, to:""})
-        if (event.target.value){
-        this.setFrom(event.target.value)
-        }
-      }else if(target ==="to"){
-        this.setState({to: event.target.value})
-
-      }
-  }
-
-  checkTime(value){
-    if (value <= this.state.from){
-        this.setState({to:""})
-    }
-  }
-  displayOptions(){
-      if(this.state.hiddenRepeat){
-        this.setState({hiddenRepeat:""})
-      }else{
-        this.setState({hiddenRepeat:"hidden"})
-      }
-      if(!this.state.hiddenCalendarRepeat){
-        this.setState({hiddenCalendarRepeat:"hidden"})
-      }
-
-
-    var dayWeek = new Date(this.state.date[0]).getDay();
-    if(this.state.date[0] && this.state.hiddenRepeat && this.state.repeatDays[this.dayDict[this.dayWeekDict[dayWeek]]] === 0){
-      this.handleClickDayRepeat(this.dayWeekDict[dayWeek]);
-    }
-
-    var isRepeating = 0;
-    this.state.repeat.forEach((day)=>{
-      if(day){isRepeating = 1}
-    })
-    if (!isRepeating){
-      this.setState({lastDayRepeat:[0], lastDayRepeatDate:new Date()})
-    }
-
-  }
-  handleClickDayRepeat(day){
-    var newOptions = this.state.repeat.slice();
-    var newOptionsValues = this.state.repeatDays.slice();
-    newOptions[this.dayDict[day]] = this.dictReversed[newOptions[this.dayDict[day]]];
-    newOptionsValues[this.dayDict[day]] = day;
-
-    if(this.state.repeatDays[this.dayDict[day]]){
-      newOptionsValues[this.dayDict[day]] = 0;
-    }
-    this.setState({repeat:newOptions, repeatDays:newOptionsValues})
-
-  }
-
-  displayCalendar(){
-    if (!this.state.date[0]){
-      this.setState({date:[this.state.fromDayDate.toLocaleDateString("en-GB")]})
-    }
-    if(this.state.hiddenCalendarEvent){
-      this.setState({hiddenCalendarEvent:""})
-    }else{
-      this.setState({hiddenCalendarEvent:"hidden"})
-    }
-  }
-
-  toggleLinkTool(){
-      if (this.state.hiddenLinkTool === "") {
-          this.setState({hiddenLinkTool: "hidden"});
-      } else {
-          this.setState({hiddenLinkTool: ""});
-      }
-  }
-
-  toggleTagTool(){
-      if (this.state.hiddenTagTool === "") {
-          this.setState({hiddenTagTool: "hidden"});
-      } else {
-          this.setState({hiddenTagTool: ""});
-      }
-  }
-
-  toggleHiddenElement(current_mode, element){
-    switch (current_mode) {
-        case "hidden":
-            return "";
-        case "":
-            return element;
-    }
-}
-
-  onChangeCalendar(newDate){
-    if(this.state.hiddenCalendarEvent){
-      this.setState({hiddenCalendarEvent:""})
-    }else{
-      this.setState({hiddenCalendarEvent:"hidden"})
-    }
-    this.setState({date:[newDate.toLocaleDateString("en-GB")], fromDayDate:newDate, minDateRepeat:newDate})
-
-  }
-
-  displayCalendarRepeat(){
-    if(this.state.hiddenCalendarRepeat){
-      this.setState({hiddenCalendarRepeat:""})
-    }else{
-      this.setState({hiddenCalendarRepeat:"hidden"})
-    }
-  }
-
-  onChangeCalendarRepeat(newDate){
-
-    if(this.state.hiddenCalendarRepeat){
-      this.setState({hiddenCalendarRepeat:""})
-    }else{
-      this.setState({hiddenCalendarRepeat:"hidden"})
-    }
-    this.setState({lastDayRepeat:[newDate.toLocaleDateString("en-GB")], lastDayRepeatDate:newDate})
   }
 
   getEventTagDivs(event_tags){
@@ -373,7 +218,7 @@ export default class EventForm extends React.PureComponent {
                 value_to_summary={dateToWritenDate}
                 off_component={SimpleInputOffState}
                 container_style='event_form_big_input grey_tag event_form_on_off'
-                on_component_props={{minDate: this.state.today,
+                on_component_props={{minDate: this.props.current_time,
                                      className: "input_calendar"}}
                 submit_on_change
               />

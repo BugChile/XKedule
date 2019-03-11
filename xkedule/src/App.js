@@ -329,6 +329,7 @@ class App extends Component {
                                user_tags = {this.state.user_tags}
                                editing_event_id = {this.state.editing_event_id}
                                close_event_form = {this.hideSmallCreationCard}
+                               current_time={this.state.current_time}
                                />
         )
 
