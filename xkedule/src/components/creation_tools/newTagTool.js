@@ -1,7 +1,7 @@
 import React from "react"
 import TextLineInput from "../input_components/textLineInput";
 
-export default class TagToolCreateTag extends React.PureComponent {
+export default class NewTagTool extends React.PureComponent {
   constructor(props){
       super(props)
       this.tagColors = ["lapis", "ocean", "seafoam", "blonde", "tangerine", "rose", "lilac", "violet"];

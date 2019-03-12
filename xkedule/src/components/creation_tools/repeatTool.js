@@ -6,14 +6,14 @@ import SimpleInputOffState from "../input_components/simpleInputOffState";
 import CustomRepeatTool from "./customRepeatTool.js"
 import CustomOcurrencesTool from "./customOcurrencesTool.js"
 import Calendar from 'react-calendar/dist/entry.nostyle';
+import { RRule } from "rrule";
 
 
 export default class RepeatTool extends React.Component {
   constructor(props){
       super(props)
       this.state = {
-          repeat: "",
-          ending: "",
+          rrule: "",
 
       }
 

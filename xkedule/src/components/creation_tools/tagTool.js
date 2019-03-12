@@ -1,7 +1,7 @@
 import React from "react"
 import EventFormCard from "./eventFormCard"
 import TextLineInput from "../input_components/textLineInput";
-import TagToolCreateTag from './tagToolCreateTag'
+import NewTagTool from './newTagTool'
 import { decreasingFunctionCompare } from  '../../js_helpers/helpers'
 
 // Requires:
@@ -143,7 +143,7 @@ export default class TagTool extends React.Component {
           )
       }
       return(
-                <TagToolCreateTag className={this.props.className}
+                <NewTagTool className={this.props.className}
                                   onSubmit={this.onSubmitNewTag}
                                   doneEditing={() => this.setMode("index")}/>
     )

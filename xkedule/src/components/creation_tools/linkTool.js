@@ -25,23 +25,47 @@ export default class LinkTool extends React.Component {
     }
 
     saveLink(){
+        var href;
+
+        // add https if not already there
+        if (this.state.new_link_href.indexOf("https://") !== 0) {
+            href = "https://" + this.state.new_link_href;
+        } else {
+            href = this.state.new_link_href
+        }
         const link_object = {name: this.state.new_link_name,
-                             href: this.state.new_link_href};
-        this.props.onSubmit(link_object);
+                             href};
+        this.props.onChange(link_object);
+        this.setNewLinkName("");
+        this.setNewLinkHref("");
 
     }
 
   render() {
       return(
               <div className={this.props.className} >
-                  <TextLineInput placeholder="Link name"
-                                 value={this.state.new_link_name}
-                                 onChange={this.setNewLinkName}/>
-                  <TextLineInput placeholder="Link url"
-                                 value={this.state.new_link_href}
-                                 onChange={this.setNewLinkHref}/>
-                  <div className="button" onClick={this.saveLink}>
-                      Save link
+                  <div className="horizontal_flex label_input_combo">
+                      <div className="input_label">
+                        Link name
+                      </div>
+                      <TextLineInput value={this.state.new_link_name}
+                                     onChange={this.setNewLinkName}/>
+                  </div>
+                  <div className="horizontal_flex label_input_combo">
+                      <div className="input_label">
+                        Link url
+                      </div>
+                      <TextLineInput value={this.state.new_link_href}
+                                     onChange={this.setNewLinkHref}/>
+                  </div>
+                  <div className="horizontal_flex shrink_row">
+                      <div className="button" onClick={this.saveLink}>
+                          Save link
+                      </div>
+                      <a className="clickable_anchor"
+                           onClick={this.props.doneEditing}>
+                          Done
+                      </a>
                   </div>
               </div>
     )

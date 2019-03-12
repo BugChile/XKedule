@@ -37,11 +37,21 @@ export default class HourMinuteInput extends React.PureComponent {
     };
 
     setHours(hour){
-        this.setState({hour})
+        this.setState({hour});
+        if (this.props.onChange) {
+            this.props.onChange({hour: parseInt(hour),
+                                 minute: parseInt(this.state.minute)});
+
+        }
     }
 
     setMinutes(minute){
-        this.setState({minute})
+        this.setState({minute});
+        if (this.props.onChange) {
+            this.props.onChange({hour: parseInt(this.state.hour),
+                                 minute: parseInt(minute)});
+
+        }
     }
 
     submitValue(){
@@ -62,9 +72,6 @@ export default class HourMinuteInput extends React.PureComponent {
                     <WheelSelector options={this.state.minute_options}
                                    value={this.state.minute}
                                    onChange={this.setMinutes}/>
-                </div>
-                <div className="button" onClick={this.submitValue}>
-                    Accept
                 </div>
             </div>
         )
