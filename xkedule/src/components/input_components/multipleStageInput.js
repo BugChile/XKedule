@@ -68,6 +68,7 @@ export default class MultipleStageInput extends React.PureComponent {
         this._onBlurWrapper = this._onBlurWrapper.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.doneEditing = this.doneEditing.bind(this);
+        this.nextStage = this.nextStage.bind(this);
     };
 
     getComponent(stage){
@@ -103,22 +104,28 @@ export default class MultipleStageInput extends React.PureComponent {
                         && route_actions["go_to"][value]){
                             this.setState({stage: route_actions["go_to"][value]});
 
+            } else {
+                this.nextStage()
             }
         } else {
-            if (this.state.stage + 1 === this.props.component_list.length) {
-                // ended
-                this.props.onSubmit(this.updatedSavedValues);
-            } else {
-                // next stage
-                this.setState({stage: this.state.stage + 1});
-            }
+            this.nextStage()
         };
 
     }
 
+    nextStage(){
+        if (this.state.stage + 1 === this.props.component_list.length) {
+            // ended
+            this.props.onSubmit(this.updatedSavedValues);
+        } else {
+            // next stage
+            this.setState({stage: this.state.stage + 1});
+        }
+    }
+
     doneEditing(){
         this.setState({isManagingFocus: false});
-        this.onBlur();
+        this._onBlurWrapper();
     }
 
     onFocus(){

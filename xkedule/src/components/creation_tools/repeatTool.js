@@ -17,7 +17,7 @@ export default class RepeatTool extends React.Component {
   constructor(props){
       super(props)
       this.state = {
-          rrule: "",
+          rrule: "never",
 
       }
 
@@ -30,6 +30,8 @@ export default class RepeatTool extends React.Component {
       ]
 
       this.option_to_rrule_map = {}
+      this.option_to_rrule_map["never"] = "never";
+
       this.option_list.forEach((option) => {
           this.option_to_rrule_map[option.toText()] = option
       });
@@ -43,7 +45,7 @@ export default class RepeatTool extends React.Component {
         if (multipleStageOutput[0] === "custom...") {
 
         } else if (multipleStageOutput[0] === "never"){
-            this.setState({rrule: ""})
+            this.setState({rrule: "never"})
         } else {
             const rrule = multipleStageOutput[0];
             this.setState({rrule});
@@ -51,8 +53,8 @@ export default class RepeatTool extends React.Component {
     }
 
     getRepeatsSummary(value){
-        if (value === "") {
-            return "never"
+        if (typeof(value) === "string") {
+            return value;
         } else {
             return value.toText();
         }
@@ -74,8 +76,8 @@ export default class RepeatTool extends React.Component {
                       container_style='event_form_big_input event_form_on_off'
                       on_component_props= {{component_list: [{
                                                                   input_component: SelectInput,
-                                                                  input_props: {options: this.option_to_rrule_map,
-                                                                                selected: Object.keys(this.option_to_rrule_map)[0],
+                                                                  input_props: {options: { ...this.option_to_rrule_map, "custom...": "custom..."},
+                                                                                selected: "never",
                                                                                 expanded: true
                                                                   },
                                                                   route_values: {
