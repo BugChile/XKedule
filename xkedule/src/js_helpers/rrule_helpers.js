@@ -1,13 +1,13 @@
 import { RRule } from "rrule";
 
 
-const rrule_day_dict = [RRule.MO,
+const rrule_day_dict = [RRule.SU,
+                        RRule.MO,
                         RRule.TU,
                         RRule.WE,
                         RRule.TH,
                         RRule.FR,
-                        RRule.SA,
-                        RRule.SU]
+                        RRule.SA]
 
 const everyday_rrule = new RRule({
   freq: RRule.DAILY,
@@ -20,7 +20,7 @@ const everyweekday_rrule = new RRule({
   byweekday: [RRule.MO, RRule.TU, RRule.WE, RRule.TH, RRule.FR]
 })
 
-function weekly_on_weekday(weekday){ // weekday number, where monday = 0 and sunday = 6;
+function weekly_on_weekday(weekday){ // weekday number, where sunday = 0 and saturday = 6;
     const weekly_rrule = new RRule({
                               freq: RRule.WEEKLY,
                               interval: 1,
@@ -47,3 +47,5 @@ function yearly_on_month_day(month, day){ // month -> month's number, day -> num
                                 })
     return yearly_rrule;
 }
+
+export { everyday_rrule, everyweekday_rrule, weekly_on_weekday, monthly_on_monthday, yearly_on_month_day };

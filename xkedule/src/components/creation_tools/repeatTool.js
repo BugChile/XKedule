@@ -7,7 +7,11 @@ import CustomRepeatTool from "./customRepeatTool.js"
 import CustomOcurrencesTool from "./customOcurrencesTool.js"
 import Calendar from 'react-calendar/dist/entry.nostyle';
 import { RRule } from "rrule";
-
+import { everyday_rrule,
+         everyweekday_rrule,
+         weekly_on_weekday,
+         monthly_on_monthday,
+         yearly_on_month_day } from "../../js_helpers/rrule_helpers.js"
 
 export default class RepeatTool extends React.Component {
   constructor(props){
@@ -17,6 +21,41 @@ export default class RepeatTool extends React.Component {
 
       }
 
+      this.option_list = [
+          everyday_rrule,
+          everyweekday_rrule,
+          weekly_on_weekday(props.event_date.getDay()),
+          monthly_on_monthday(props.event_date.getDate()),
+          yearly_on_month_day(props.event_date.getMonth(), props.event_date.getDate())
+      ]
+
+      this.option_to_rrule_map = {}
+      this.option_list.forEach((option) => {
+          this.option_to_rrule_map[option.toText()] = option
+      });
+
+      this.setRRule = this.setRRule.bind(this);
+      this.getRepeatsSummary = this.getRepeatsSummary.bind(this);
+
+    }
+
+    setRRule(multipleStageOutput){
+        if (multipleStageOutput[0] === "custom...") {
+
+        } else if (multipleStageOutput[0] === "never"){
+            this.setState({rrule: ""})
+        } else {
+            const rrule = multipleStageOutput[0];
+            this.setState({rrule});
+        }
+    }
+
+    getRepeatsSummary(value){
+        if (value === "") {
+            return "never"
+        } else {
+            return value.toText();
+        }
     }
 
   render() {
@@ -27,36 +66,28 @@ export default class RepeatTool extends React.Component {
                     Repeats
                   </div>
                   <OnOffInputContainer
-                      on_component_value={""}
-                      on_component_save={""}
+                      on_component_value={this.state.rrule}
+                      on_component_save={this.setRRule}
+                      value_to_summary={this.getRepeatsSummary}
                       on_component={MultipleStageInput}
                       off_component={SimpleInputOffState}
                       container_style='event_form_big_input event_form_on_off'
                       on_component_props= {{component_list: [{
                                                                   input_component: SelectInput,
-                                                                  input_props: {options: ["everyday",
-                                                                                          "every weekday",
-                                                                                          "weekly on mondays",
-                                                                                          "monthly on day 25",
-                                                                                          "yearly on november 25",
-                                                                                          "custom..."], expanded: true
+                                                                  input_props: {options: this.option_to_rrule_map,
+                                                                                selected: Object.keys(this.option_to_rrule_map)[0],
+                                                                                expanded: true
                                                                   },
                                                                   route_values: {
-                                                                      "everyday": "submit",
-                                                                      "every weekday": "submit",
-                                                                      "weekly on mondays": "submit",
-                                                                      "monthly on day 25": "submit",
-                                                                      "yearly on november 25": "submit"
+                                                                      "submit": Object.values(this.option_to_rrule_map)
                                                                       // custom continues to next input
                                                                   }
                                                               },
                                                             {
                                                                 input_component: CustomRepeatTool,
-                                                            }],
-                                            onSubmit: (value) => {console.log(value)} }
+                                                            }]
+                                                         }
                                             }
-
-                     off_text="Repeats"
                      />
                   </div>
 

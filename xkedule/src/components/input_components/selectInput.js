@@ -1,30 +1,12 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-
-// Simple input for text, can load and save information. Receives:
-//     - props.id:          (optional) must be unique
-//     - props.value:         (optional) value holder
-//     - props.onChange: (optional) callback to save value changes whith
-//                             same format as value. Needed if props.value is passed
-//     - props.className:   (optional) additional css classes. Main class is
-//                            .text_line_input
-//     - props.expanded:    (optional) if true, the input will begin showing options
-//
-
 export default class SelectInput extends React.PureComponent {
     constructor(props){
         super(props)
         this.state = {
             expanded: false,
-            value: 0,
-        }
-        if (typeof props.value !== "string") {
-            this.mode = "independent" // component saves the value
-        } else {
-            this.mode = "messenger"; // component doesn't save the value
-            this.state.value = props.value;
-
+            value: props.selected,
         }
 
         this.id = props.id;
@@ -45,7 +27,7 @@ export default class SelectInput extends React.PureComponent {
 
     handleClick(value){
         this.setValue(value);
-        if (this.props.blur_on_change) {
+        if (!this.props.dont_blur_on_change) {
             this.onBlur();
         }
     };
@@ -61,14 +43,15 @@ export default class SelectInput extends React.PureComponent {
     getComponents(options, expanded, value){
         if (expanded) {
             var options_divs = [];
-            options.forEach((option) => {
+            Object.keys(options).forEach((key) => {
                 options_divs.push(<div   className="select_option"
-                                    onClick={() => {this.handleClick(options.indexOf(option))}}
-                                    id={`select_option_${options.indexOf(option)}_${this.props.id}`}
-                                    key={`select_option_${options.indexOf(option)}_${this.props.id}`}>
-                                    {option}
+                                    onClick={() => {this.handleClick(key)}}
+                                    id={`select_option_${key}_${this.props.id}`}
+                                    key={`select_option_${key}_${this.props.id}`}>
+                                    {key}
                                 </div>)
             });
+
             return (
                 <div className="select_options_container" >
                   {[options_divs]}
@@ -80,7 +63,7 @@ export default class SelectInput extends React.PureComponent {
                     <div className="value_container"
                              onClick={this.onFocus}
                              tabIndex="-1">
-                                {options[this.state.value]}
+                                {this.state.value}
                          </div>
                     )
         }

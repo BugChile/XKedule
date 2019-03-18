@@ -252,7 +252,7 @@ export default class EventForm extends React.PureComponent {
                   on_component={RepeatTool}
                   off_component={SimpleInputOffState}
                   container_style='event_form_big_input grey_tag event_form_on_off'
-                  on_component_props={{className: "repeat_tool"}}
+                  on_component_props={{className: "repeat_tool", event_date: this.state.date}}
                  off_text="Never"
                  />
               <div className="event_form_input_gap"></div>

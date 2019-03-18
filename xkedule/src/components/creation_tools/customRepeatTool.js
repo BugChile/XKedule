@@ -44,7 +44,7 @@ export default class CustomRepeatTool extends React.PureComponent {
             case "week":
                 return <CircleOptionsInput options={["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]}/>
             case "month":
-                return <SelectInput options={["on day 25", "on the third Wednesday"]} blur_on_change/>
+                return <SelectInput options={["on day 25", "on the third Wednesday"]}/>
         }
     }
 
@@ -60,7 +60,7 @@ export default class CustomRepeatTool extends React.PureComponent {
                     </div>
                     <SelectInput options={this.getSelectOptions(this.state.number)}
                                  onSubmit={this.setMode}
-                                 blur_on_change/>
+                                 />
                 </div>
                 <div className="horizontal_flex additional_info" >
                     {this.getAdditionalInfo(this.state.mode)}

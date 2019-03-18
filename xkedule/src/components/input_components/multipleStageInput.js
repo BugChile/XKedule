@@ -22,15 +22,13 @@ import PropTypes from 'prop-types';
 //      route_values should be a dict, mapping possible values (keys) of that input to
 //      one of the following:
 //
-//                  - {possible_value: "submit"} will submit the already saved
+//                  - {"submit": list of values} if one of the values on the list is selected,
+//                                               will submit the already saved
 //                                               stages, ending the questionnaire
 //                                               even if there's more stages ahead
-//                  - {possible_value: {"go_to": number}} will go to that stage number
-//                                                        (where 0 is the first one)
-//                                                        and continue normal flow
-//                  - {possible_value: {"go_to_reset": number}} same as go to
-//                                                        but this will clear
-//                                                        previous answers
+//                  - {"go_to": mapping of {values: stage}}
+//                                               if one of the values on the is selected,
+//                                               will go to that stage number
 //
 //     - props.onSubmit:  (required) callback to update final value
 //
@@ -60,6 +58,7 @@ export default class MultipleStageInput extends React.PureComponent {
         this.on_component_id = "MultipleStageFocusedChild"
 
         this.updatedSavedValues = [];
+
 
         this.getComponent = this.getComponent.bind(this);
         this.getContainerStyle = this.getContainerStyle.bind(this);
@@ -94,21 +93,22 @@ export default class MultipleStageInput extends React.PureComponent {
     onSubmit(value){
         this.updatedSavedValues.push(value);
         this.setState({saved_values: this.updatedSavedValues});
-        if (this.props.component_list[this.state.stage].route_values
-            && this.props.component_list[this.state.stage].route_values[value]) {
-            const action = this.props.component_list[this.state.stage].route_values[value];
-            if (action === "submit") {
-                this.props.onSubmit(this.state.saved_values);
-                this.onBlur();
-            } else if ("go_to" in action) {
-                this.setState({stage: action["go_to"]});
-            } else {
-                console.log("not implemented action");
+
+        if (this.props.component_list[this.state.stage].route_values) {
+            const route_actions = this.props.component_list[this.state.stage].route_values;
+            if ("submit" in route_actions
+                && route_actions.submit.indexOf(value) !== -1) {
+                    this.props.onSubmit(this.updatedSavedValues);
+                    this.onBlur();
+            } else if ("go_to" in route_actions
+                        && route_actions["go_to"][value]){
+                            this.setState({stage: route_actions["go_to"][value]});
+
             }
         } else {
             if (this.state.stage + 1 === this.props.component_list.length) {
                 // ended
-                this.props.onSubmit(this.state.saved_values);
+                this.props.onSubmit(this.updatedSavedValues);
                 this.onBlur();
             } else {
                 // next stage
