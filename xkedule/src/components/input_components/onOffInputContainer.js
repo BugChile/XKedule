@@ -121,7 +121,7 @@ export default class OnOffInputContainer extends React.PureComponent {
     // this will save the value and set mode to off
     onSubmit(value){
         this.props.on_component_save(value);
-        this.doneEditing();
+        this._onBlurWrapper();
     }
 
     doneEditing(){

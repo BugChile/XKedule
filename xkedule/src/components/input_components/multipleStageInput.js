@@ -99,7 +99,6 @@ export default class MultipleStageInput extends React.PureComponent {
             if ("submit" in route_actions
                 && route_actions.submit.indexOf(value) !== -1) {
                     this.props.onSubmit(this.updatedSavedValues);
-                    this.onBlur();
             } else if ("go_to" in route_actions
                         && route_actions["go_to"][value]){
                             this.setState({stage: route_actions["go_to"][value]});
@@ -109,7 +108,6 @@ export default class MultipleStageInput extends React.PureComponent {
             if (this.state.stage + 1 === this.props.component_list.length) {
                 // ended
                 this.props.onSubmit(this.updatedSavedValues);
-                this.onBlur();
             } else {
                 // next stage
                 this.setState({stage: this.state.stage + 1});
