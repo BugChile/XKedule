@@ -77,7 +77,6 @@ export default class RepeatTool extends React.Component {
                       on_component_props= {{component_list: [{
                                                                   input_component: SelectInput,
                                                                   input_props: {options: { ...this.option_to_rrule_map, "custom...": "custom..."},
-                                                                                selected: "never",
                                                                                 expanded: true
                                                                   },
                                                                   route_values: {
@@ -87,6 +86,7 @@ export default class RepeatTool extends React.Component {
                                                               },
                                                             {
                                                                 input_component: CustomRepeatTool,
+                                                                input_props: {event_date: this.props.event_date}
                                                             }]
                                                          }
                                             }

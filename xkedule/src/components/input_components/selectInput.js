@@ -10,12 +10,16 @@ export default class SelectInput extends React.PureComponent {
         }
 
         this.id = props.id;
+        if (!props.selected) {
+            this.state.value = Object.keys(props.options)[0];
+        }
 
         this.handleClick = this.handleClick.bind(this);
         this.setValue = this.setValue.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.getComponents = this.getComponents.bind(this);
+        this.getOptionText = this.getOptionText.bind(this);
     };
 
     setValue(value){
@@ -33,11 +37,21 @@ export default class SelectInput extends React.PureComponent {
     };
 
     onFocus(){
-        this.setState({expanded: true});
+        if (!this.state.expanded) {
+            this.setState({expanded: true});
+        }
     }
 
     onBlur(){
         this.setState({expanded: false});
+    }
+
+    getOptionText(option_text){
+        if (this.props.perform_text_transform) {
+            return this.props.text_transform(option_text);
+        } else {
+            return option_text;
+        }
     }
 
     getComponents(options, expanded, value){
@@ -48,7 +62,7 @@ export default class SelectInput extends React.PureComponent {
                                     onClick={() => {this.handleClick(key)}}
                                     id={`select_option_${key}_${this.props.id}`}
                                     key={`select_option_${key}_${this.props.id}`}>
-                                    {key}
+                                    {this.getOptionText(key)}
                                 </div>)
             });
 
@@ -58,12 +72,9 @@ export default class SelectInput extends React.PureComponent {
                 </div>
             )
         } else {
-
             return (
-                    <div className="value_container"
-                             onClick={this.onFocus}
-                             tabIndex="-1">
-                                {this.state.value}
+                    <div className="value_container">
+                                {this.getOptionText(this.state.value)}
                          </div>
                     )
         }
@@ -83,6 +94,7 @@ export default class SelectInput extends React.PureComponent {
                       className={"select_input "+this.props.className}
                       tabIndex="-1"
                       onFocus={this.onFocus}
+                      onClick={this.onFocus}
                       onBlur={this.onBlur}>
                         {this.getComponents(this.props.options, this.state.expanded, this.state.value)}
                </div>

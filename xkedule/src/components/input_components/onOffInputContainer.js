@@ -121,7 +121,7 @@ export default class OnOffInputContainer extends React.PureComponent {
     // this will save the value and set mode to off
     onSubmit(value){
         this.props.on_component_save(value);
-        this._onBlurWrapper();
+        this.doneEditing();
     }
 
     doneEditing(){
@@ -192,6 +192,7 @@ export default class OnOffInputContainer extends React.PureComponent {
   }
 
   _onBlurWrapper(){
+      console.log("on blur")
       this._timeoutID = setTimeout(() => {
                             if (this.state.isManagingFocus) {
                               this.doneEditing();

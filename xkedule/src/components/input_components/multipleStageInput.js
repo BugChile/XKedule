@@ -62,18 +62,14 @@ export default class MultipleStageInput extends React.PureComponent {
 
         this.getComponent = this.getComponent.bind(this);
         this.getContainerStyle = this.getContainerStyle.bind(this);
-        this.onFocus = this.onFocus.bind(this);
-        this._onFocusWrapper = this._onFocusWrapper.bind(this);
-        this.onBlur = this.onBlur.bind(this);
-        this._onBlurWrapper = this._onBlurWrapper.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.doneEditing = this.doneEditing.bind(this);
         this.nextStage = this.nextStage.bind(this);
     };
 
     getComponent(stage){
         const Component = this.props.component_list[stage].input_component;
         return (<Component onSubmit={this.onSubmit}
+                           doneEditing={this.props.doneEditing}
                            id={`multiple_stage_input_stage_${stage}`}
                            {...this.props.component_list[stage].input_props}/>)
     }
@@ -123,18 +119,7 @@ export default class MultipleStageInput extends React.PureComponent {
         }
     }
 
-    doneEditing(){
-        this.setState({isManagingFocus: false});
-        this._onBlurWrapper();
-    }
 
-    onFocus(){
-        this.setState({mode: "on"});
-    }
-
-    onBlur(){
-        this.setState({mode: "off"});
-    }
 
 
   render() {
@@ -149,33 +134,6 @@ export default class MultipleStageInput extends React.PureComponent {
                {this.getComponent(this.state.stage)}
           </div>
     )
-  }
-
-  // The following wrappers are required because of the way react handles
-  // focus events. It basically waits to see if the blur event comes from
-  // a container's child, and if it does, the container doesn't loose focus
-  //
-  // code from (and more info):
-  // https://medium.com/@jessebeach/dealing-with-focus-and-blur-in-a-composite-widget-in-react-90d3c3b49a9b
-
-  _onFocusWrapper(){
-      // _onFocusWrapper called when the container or one of it's child gains focus
-      clearTimeout(this._timeoutID);
-      // clearing timeout prevents the Blur
-      if (!this.state.isManagingFocus) {
-        this.setState({
-          isManagingFocus: true,
-        });
-        this.onFocus();
-      }
-  }
-
-  _onBlurWrapper(){
-      this._timeoutID = setTimeout(() => {
-                            if (this.state.isManagingFocus) {
-                              this.doneEditing();
-                            }
-                        }, 0);
   }
 
 

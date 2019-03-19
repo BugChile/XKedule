@@ -2,41 +2,58 @@ import React from "react"
 import SelectInput from "../input_components/selectInput";
 import NumberSelector from "../input_components/numberSelector";
 import CircleOptionsInput from "../input_components/circleOptionsInput";
-
+import { RRule } from "rrule";
+import { everyday_rrule,
+         weekly_on_weekday,
+         monthly_on_monthday,
+         yearly_on_month_day } from "../../js_helpers/rrule_helpers.js"
 // tool for creating custom repeat cycles
+
+
 
 export default class CustomRepeatTool extends React.PureComponent {
     constructor(props){
         super(props)
+        this.base_daily_rrule = everyday_rrule;
+        this.base_weekly_rrule = weekly_on_weekday(props.event_date.getDay());
+        this.base_monthly_rrule = monthly_on_monthday(props.event_date.getDate());
+        this.base_yearly_rrule = yearly_on_month_day(props.event_date.getMonth(), props.event_date.getDate());
+
         this.state = {
             number: 1,
             mode: "day",
+            select_options: {"day": "day", "week": "week", "month": "month", "year": "year"},
+            plural_options: false,
+            rrule: this.base_daily_rrule,
         }
 
         this.setNumber = this.setNumber.bind(this);
         this.setMode = this.setMode.bind(this);
-        this.getSelectOptions = this.getSelectOptions.bind(this);
         this.getAdditionalInfo = this.getAdditionalInfo.bind(this);
+        this.submitValue = this.submitValue.bind(this);
+        this.pluralizeOptions = this.pluralizeOptions.bind(this);
     };
 
     setNumber(number){
-        this.setState({number});
+        var new_rrule = Object.assign({}, this.state.rrule);
+        new_rrule.options.interval = number;
+        if (number === 1) {
+            this.setState({number, pluralize: false, rrule: new_rrule})
+        } else {
+            this.setState({number, pluralize: true, rrule: new_rrule})
+        }
     }
 
     setMode(mode){
-        if (mode[mode.length - 1] === "s") {
-            this.setState({mode: mode.slice(0, -1)});
-        } else {
-            this.setState({mode});
-        }
+        this.setState({mode});
     }
 
-    getSelectOptions(number){
-        if (number > 1) {
-            return ["days", "weeks", "months", "years"]
-        } else {
-            return ["day", "week", "month", "year"]
-        }
+    submitValue(){
+
+    }
+
+    pluralizeOptions(option){
+        return option+"s"
     }
 
     getAdditionalInfo(mode){
@@ -58,8 +75,10 @@ export default class CustomRepeatTool extends React.PureComponent {
                     <div className="" >
                     <NumberSelector min_value={1} value={1} onChange={this.setNumber}/>
                     </div>
-                    <SelectInput options={this.getSelectOptions(this.state.number)}
+                    <SelectInput options={this.state.select_options}
                                  onSubmit={this.setMode}
+                                 perform_text_transform={this.state.pluralize}
+                                 text_transform={this.pluralizeOptions}
                                  />
                 </div>
                 <div className="horizontal_flex additional_info" >
@@ -69,7 +88,7 @@ export default class CustomRepeatTool extends React.PureComponent {
                     <div className="button" onClick={this.submitValue}>
                         Accept
                     </div>
-                    <a className="clickable_anchor" onClick={this.doneEditing}>
+                    <a className="clickable_anchor" onClick={this.props.doneEditing}>
                         Cancel
                     </a>
                 </div>
