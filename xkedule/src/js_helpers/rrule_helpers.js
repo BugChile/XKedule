@@ -55,11 +55,16 @@ function yearly_on_month_day(month, day){ // month -> month's number, day -> num
     return yearly_rrule;
 }
 
+function get_day_occurrence(date){
+    const day = date.getDate();
+    const occurrence = Math.floor((day - 1)/7);
+    return occurrence;
+}
+
 function day_ordinal(date){
     // return which occurence of a given day: 1st Wednesday, 3rd Friday, etc.
     const ordinal = ["1st", "2nd", "3rd"]
-    const day = date.getDate();
-    const occurrence = Math.floor((day - 1)/7);
+    const occurrence = get_day_occurrence(date);
     var occurrence_ordinal = `${occurrence+1}th`;
     if (occurrence < 2)  {
         occurrence_ordinal = ordinal[occurrence];
@@ -73,4 +78,5 @@ export { rrule_day_dict,
          weekly_on_weekday,
          monthly_on_monthday,
          yearly_on_month_day,
+         get_day_occurrence,
          day_ordinal };

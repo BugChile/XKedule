@@ -66,11 +66,15 @@ export default class CustomRepeatTool extends React.PureComponent {
     }
 
     onSubmit(){
+        const circle_option_map = {"Mo":1, "Tu":2, "We":3, "Th":4, "Fr":5, "Sa":6, "Su":0};
+        //map to js date numbers for days, sunday = 0, saturday = 6
+        const circle_selected_mapped = this.state.week_mode_selected.map(x => circle_option_map[x])
+
         const submit_value = {
             freq: this.state.rrule_freq,
             interval: this.state.rrule_interval,
             month_mode: this.state.month_mode,
-            week_mode_selected: this.state.week_mode_selected
+            week_mode_selected: circle_selected_mapped
         }
         this.props.onSubmit(submit_value);
     }

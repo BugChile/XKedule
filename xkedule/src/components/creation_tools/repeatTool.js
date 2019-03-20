@@ -7,11 +7,13 @@ import CustomRepeatTool from "./customRepeatTool.js"
 import CustomOcurrencesTool from "./customOcurrencesTool.js"
 import Calendar from 'react-calendar/dist/entry.nostyle';
 import { RRule } from "rrule";
-import { everyday_rrule,
+import { rrule_day_dict,
+         everyday_rrule,
          everyweekday_rrule,
          weekly_on_weekday,
          monthly_on_monthday,
-         yearly_on_month_day } from "../../js_helpers/rrule_helpers.js"
+         yearly_on_month_day,
+         get_day_occurrence } from "../../js_helpers/rrule_helpers.js"
 
 export default class RepeatTool extends React.Component {
   constructor(props){
@@ -38,18 +40,50 @@ export default class RepeatTool extends React.Component {
 
       this.setRRule = this.setRRule.bind(this);
       this.getRepeatsSummary = this.getRepeatsSummary.bind(this);
+      this.generateCustomRRule = this.generateCustomRRule.bind(this);
 
     }
 
     setRRule(multipleStageOutput){
         if (multipleStageOutput[0] === "custom...") {
-
+            this.setState({rrule: this.generateCustomRRule(multipleStageOutput[1])})
         } else if (multipleStageOutput[0] === "never"){
             this.setState({rrule: "never"})
         } else {
             const rrule = multipleStageOutput[0];
             this.setState({rrule});
         }
+    }
+
+    generateCustomRRule(custom_tool_value){
+        var new_rrule;
+        if (custom_tool_value.freq === 1) { //monthly
+            if (custom_tool_value.month_mode === "on_day_number") {
+                new_rrule = new RRule({
+                                    freq: RRule.MONTHLY,
+                                    interval: custom_tool_value.interval,
+                                    bymonthday: this.props.event_date.getDate(),
+                            })
+            } else {
+                new_rrule = new RRule({
+                                    freq: RRule.MONTHLY,
+                                    interval: custom_tool_value.interval,
+                                    byweekday: [RRule.TH.nth(1+get_day_occurrence(this.props.event_date))],
+                            })
+            }
+        } else if (custom_tool_value.freq === 2) { // weekly
+            new_rrule = new RRule({
+                freq: RRule.WEEKLY,
+                interval: custom_tool_value.interval,
+                byweekday: custom_tool_value.week_mode_selected.map(x => rrule_day_dict[x]),
+            })
+        } else { //yearly or daily
+            new_rrule = new RRule({
+                                freq: custom_tool_value.freq,
+                                interval: custom_tool_value.interval
+                        })
+        }
+        return new_rrule;
     }
 
     getRepeatsSummary(value){
