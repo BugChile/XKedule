@@ -4,7 +4,7 @@ import OnOffInputContainer from "../input_components/onOffInputContainer";
 import MultipleStageInput from "../input_components/multipleStageInput";
 import SimpleInputOffState from "../input_components/simpleInputOffState";
 import CustomRepeatTool from "./customRepeatTool.js"
-import CustomOcurrencesTool from "./customOcurrencesTool.js"
+import CustomOccurrencesTool from "./customOccurrencesTool.js"
 import Calendar from 'react-calendar/dist/entry.nostyle';
 import { RRule } from "rrule";
 import { rrule_day_dict,
@@ -139,16 +139,15 @@ export default class RepeatTool extends React.Component {
                       container_style='event_form_big_input event_form_on_off'
                       on_component_props= {{component_list: [{
                                                                   input_component: SelectInput,
-                                                                  input_props: {options: ["never",
-                                                                                          "until specific date",
-                                                                                          "after number of ocurrences"
-                                                                                          ], expanded: true
+                                                                  input_props: {options: {"never": "never",
+                                                                                          "until specific date": "until specific date",
+                                                                                          "after number of occurrences": "after number of occurrences"
+                                                                                      }, expanded: true
                                                                   },
                                                                   route_values: {
-                                                                      "never": "submit",
-                                                                      "until specific date": {"go_to": 1},
-                                                                      "after number of ocurrences": {"go_to": 2}
-                                                                      // custom continues to next input
+                                                                      "submit": "never",
+                                                                      "go_to": {"until specific date": 1, //go to calendar
+                                                                                "after number of occurrences": 2} //go to occurrences tool
                                                                   }
                                                               },
                                                               {
@@ -156,7 +155,7 @@ export default class RepeatTool extends React.Component {
                                                                   input_props: {className: "input_calendar"},
                                                               },
                                                               {
-                                                                  input_component: CustomOcurrencesTool,
+                                                                  input_component: CustomOccurrencesTool,
                                                               }
                                                           ],
 

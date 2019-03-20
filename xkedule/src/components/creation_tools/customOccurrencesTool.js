@@ -3,7 +3,7 @@ import NumberSelector from "../input_components/numberSelector";
 
 // tool for creating custom repeat cycles
 
-export default class CustomOcurrencesTool extends React.PureComponent {
+export default class CustomOccurrencesTool extends React.PureComponent {
     constructor(props){
         super(props)
         this.state = {
@@ -28,7 +28,7 @@ export default class CustomOcurrencesTool extends React.PureComponent {
                     <NumberSelector min_value={1} value={1} onChange={this.setNumber}/>
                     </div>
                     <span>
-                        ocurrences
+                        occurrences
                     </span>
                 </div>
                 <div className="horizontal_flex shrink_row">
