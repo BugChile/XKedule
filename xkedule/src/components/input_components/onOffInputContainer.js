@@ -146,7 +146,7 @@ export default class OnOffInputContainer extends React.PureComponent {
     }
 
     onBlur(){
-        this.setState({mode: "off"});
+        this.setState({mode: "on"});
     }
 
     onKeyPress(event){
@@ -192,7 +192,6 @@ export default class OnOffInputContainer extends React.PureComponent {
   }
 
   _onBlurWrapper(){
-      console.log("on blur")
       this._timeoutID = setTimeout(() => {
                             if (this.state.isManagingFocus) {
                               this.doneEditing();

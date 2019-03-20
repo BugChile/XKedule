@@ -126,10 +126,6 @@ export default class MultipleStageInput extends React.PureComponent {
       return(
           <div className={this.getContainerStyle(this.state.mode,
                                                  this.props.container_style)}
-               tabIndex="-1"
-               onFocus={this._onFocusWrapper}
-               onClick={this._onFocusWrapper}
-               onBlur={this._onBlurWrapper}
                onKeyPress={this.onKeyPress}>
                {this.getComponent(this.state.stage)}
           </div>

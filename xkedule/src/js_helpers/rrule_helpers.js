@@ -1,5 +1,12 @@
 import { RRule } from "rrule";
 
+const day_name_dict = ["Sunday",
+                       "Monday",
+                       "Tuesday",
+                       "Wednesday",
+                       "Thursday",
+                       "Friday",
+                       "Saturday"]
 
 const rrule_day_dict = [RRule.SU,
                         RRule.MO,
@@ -48,4 +55,22 @@ function yearly_on_month_day(month, day){ // month -> month's number, day -> num
     return yearly_rrule;
 }
 
-export { everyday_rrule, everyweekday_rrule, weekly_on_weekday, monthly_on_monthday, yearly_on_month_day };
+function day_ordinal(date){
+    // return which occurence of a given day: 1st Wednesday, 3rd Friday, etc.
+    const ordinal = ["1st", "2nd", "3rd"]
+    const day = date.getDate();
+    const occurrence = Math.floor((day - 1)/7);
+    var occurrence_ordinal = `${occurrence+1}th`;
+    if (occurrence < 2)  {
+        occurrence_ordinal = ordinal[occurrence];
+    };
+    return `${occurrence_ordinal} ${day_name_dict[date.getDay()]}`
+}
+
+export { rrule_day_dict,
+         everyday_rrule,
+         everyweekday_rrule,
+         weekly_on_weekday,
+         monthly_on_monthday,
+         yearly_on_month_day,
+         day_ordinal };

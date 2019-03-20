@@ -6,40 +6,64 @@ export default class CircleOptionsInput extends React.PureComponent {
     constructor(props){
         super(props)
         this.state = {
-            selected_options: [],
+            options: {},
         }
+        this.updatedSelectedOptions = {};
 
-        this.updatedSelectedOptions = [];
+
+        var index = 0;
+        props.options.forEach((option) => {
+            var selected = 0;
+            if (props.preselected && props.preselected.includes(index)) {
+                selected = 1;
+            }
+            this.state.options[option] = selected;
+            this.updatedSelectedOptions[option] = selected;
+            index += 1;
+        });
+
 
         this.selectOption = this.selectOption.bind(this);
         this.undoSelect = this.undoSelect.bind(this);
         this.getComponentDivs = this.getComponentDivs.bind(this);
+        this.onChange = this.onChange.bind(this);
     };
 
-    selectOption(option){
-        if (!(this.state.selected_options.includes(option))) {
-            this.updatedSelectedOptions.push(option);
-            this.setState({selected_options: this.updatedSelectedOptions});
-            this.forceUpdate(); //due to array deep comparison. other solution is to override componentShouldUpdate
+    onChange(new_selected){
+        if (this.props.onSubmit) {
+            // return selected on list form
+            var selected = []
+            this.props.options.forEach((key) => {
+                if (new_selected[key]) {
+                    selected.push(key);
+                }
+            });
+            this.props.onSubmit(selected);
         }
+    }
+
+    selectOption(option){
+        this.updatedSelectedOptions[option] = 1;
+        this.setState({options: this.updatedSelectedOptions});
+        this.onChange(this.updatedSelectedOptions);
+        this.forceUpdate(); //due to array deep comparison. other solution is to override componentShouldUpdate
     }
 
     undoSelect(option){
-        if (this.state.selected_options.includes(option)) {
-            const option_index = this.state.selected_options.indexOf(option);
-            this.updatedSelectedOptions.splice(option_index, 1);
-            this.setState({selected_options: this.updatedSelectedOptions});
-            this.forceUpdate(); //due to array deep comparison. other solution is to override componentShouldUpdate
-        }
+        this.updatedSelectedOptions[option] = 0;
+        this.setState({options: this.updatedSelectedOptions});
+        this.onChange(this.updatedSelectedOptions);
+        this.forceUpdate(); //due to array deep comparison. other solution is to override componentShouldUpdate
     }
 
-    getComponentDivs(selected, options){
+    getComponentDivs(options){
+        const options_list = Object.keys(options)
         var divs = [];
         var className;
         var onClick;
-        options.forEach((option) => {
+        options_list.forEach((option) => {
             className = "circle_option"
-            if (selected.includes(option)) {
+            if (options[option]) {
                 className += " selected_circle_option"
                 onClick = () => {this.undoSelect(option)};
             } else {
@@ -59,7 +83,7 @@ export default class CircleOptionsInput extends React.PureComponent {
    render() {
         return(
             <div className={"circle_options_container "+this.props.className}>
-                {this.getComponentDivs(this.state.selected_options, this.props.options)}
+                {this.getComponentDivs(this.state.options)}
             </div>
         )
     }

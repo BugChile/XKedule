@@ -92,8 +92,6 @@ export default class SelectInput extends React.PureComponent {
        return(
                <div id={this.props.id}
                       className={"select_input "+this.props.className}
-                      tabIndex="-1"
-                      onFocus={this.onFocus}
                       onClick={this.onFocus}
                       onBlur={this.onBlur}>
                         {this.getComponents(this.props.options, this.state.expanded, this.state.value)}
