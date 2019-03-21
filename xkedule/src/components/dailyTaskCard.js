@@ -4,18 +4,16 @@ export default class DailyTaskCard extends React.Component {
   getGridPlacement(event){
      var grid_start = Math.floor((event.date_start.getHours()*60 + event.date_start.getMinutes())/2)+1
      var grid_end = Math.floor((event.date_end.getHours()*60 + event.date_end.getMinutes())/2)+1
+     console.log({"gridRow": grid_start+"/"+grid_end})
      return {"gridRow": grid_start+"/"+grid_end}
   }
 
   render() {
-      const card_id = this.props.event.id.concat("_event_daily_card")
       return(
           <a className="task_card daily_task_card"
-             key={card_id}
-             id={card_id}
-             style={this.getGridPlacement(this.props.event)}
-             title={this.props.event.title}
-             onClick={()=> this.props.clickEvent(this.props.event, card_id)}>
+             key={this.props.event.id}
+             href={this.props.event.link}
+             style={this.getGridPlacement(this.props.event)}>
               <div className="task_title">
                   {this.props.event.title}
               </div>

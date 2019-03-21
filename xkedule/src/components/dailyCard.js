@@ -1,6 +1,5 @@
 import React from "react"
 import DailyTaskCard from './dailyTaskCard'
-import HeaderDate from './headerDate'
 
 export default class DailyCard extends React.Component {
 
@@ -34,7 +33,7 @@ export default class DailyCard extends React.Component {
         </div> )
     }
 
-  lines(){
+    lines(){
         return (
             <div className="line-subgrid" key="line_subgrid">
                 <div className="line" key="daily_hour_line_00"></div>
@@ -66,39 +65,22 @@ export default class DailyCard extends React.Component {
         )
     }
 
-  getHeaderDate(current_time){
-        var date_dict = {};
-        date_dict["main"] = current_time.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
-        date_dict["sub"] = current_time.toLocaleString('en-GB', {month:"long", year: "numeric"});
-        return date_dict;
-    }
-
-  generateEvents(events, current_time){
-        var generated = []
-        const day_events = events[current_time.toLocaleDateString()]
-        if (day_events) {
-            day_events.forEach((event) => {
-                generated.push(
-                    <DailyTaskCard event={event} key={event.id} clickEvent={this.props.clickEvent}/>
-                    )
-                }
-            )
-        }
-        return generated;
+    processEvents(events){
+        var processed = []
+        for (var key in events) {
+            processed.push(
+                <DailyTaskCard event={events[key]} key={events[key].id}/>
+                )
+            }
+        return processed;
     }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.events === nextProps.events &&
-        this.props.current_time.toLocaleDateString() === nextProps.current_time.toLocaleDateString()) {
+    if (this.props.events === nextProps.events) {
       return false;
     } else {
       return true;
     }
-  }
-
-
-  componentDidMount(){
-    this.props.scrollDailyEvent();
   }
 
   render() {
@@ -108,15 +90,19 @@ export default class DailyCard extends React.Component {
              <div id="this_is_you_line" className="text_15" key="this_is_you_line">
                  this is <strong>your</strong> day
              </div>
-             <HeaderDate date={this.getHeaderDate(this.props.current_time)}/>
+             <div className="text_bold_title" key="date_indicator1">
+                 Monday 14th
+             </div>
+             <div className="text_30" key="date_indicator2">
+                 January, 2019
+             </div>
          </div>
-         <div className="content" key="content" id='content' onScroll={this.props.scrollEvent}>
+         <div className="content" key="content">
              <div className="daily_tasks" key="daily_tasks">
                  {this.hourTicks()}
                  {this.lines()}
                  <div className="tasks_container" key="tasks_container">
-                    {this.generateEvents(this.props.events,
-                                         this.props.current_time)}
+                    {this.processEvents(this.props.events)}
                  </div>
              </div>
          </div>

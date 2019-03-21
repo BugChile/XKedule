@@ -6,19 +6,6 @@ body {
     overflow: hidden;
 }
 
-input{
-    width: 0px;
-    border-style: none;
-    background: white;
-    padding: 0px;
-    border-width: 0px;
-    font-family: "Lato", sans-serif;
-}
-
-.y-unscrollable{
-    overflow-y: hidden;
-}
-
 .background{
     height: 100vh;
     display: grid;
@@ -47,7 +34,6 @@ a:visited{
 }
 
 .content_container{
-    z-index: 1;
     display: flex;
     flex-direction: row;
     position: absolute;
@@ -56,22 +42,22 @@ a:visited{
     width: 600px;
     transition: all 0.5s ease;
     overflow-x: hidden;
+}
 
+.large_content_container{
+    width: 1300px;
 }
 
 
 .content_card{
     display: grid;
-    grid-template-rows: 150px auto;
+    grid-template-rows: 6fr 22fr;
     height: 100vh;
     width: inherit;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-.task_card:hover{
-    color:#E7042D;
-    cursor: pointer;
-}
+
 
 .content_header{
     width: inherit;
@@ -85,14 +71,14 @@ a:visited{
     }
 }
 
-.main_button_container{
-    z-index: 2;
+.expand{
+    z-index: 1;
     position: absolute;
     top: 20px;
     left: 550px;
     transition: all 0.5s ease;
     cursor: pointer;
-    .main_button{
+    .expand_button{
         border-radius: 50px;
         width: 100px;
         height: 100px;
@@ -108,12 +94,9 @@ a:visited{
     }
 }
 
-.reversed{
+.reversed_expand{
+    left: 1250px;
     transform: rotate(-180deg);
-}
-
-.full_loop{
-    transform: rotate(360deg);
 }
 
 .content{
@@ -140,10 +123,7 @@ a:visited{
 .text_bold_title{
     font-size: 70px;
     font-weight: 600;
-}
-
-.color_text{
-    background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+    background: linear-gradient(180deg, #DF0F98 0%, #E7042D 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -151,11 +131,6 @@ a:visited{
 
 .task_card{
     background: #FFFFFF;
-    border-radius: 10px;
-}
-
-.task_card_past{
-    background: rgba(255,255,255,0.4);
     border-radius: 10px;
 }
 
@@ -206,56 +181,4 @@ a:visited{
         transition: left 0.25s ease-out;
     }
 
-}
-.hidden{
-    display: none;
-}
-.button_min{
-    display: inline-block;
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    margin: 5px;
-    width: (13px!important);
-    text-align: center;
-    border-radius: 20px;
-    border-style: solid;
-    border-color: rgba(0,0,0,0.1);
-    border-width: 2px;
-    &:hover{
-        cursor: pointer;
-        border-color: rgba(255, 255, 255, .7);
-    }
-}
-.placeholder_button{
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100px;
-    width: 100px;
-    z-index: 3;
-    background: white;
-    cursor: pointer;
-}
-
-// general information card daily - weekly - monthly
-.event_info_card{
-    position: absolute;
-    background-color: rgba(0,0,0,0.8);
-    z-index: 4;
-    color: white;
-    padding: 30px;
-    width: 350px;
-    box-shadow: 7px 10px 30px rgba(0, 0, 0, .4);
-    height: 200px;
-    word-wrap: break-word;
-    border-radius: 10px;
-    -webkit-transition: all 0.1s ease;
-    top: 41%;
-}
-.position_daily{
-    left: 150px;
-}
-
-.right_aligned_text{
-    text-align: right;
 }
