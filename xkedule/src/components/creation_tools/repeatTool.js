@@ -14,7 +14,8 @@ import { rrule_day_dict,
          weekly_on_weekday,
          monthly_on_monthday,
          yearly_on_month_day,
-         get_day_occurrence } from "../../js_helpers/rrule_helpers.js"
+         get_day_occurrence,
+         getRepeatsSummary } from "../../js_helpers/rrule_helpers.js"
 
 export default class RepeatTool extends React.Component {
   constructor(props){
@@ -43,30 +44,34 @@ export default class RepeatTool extends React.Component {
       });
 
       this.setRRule = this.setRRule.bind(this);
-      this.getRepeatsSummary = this.getRepeatsSummary.bind(this);
       this.generateCustomRRule = this.generateCustomRRule.bind(this);
-      this.setEndingDate = this.setEndingDate.bind(this);
-      this.setEndingOccurrences = this.setEndingOccurrences.bind(this);
       this.receiveEndingResult = this.receiveEndingResult.bind(this);
       this.getEndingText = this.getEndingText.bind(this);
+      this.onSubmit = this.onSubmit.bind(this);
 
     }
 
-    setEndingDate(ending_date){
-        this.setState({ending_date})
-    }
-
-    setEndingOccurrences(ending_occurrences){
-        this.setState({ending_occurrences})
+    onSubmit(){
+        if (this.props.onSubmit) {
+            var final_rrule = this.state.rrule;
+            if (this.state.ending_mode === "date") {
+                final_rrule.options.until = this.state.ending_date;
+            } else if (this.state.ending_mode === "occurrences") {
+                final_rrule.options.count = this.state.ending_occurrences;
+            }
+            final_rrule.options.dtstart = this.props.event_date;
+            this.props.onSubmit(final_rrule);
+        }
     }
 
     receiveEndingResult(result){
         const ending_mode = result[0];
-        this.setState({ending_mode});
         if (ending_mode === "until specific date") {
-            this.setEndingDate(result[1]);
+            this.setState({ending_mode: "date", ending_date: result[1]});
         } else if (ending_mode === "after number of occurrences") {
-            this.setEndingOccurrences(result[1]);
+            this.setState({ending_mode: "occurrences", ending_occurrences: result[1]});
+        } else {
+            this.setState({ending_mode: "never"});
         }
     }
 
@@ -114,18 +119,10 @@ export default class RepeatTool extends React.Component {
         return new_rrule;
     }
 
-    getRepeatsSummary(value){
-        if (typeof(value) === "string") {
-            return value;
-        } else {
-            return value.toText();
-        }
-    }
-
     getEndingText(ending_mode){
-        if (ending_mode === "until specific date") {
+        if (ending_mode === "date") {
             return dateToWritenDate(this.state.ending_date);
-        } else if (ending_mode === "after number of occurrences") {
+        } else if (ending_mode === "occurrences") {
             return ` after ${this.state.ending_occurrences} ${this.state.ending_occurrences > 1 ? "occurrences" : "occurrence"}`;
         } else {
             return "never";
@@ -142,7 +139,7 @@ export default class RepeatTool extends React.Component {
                   <OnOffInputContainer
                       on_component_value={this.state.rrule}
                       on_component_save={this.setRRule}
-                      value_to_summary={this.getRepeatsSummary}
+                      value_to_summary={getRepeatsSummary}
                       on_component={MultipleStageInput}
                       off_component={SimpleInputOffState}
                       container_style='event_form_big_input event_form_on_off'
@@ -206,7 +203,7 @@ export default class RepeatTool extends React.Component {
                      off_text={this.getEndingText(this.state.ending_mode)}
                      />
                   </div>
-                  <div className="button" onClick={this.saveLink}>
+                  <div className="button" onClick={this.onSubmit}>
                       Accept
                   </div>
               </div>

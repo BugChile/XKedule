@@ -13,4 +13,8 @@ function dateToHourMinute(date) {
     return `${hour}\xa0:\xa0${minute}`;
 }
 
-export { dateToWritenDate, dateToHourMinute };
+function capitalizeFirstLetter(string) { // from https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export { dateToWritenDate, dateToHourMinute, capitalizeFirstLetter };

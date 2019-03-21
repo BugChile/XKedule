@@ -72,6 +72,14 @@ function day_ordinal(date){
     return `${occurrence_ordinal} ${day_name_dict[date.getDay()]}`
 }
 
+function getRepeatsSummary(value){
+    if (typeof(value) === "string") {
+        return value;
+    } else {
+        return value.toText();
+    }
+}
+
 export { rrule_day_dict,
          everyday_rrule,
          everyweekday_rrule,
@@ -79,4 +87,5 @@ export { rrule_day_dict,
          monthly_on_monthday,
          yearly_on_month_day,
          get_day_occurrence,
-         day_ordinal };
+         day_ordinal,
+         getRepeatsSummary };

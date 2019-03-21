@@ -9,7 +9,8 @@ import SimpleInputOffState from "../input_components/simpleInputOffState";
 import SelectInput from "../input_components/selectInput";
 import TextLineInput from "../input_components/textLineInput";
 import HourMinuteInput from "../input_components/hourMinuteInput";
-import { dateToWritenDate, dateToHourMinute } from "../../js_helpers/parsers";
+import { dateToWritenDate, dateToHourMinute, capitalizeFirstLetter } from "../../js_helpers/parsers";
+import { getRepeatsSummary } from "../../js_helpers/rrule_helpers";
 import Calendar from 'react-calendar';
 
 export default class EventForm extends React.PureComponent {
@@ -20,6 +21,7 @@ export default class EventForm extends React.PureComponent {
           date: new Date(),
           from: new Date(),
           to: new Date(),
+          repeat_rrule: "Never",
           minDateRepeatEnd: new Date(),
           eventTags: {},
           eventLinks: {},
@@ -40,6 +42,7 @@ export default class EventForm extends React.PureComponent {
       this.setFromHourMinute = this.setFromHourMinute.bind(this);
       this.setTo = this.setTo.bind(this);
       this.setToHourMinute = this.setToHourMinute.bind(this);
+      this.setRepeatRRule = this.setRepeatRRule.bind(this);
       this.getEventTagDivs = this.getEventTagDivs.bind(this);
       this.getEventLinkDivs = this.getEventLinkDivs.bind(this);
       this.loadEvent = this.loadEvent.bind(this);
@@ -82,6 +85,10 @@ export default class EventForm extends React.PureComponent {
               this.setFrom(to);
           }
       })
+  }
+
+  setRepeatRRule(repeat_rrule){
+      this.setState({repeat_rrule});
   }
 
   setToHourMinute(to_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
@@ -247,13 +254,13 @@ export default class EventForm extends React.PureComponent {
 
               <span> repeat: </span>
               <OnOffInputContainer
-                  on_component_value={this.state.eventTags}
-                  on_component_save={this.addEventTag}
+                  on_component_value={this.state.repeat_rrule}
+                  on_component_save={this.setRepeatRRule}
                   on_component={RepeatTool}
                   off_component={SimpleInputOffState}
                   container_style='event_form_big_input grey_tag event_form_on_off'
                   on_component_props={{className: "repeat_tool", event_date: this.state.date}}
-                 off_text="Never"
+                  value_to_summary={(value) => {return capitalizeFirstLetter(getRepeatsSummary(value))}}
                  />
               <div className="event_form_input_gap"></div>
 
