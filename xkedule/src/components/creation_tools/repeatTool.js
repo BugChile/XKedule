@@ -33,7 +33,7 @@ export default class RepeatTool extends React.Component {
           everyweekday_rrule,
           weekly_on_weekday(props.event_date.getDay()),
           monthly_on_monthday(props.event_date.getDate()),
-          yearly_on_month_day(props.event_date.getMonth(), props.event_date.getDate())
+          yearly_on_month_day(props.event_date.getMonth() + 1, props.event_date.getDate())
       ]
 
       this.option_to_rrule_map = {}

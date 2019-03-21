@@ -18,6 +18,7 @@ export default class EventForm extends React.PureComponent {
       super(props)
       this.state = {
           title: "",
+          description: "",
           date: new Date(),
           from: new Date(),
           to: new Date(),
@@ -37,6 +38,7 @@ export default class EventForm extends React.PureComponent {
       // this.setState({eventLinks: this.updatedEventLinks})
 
       this.setTitle = this.setTitle.bind(this);
+      this.setDescription = this.setDescription.bind(this);
       this.setDate = this.setDate.bind(this);
       this.setFrom = this.setFrom.bind(this);
       this.setFromHourMinute = this.setFromHourMinute.bind(this);
@@ -58,6 +60,10 @@ export default class EventForm extends React.PureComponent {
 
   setTitle(title){
       this.setState({title})
+  }
+
+  setDescription(description){
+      this.setState({description})
   }
 
   setDate(date){
@@ -125,6 +131,7 @@ export default class EventForm extends React.PureComponent {
 
   loadEvent(_event){
       this.setTitle(_event["title"]);
+      this.setDescription(_event["description"]);
       const from_date = new Date([_event["date_start"]]);
       const from_hour = {hour: from_date.getHours(), minute: from_date.getMinutes()};
 
@@ -215,6 +222,14 @@ export default class EventForm extends React.PureComponent {
                 className="event_form_big_input grey_tag"
                 enter_key_submit
               />
+              <div className="event_form_input_gap"></div>
+
+              <span> description: </span>
+              <textarea
+                value={this.state.description}
+                onChange={(event) => {this.setDescription(event.target.value)}}
+                className="event_form_big_input grey_tag"
+              ></textarea>
               <div className="event_form_input_gap"></div>
 
               <span> date: </span>

@@ -2,6 +2,7 @@ const events = {
     "1" : {
         "id": "1",
         "title": "Fake1",
+        "description": "Wena choro",
         "links": {
             "CSS height": {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
             "CSS width": {"name": "CSS width", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/width#Values"}
@@ -14,6 +15,7 @@ const events = {
     "2" : {
         "id": "2",
         "title": "Fake2",
+        "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('February 26, 2019 18:00:00'),
         "date_end": new Date('February 26, 2019 19:30:00'),
@@ -23,6 +25,7 @@ const events = {
     "3" : {
         "id": "3",
         "title": "Fake3",
+        "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('February 26, 2019 15:00:00'),
         "date_end": new Date('February 26, 2019 16:59:00'),
@@ -32,6 +35,7 @@ const events = {
     "4" : {
         "id": "4",
         "title": "Fake4",
+        "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('February 26, 2019 13:00:00'),
         "date_end": new Date('February 26, 2019 14:59:00')
@@ -40,6 +44,7 @@ const events = {
     "5" : {
         "id": "5",
         "title": "Fake5",
+        "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('February 26, 2019 08:00:00'),
         "date_end": new Date('February 26, 2019 12:00:00')
@@ -48,6 +53,7 @@ const events = {
     "6" : {
         "id": "6",
         "title": "Fake6",
+        "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('February 19, 2019 05:00:00'),
         "date_end": new Date('February 19, 2019 06:59:00')
@@ -56,6 +62,7 @@ const events = {
     "7" : {
         "id": "7",
         "title": "Fake7",
+        "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('February 23, 2019 05:00:00'),
         "date_end": new Date('February 23, 2019 06:59:00')
@@ -64,6 +71,7 @@ const events = {
     "8" : {
         "id": "8",
         "title": "Fake8",
+        "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('March 01, 2019 05:00:00'),
         "date_end": new Date('March 01, 2019 06:59:00')
@@ -72,6 +80,7 @@ const events = {
     "9" : {
         "id": "9",
         "title": "Fake two days 6",
+        "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('January 30, 2019 05:00:00'),
         "date_end": new Date('January 31, 2019 06:59:00')

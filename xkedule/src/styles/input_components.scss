@@ -1,9 +1,11 @@
-input {
+input, textarea {
     color: inherit;
     border-radius: inherit;
     font-size: inherit;
     background-color: inherit;
     font-weight: inherit;
+    outline: 0 none;
+    border: none;
 }
 
 select {
@@ -17,9 +19,9 @@ select {
 }
 
 .simple_input_off_state{
-    width: 90%;
+    width: 94%;
     height: 100%;
-    padding: 0px 5%;
+    padding: 0px 3%;
     font-size: 15px;
     display: grid;
     align-items: center;
@@ -47,9 +49,9 @@ select {
 
 //text input
 .text_line_input{
-    width: 90%;
+    width: 94%;
     height: 30px;
-    padding: 0px 5%;
+    padding: 0px 3%;
     &:focus{
         outline: 0 none;
         background-color: white;
@@ -377,8 +379,8 @@ select {
                 grid-auto-rows: 30px;
                 align-items: center;
                 display: grid;
-                width: 90%;
-                padding: 0 5%;
+                width: 94%;
+                padding: 0 3%;
 
             }
 
