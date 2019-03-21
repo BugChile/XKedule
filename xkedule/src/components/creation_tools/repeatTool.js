@@ -94,7 +94,9 @@ export default class RepeatTool extends React.Component {
                 new_rrule = new RRule({
                                     freq: RRule.MONTHLY,
                                     interval: custom_tool_value.interval,
-                                    byweekday: [RRule.TH.nth(1+get_day_occurrence(this.props.event_date))],
+                                    byweekday: [rrule_day_dict[
+                                                    this.props.event_date.getDay()].nth(
+                                                            1+get_day_occurrence(this.props.event_date))],
                             })
             }
         } else if (custom_tool_value.freq === 2) { // weekly
