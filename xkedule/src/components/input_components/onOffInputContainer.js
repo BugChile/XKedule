@@ -206,9 +206,10 @@ export default class OnOffInputContainer extends React.PureComponent {
 OnOffInputContainer.propTypes = {
   on_component: PropTypes.func.isRequired,
   off_component: PropTypes.func.isRequired,
-  on_component_save: PropTypes.func.isRequired,
-  on_component_value: PropTypes.any.isRequired,
 
+
+  on_component_save: PropTypes.func,
+  on_component_value: PropTypes.any,
   on_component_props: PropTypes.object,
   off_component_props: PropTypes.object,
   container_style: PropTypes.string,

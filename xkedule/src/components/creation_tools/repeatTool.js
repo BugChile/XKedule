@@ -7,6 +7,7 @@ import CustomRepeatTool from "./customRepeatTool.js"
 import CustomOccurrencesTool from "./customOccurrencesTool.js"
 import Calendar from 'react-calendar/dist/entry.nostyle';
 import { RRule } from "rrule";
+import { dateToWritenDate } from "../../js_helpers/parsers.js"
 import { rrule_day_dict,
          everyday_rrule,
          everyweekday_rrule,
@@ -20,6 +21,9 @@ export default class RepeatTool extends React.Component {
       super(props)
       this.state = {
           rrule: "never",
+          ending_mode: "never", //never, occurrences or date
+          ending_date: props.event_date, //only used on date ending mode
+          ending_occurrences: 1, //only used on occurrences ending mode
 
       }
 
@@ -41,7 +45,29 @@ export default class RepeatTool extends React.Component {
       this.setRRule = this.setRRule.bind(this);
       this.getRepeatsSummary = this.getRepeatsSummary.bind(this);
       this.generateCustomRRule = this.generateCustomRRule.bind(this);
+      this.setEndingDate = this.setEndingDate.bind(this);
+      this.setEndingOccurrences = this.setEndingOccurrences.bind(this);
+      this.receiveEndingResult = this.receiveEndingResult.bind(this);
+      this.getEndingText = this.getEndingText.bind(this);
 
+    }
+
+    setEndingDate(ending_date){
+        this.setState({ending_date})
+    }
+
+    setEndingOccurrences(ending_occurrences){
+        this.setState({ending_occurrences})
+    }
+
+    receiveEndingResult(result){
+        const ending_mode = result[0];
+        this.setState({ending_mode});
+        if (ending_mode === "until specific date") {
+            this.setEndingDate(result[1]);
+        } else if (ending_mode === "after number of occurrences") {
+            this.setEndingOccurrences(result[1]);
+        }
     }
 
     setRRule(multipleStageOutput){
@@ -94,6 +120,16 @@ export default class RepeatTool extends React.Component {
         }
     }
 
+    getEndingText(ending_mode){
+        if (ending_mode === "until specific date") {
+            return dateToWritenDate(this.state.ending_date);
+        } else if (ending_mode === "after number of occurrences") {
+            return ` after ${this.state.ending_occurrences} ${this.state.ending_occurrences > 1 ? "occurrences" : "occurrence"}`;
+        } else {
+            return "never";
+        }
+    }
+
   render() {
       return(
               <div className={this.props.className}>
@@ -132,10 +168,9 @@ export default class RepeatTool extends React.Component {
                     Ending
                   </div>
                   <OnOffInputContainer
-                      on_component_value={""}
-                      on_component_save={""}
                       on_component={MultipleStageInput}
                       off_component={SimpleInputOffState}
+                      on_component_save={this.receiveEndingResult}
                       container_style='event_form_big_input event_form_on_off'
                       on_component_props= {{component_list: [{
                                                                   input_component: SelectInput,
@@ -152,17 +187,21 @@ export default class RepeatTool extends React.Component {
                                                               },
                                                               {
                                                                   input_component: Calendar,
-                                                                  input_props: {className: "input_calendar"},
+                                                                  input_props: {className: "input_calendar",
+                                                                                minDate: this.props.event_date,
+                                                                                value: this.state.ending_date},
+                                                                  route_values: {
+                                                                      "submit": "all"
+                                                                  }
                                                               },
                                                               {
                                                                   input_component: CustomOccurrencesTool,
+                                                                  input_props: {value: this.state.ending_occurrences}
                                                               }
-                                                          ],
-
-                                            onSubmit: (value) => {console.log(value)} }
+                                                          ]}
                                         }
 
-                     off_text="Ending"
+                     off_text={this.getEndingText(this.state.ending_mode)}
                      />
                   </div>
                   <div className="button" onClick={this.saveLink}>

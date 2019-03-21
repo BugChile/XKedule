@@ -11,15 +11,13 @@ export default class CircleOptionsInput extends React.PureComponent {
         this.updatedSelectedOptions = {};
 
 
-        var index = 0;
         props.options.forEach((option) => {
             var selected = 0;
-            if (props.preselected && props.preselected.includes(index)) {
+            if (props.preselected && props.preselected.includes(option)) {
                 selected = 1;
             }
             this.state.options[option] = selected;
             this.updatedSelectedOptions[option] = selected;
-            index += 1;
         });
 
 

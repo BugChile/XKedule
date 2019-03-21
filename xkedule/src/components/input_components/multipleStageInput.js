@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 //                  {   input_component: ReactComponent,
 //                      input_props: (optional), additional props for component
 //                      route_values: (optional, object)
+//                      submit_on_change: (true/false)
 //                  },
 //                  ...
 //              ]
@@ -25,7 +26,10 @@ import PropTypes from 'prop-types';
 //                  - {"submit": list of values} if one of the values on the list is selected,
 //                                               will submit the already saved
 //                                               stages, ending the questionnaire
-//                                               even if there's more stages ahead
+//                                               even if there's more stages ahead.
+//                                               if instead of list of values,
+//                                               submit = "all", all responses
+//                                               will submit.
 //                  - {"go_to": mapping of {values: stage}}
 //                                               if one of the values on the is selected,
 //                                               will go to that stage number
@@ -69,6 +73,7 @@ export default class MultipleStageInput extends React.PureComponent {
     getComponent(stage){
         const Component = this.props.component_list[stage].input_component;
         return (<Component onSubmit={this.onSubmit}
+                           onChange={this.onSubmit} //on change not supported yet
                            doneEditing={this.props.doneEditing}
                            id={`multiple_stage_input_stage_${stage}`}
                            {...this.props.component_list[stage].input_props}/>)
@@ -90,11 +95,11 @@ export default class MultipleStageInput extends React.PureComponent {
     onSubmit(value){
         this.updatedSavedValues.push(value);
         this.setState({saved_values: this.updatedSavedValues});
-
         if (this.props.component_list[this.state.stage].route_values) {
             const route_actions = this.props.component_list[this.state.stage].route_values;
             if ("submit" in route_actions
-                && route_actions.submit.indexOf(value) !== -1) {
+                && (route_actions.submit === "all" || route_actions.submit.indexOf(value) !== -1)
+                ) {
                     this.props.onSubmit(this.updatedSavedValues);
             } else if ("go_to" in route_actions
                         && route_actions["go_to"][value]){
