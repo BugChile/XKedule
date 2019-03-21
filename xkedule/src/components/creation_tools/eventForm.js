@@ -214,7 +214,7 @@ export default class EventForm extends React.PureComponent {
                     Cancel
                     </span>
               </div>
-
+              <div className="event_form_input_gap"></div>
               <span> title: </span>
               <TextLineInput
                 value={this.state.title}
