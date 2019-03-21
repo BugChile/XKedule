@@ -1,7 +1,9 @@
-export function save_event(json){
-
+function save_event(json){
+    console.log("Save placeholder")
 }
 
-export function load_event(json){
-
+function load_event(json){
+    console.log("Load placeholder")
 }
+
+export {save_event, load_event}
