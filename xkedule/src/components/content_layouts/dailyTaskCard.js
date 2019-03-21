@@ -8,12 +8,14 @@ export default class DailyTaskCard extends React.Component {
   }
 
   render() {
+      const card_id = this.props.event.id.concat("_event_daily_card")
       return(
           <a className="task_card daily_task_card"
-             key={this.props.event.id}
+             key={card_id}
+             id={card_id}
              style={this.getGridPlacement(this.props.event)}
              title={this.props.event.title}
-             onClick={()=> this.props.clickEvent(this.props.event, 'position_daily')}>
+             onClick={()=> this.props.clickEvent(this.props.event, card_id)}>
               <div className="task_title">
                   {this.props.event.title}
               </div>

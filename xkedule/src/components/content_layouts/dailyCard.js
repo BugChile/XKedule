@@ -95,6 +95,8 @@ export default class DailyCard extends React.Component {
       return true;
     }
   }
+
+
   componentDidMount(){
     this.props.scrollDailyEvent();
   }

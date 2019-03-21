@@ -33,7 +33,8 @@ export default class InfoCard extends React.Component {
             </div>
           );
           }
-      })())}
-      
-    
+      })()
+    )
   }
+
+}

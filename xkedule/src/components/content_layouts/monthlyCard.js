@@ -98,7 +98,7 @@ export default class MonthlyCard extends React.Component {
                 </div>
                 <HeaderDate date={this.getHeaderDate(this.props.current_time)}/>
             </div>
-            <div className="content">
+            <div className="content" id="content">
                  <div className="monthly_schedule">
                      {this.generateDayCells(this.props.current_time,
                                             this.props.events)}
