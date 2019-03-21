@@ -48,7 +48,7 @@ export default class CustomOccurrencesTool extends React.PureComponent {
                     <div className="button" onClick={this.onSubmit}>
                         Accept
                     </div>
-                    <a className="clickable_anchor" onClick={this.doneEditing}>
+                    <a className="clickable_anchor" onClick={this.props.doneEditing}>
                         Cancel
                     </a>
                 </div>
