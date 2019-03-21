@@ -12,6 +12,7 @@ input{
     background: white;
     padding: 0px;
     border-width: 0px;
+    font-family: "Lato", sans-serif;
 }
 
 .y-unscrollable{
@@ -55,12 +56,13 @@ a:visited{
     width: 600px;
     transition: all 0.5s ease;
     overflow-x: hidden;
+
 }
 
 
 .content_card{
     display: grid;
-    grid-template-rows: 6fr 22fr;
+    grid-template-rows: 150px auto;
     height: 100vh;
     width: inherit;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
@@ -83,14 +85,14 @@ a:visited{
     }
 }
 
-.expand{
+.main_button_container{
     z-index: 2;
     position: absolute;
     top: 20px;
     left: 550px;
     transition: all 0.5s ease;
     cursor: pointer;
-    .expand_button{
+    .main_button{
         border-radius: 50px;
         width: 100px;
         height: 100px;
@@ -106,8 +108,12 @@ a:visited{
     }
 }
 
-.reversed_expand{
+.reversed{
     transform: rotate(-180deg);
+}
+
+.full_loop{
+    transform: rotate(360deg);
 }
 
 .content{
@@ -248,4 +254,8 @@ a:visited{
 }
 .position_daily{
     left: 150px;
+}
+
+.right_aligned_text{
+    text-align: right;
 }

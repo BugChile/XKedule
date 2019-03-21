@@ -14,12 +14,18 @@ export default class CreationContainer extends React.PureComponent {
       }
   }
 
-  generateContent(creation_mode){
+  generateContent(creation_mode, events, user_tags, editing_event_id){
       switch (creation_mode) {
           case "create_event":
-              return <EventForm />;
+              return <EventForm user_tags={user_tags}
+                                close_event_form={this.props.close_event_form}
+                                current_time={this.props.current_time}/>;
           case "edit_event":
-              return <EventForm />;
+              const editing_event = events[editing_event_id];
+              return <EventForm event={editing_event}
+                                user_tags={user_tags}
+                                close_event_form={this.props.close_event_form}
+                                current_time={this.props.current_time}/>;
           case "schedule":
               return "Manage schedule"
       }
@@ -33,7 +39,10 @@ export default class CreationContainer extends React.PureComponent {
                       <span> {this.generateHeader(this.props.creation_mode)} </span>
                   </div>
                   <div className="creation_content">
-                      {this.generateContent(this.props.creation_mode)}
+                      {this.generateContent(this.props.creation_mode,
+                                            this.props.events,
+                                            this.props.user_tags,
+                                            this.props.editing_event_id)}
                   </div>
               </div>
           </div>
