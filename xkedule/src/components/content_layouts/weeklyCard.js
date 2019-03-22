@@ -87,7 +87,7 @@ export default class WeeklyCard extends React.Component {
 
   render() {
       return(
-         <div className="content_card">
+         <div className="content_card" id="content_card">
          <div className="content_header">
              <div id="this_is_you_line" className="text_15">
                  this is <strong>your</strong> week

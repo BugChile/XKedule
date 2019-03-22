@@ -17,8 +17,8 @@ const events = {
         "title": "Fake2",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 26, 2019 18:00:00'),
-        "date_end": new Date('February 26, 2019 19:30:00'),
+        "date_start": new Date('March 05, 2019 18:00:00'),
+        "date_end": new Date('March 05, 2019 19:30:00'),
         "tag_ids": ["2"]
 
     },
@@ -27,8 +27,8 @@ const events = {
         "title": "Fake3",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 26, 2019 15:00:00'),
-        "date_end": new Date('February 26, 2019 16:59:00'),
+        "date_start": new Date('March 05, 2019 15:00:00'),
+        "date_end": new Date('March 05, 2019 16:59:00'),
         "tag_ids": []
 
     },
@@ -37,8 +37,8 @@ const events = {
         "title": "Fake4",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 26, 2019 13:00:00'),
-        "date_end": new Date('February 26, 2019 14:59:00')
+        "date_start": new Date('March 05, 2019 13:00:00'),
+        "date_end": new Date('March 05, 2019 14:59:00')
 
     },
     "5" : {
@@ -46,8 +46,8 @@ const events = {
         "title": "Fake5",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 26, 2019 08:00:00'),
-        "date_end": new Date('February 26, 2019 12:00:00')
+        "date_start": new Date('March 05, 2019 08:00:00'),
+        "date_end": new Date('March 05, 2019 12:00:00')
 
     },
     "6" : {
@@ -55,8 +55,8 @@ const events = {
         "title": "Fake6",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 19, 2019 05:00:00'),
-        "date_end": new Date('February 19, 2019 06:59:00')
+        "date_start": new Date('March 01, 2019 05:00:00'),
+        "date_end": new Date('March 01, 2019 06:59:00')
 
     },
     "7" : {
@@ -64,8 +64,8 @@ const events = {
         "title": "Fake7",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 23, 2019 05:00:00'),
-        "date_end": new Date('February 23, 2019 06:59:00')
+        "date_start": new Date('March 02, 2019 05:00:00'),
+        "date_end": new Date('March 02, 2019 06:59:00')
 
     },
     "8" : {
@@ -90,8 +90,8 @@ const events = {
         "id": "10",
         "title": "Fake two days 10",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('January 30, 2019 05:00:00'),
-        "date_end": new Date('January 31, 2019 06:59:00')
+        "date_start": new Date('March 01, 2019 05:00:00'),
+        "date_end": new Date('March 01, 2019 06:59:00')
 
     },
     "11" : {
@@ -106,16 +106,16 @@ const events = {
         "id": "12",
         "title": "Fake12",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('February 26, 2019 05:00:00'),
-        "date_end": new Date('February 26, 2019 06:59:00')
+        "date_start": new Date('March 05, 2019 05:00:00'),
+        "date_end": new Date('March 05, 2019 06:59:00')
 
     },
 
     "13" : {
         "id": "13",
         "title": "Final AOasdasdasasdasdasdasdadasdasdkasjdlkasjdlkdasdasdasdasdasd",
-        "date_start": new Date('February 26, 1975 02:00:00'),
-        "date_end": new Date('February 26, 1975 04:59:00')
+        "date_start": new Date('March 05, 2019 02:00:00'),
+        "date_end": new Date('March 05, 2019 04:59:00')
 
     },
 

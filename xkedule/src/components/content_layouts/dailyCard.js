@@ -103,7 +103,7 @@ export default class DailyCard extends React.Component {
 
   render() {
       return(
-         <div className="content_card">
+         <div className="content_card" id="content_card">
          <div className="content_header" key="content_header">
              <div id="this_is_you_line" className="text_15" key="this_is_you_line">
                  this is <strong>your</strong> day
