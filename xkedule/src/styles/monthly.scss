@@ -26,18 +26,20 @@
     .day_cell_info{
         font-size: 16px;
         display: grid;
-        grid-template-columns: 83px 83px;
-        height: 20px;
-        margin-left: 5px;
-        margin-top: 5px;
+        grid-template-columns: auto 28px;
+        height: 24px;
+        margin: 1px 6px 0px 6px;
         .day_cell_number{
-            text-align: right;
+            text-align: center;
             grid-column-start: 2;
             color: #999999;
+            margin: 1px;
+            padding: 1px;
         }
         .day_cell_name{
             text-transform: capitalize;
             color: #333333;
+            padding: 2px 0px 0px 6px;
         }
 
     }
@@ -48,11 +50,14 @@
     .day_cell_number{
         color: #333333;
     }
+
+    .day_cell_number.current_day{
+            background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+            border-radius: 50%;
+            color: white;
+        }
 }
 
-.day_cell_number.current_day{
-        font-weight: bold;
-    }
 
 .day_cell_monthly:nth-of-type(7n){
     border-right: 2px solid #FFFFFF;
@@ -66,7 +71,6 @@
 
 .day_cell_task_container{
     display: grid;
-    margin: 3px 0px;
     justify-content: center;
 }
 

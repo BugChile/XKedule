@@ -90,7 +90,7 @@ export default class MonthlyCard extends React.Component {
             if (day_date.getMonth() === current_time.getMonth()) {
                 cell_class_list += " month_day" //day of the current month showing
                 if (day_date.getDate() === current_time.getDate()) {
-                    cell_number_class_list += " current_day color_text" //current day
+                    cell_number_class_list += " current_day" //current day
                 }
             }
 
@@ -190,7 +190,11 @@ export default class MonthlyCard extends React.Component {
                 <HeaderDate date={this.getHeaderDate(this.props.current_time)}/>
             </div>
             <div className="content" id="content">
-
+                {<MonthlyCardCell day_tasks={this.state.expanded_tasks}
+                                  cell_key={"monthly_cell_expanded"}
+                                  day_info={this.state.expanded_day}
+                                  cell_class_list={this.state.expanded_class}
+                                  closeEvent={this.closeSeeMore}/>}
 
                  <div className="monthly_schedule">
                      {this.generateDayCells(this.props.current_time,
@@ -199,11 +203,7 @@ export default class MonthlyCard extends React.Component {
 
                  </div>
 
-                 {<MonthlyCardCell day_tasks={this.state.expanded_tasks}
-                                   cell_key={"monthly_cell_expanded"}
-                                   day_info={this.state.expanded_day}
-                                   cell_class_list={this.state.expanded_class}
-                                   closeEvent={this.closeSeeMore}/>}
+
 
 
             </div>
