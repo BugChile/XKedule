@@ -117,9 +117,6 @@ export default class DailyCard extends React.Component {
         if (day_events) {
             var tasks = []
             const grouped_events = this.groupOverlaps(day_events);
-            console.log(grouped_events.map(x => x.events.length));
-            console.log(grouped_events.map(x => x.events.length).filter(onlyUnique))
-            console.log(grouped_events.map(x => x.events.length).filter(onlyUnique).reduce(multiplyReducer, 1));
             col_number = grouped_events.map(x => x.events.length).filter(onlyUnique).reduce(multiplyReducer, 1);
             var span = 1;
             grouped_events.forEach((group) => {

@@ -27,8 +27,6 @@ function increasingFunctionCompare(a, b){
 
 // this function returns true if two date ranges overlap
 function checkDateOverlap(a_start, a_end, b_start, b_end){
-    console.log("checking a", a_start, a_end);
-    console.log("checking b", b_start, b_end);
     // a and b start at the same time
     if (a_start.getTime() === b_start.getTime()) return true;
 
@@ -37,7 +35,6 @@ function checkDateOverlap(a_start, a_end, b_start, b_end){
 
     // case when b starts first and a starts before b ends
     if (b_start < a_start && a_start < b_end) return true;
-    console.log("no overlap")
     return false;
 }
 
