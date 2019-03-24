@@ -397,12 +397,7 @@ class App extends Component {
             <div>
                 {this.generateComponents(this.state.mode, this.state.creation_mode)}
 
-                <div className="placeholder_button" onClick={this.showSmallCreationCard}>
-                 1
-                </div>
-                <div className="placeholder_button" onClick={this.hideSmallCreationCard} style={{top: "150px"}}>
-                 2
-                </div>
+                
                 {<InfoCard
                 classesInfoCard={this.state.classesInfoCard}
                 event={this.state.infoDaily}

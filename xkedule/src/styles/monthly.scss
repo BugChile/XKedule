@@ -20,23 +20,26 @@
 }
 
 .day_cell_monthly{
+    overflow: hidden;
     border-bottom: 2px solid #FFFFFF;
     border-left: 2px solid #FFFFFF;
     .day_cell_info{
         font-size: 16px;
         display: grid;
-        grid-template-columns: 83px 83px;
-        height: 20px;
-        margin-left: 5px;
-        margin-top: 5px;
+        grid-template-columns: auto 28px;
+        height: 24px;
+        margin: 1px 6px 0px 6px;
         .day_cell_number{
-            text-align: right;
+            text-align: center;
             grid-column-start: 2;
             color: #999999;
+            margin: 1px;
+            padding: 1px;
         }
         .day_cell_name{
             text-transform: capitalize;
             color: #333333;
+            padding: 2px 0px 0px 6px;
         }
 
     }
@@ -47,11 +50,14 @@
     .day_cell_number{
         color: #333333;
     }
+
+    .day_cell_number.current_day{
+            background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+            border-radius: 50%;
+            color: white;
+        }
 }
 
-.day_cell_number.current_day{
-        font-weight: bold;
-    }
 
 .day_cell_monthly:nth-of-type(7n){
     border-right: 2px solid #FFFFFF;
@@ -64,15 +70,46 @@
 }
 
 .day_cell_task_container{
-    display: flex;
-    flex-direction: column;
-    margin-top: 5px;
-    margin-left: 5px;
+    display: grid;
+    justify-content: center;
+}
+
+
+.expanded_month_cell{
+    position: absolute;
+    background-color: #E4E4E4;
+    -webkit-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+    -moz-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+    border-radius: 10px;
+    padding-bottom: 10px;
+
+    .day_cell_info{
+        padding: 20px 0px 10px 0px;
+        text-align: center;
+    }
+
+    .fa-times{
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        margin-top: 10px;
+
+    }
+
+    &.hidden{
+        opacity: 1;
+    }
+
+    &.visible{
+        opacity: 1;
+    }
+
 }
 
 .monthly_task_card{
     width: 170px;
-    height: 25px;
+    height: 20px;
     border-radius: 5px;
     margin-bottom: 2px;
     box-shadow: none;
@@ -80,8 +117,21 @@
         height: inherit;
         vertical-align: middle;
         font-size: 14px;
-        margin-top: 5px;
+        margin-top: 2px;
         margin-left: 3px;
         color: #4f4f4f;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    &.see_more_card{
+        background-color: #E4E4E4;
+
+
+        &:hover{
+            background-color: #CECECE;
+        }
+
     }
 }

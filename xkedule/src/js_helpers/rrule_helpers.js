@@ -57,7 +57,7 @@ function yearly_on_month_day(month, day){ // month -> month's number, day -> num
 
 function get_day_occurrence(date){
     const day = date.getDate();
-    const occurrence = Math.floor((day - 1)/7);
+    const occurrence = Math.floor((day - 1)/7) + 1;
     return occurrence;
 }
 
@@ -65,9 +65,9 @@ function day_ordinal(date){
     // return which occurence of a given day: 1st Wednesday, 3rd Friday, etc.
     const ordinal = ["1st", "2nd", "3rd"]
     const occurrence = get_day_occurrence(date);
-    var occurrence_ordinal = `${occurrence+1}th`;
+    var occurrence_ordinal = `${occurrence}th`;
     if (occurrence < 2)  {
-        occurrence_ordinal = ordinal[occurrence];
+        occurrence_ordinal = ordinal[occurrence - 1];
     };
     return `${occurrence_ordinal} ${day_name_dict[date.getDay()]}`
 }
