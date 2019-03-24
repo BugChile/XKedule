@@ -1,6 +1,7 @@
 import React from "react"
 import DailyTaskCard from './dailyTaskCard'
 import HeaderDate from './headerDate'
+import { checkDateOverlap, onlyUnique, multiplyReducer, increasingFunctionCompare } from "../../js_helpers/helpers"
 
 export default class DailyCard extends React.Component {
 
@@ -73,18 +74,71 @@ export default class DailyCard extends React.Component {
         return date_dict;
     }
 
-  generateEvents(events, current_time){
-        var generated = []
-        const day_events = events[current_time.toLocaleDateString()]
-        if (day_events) {
-            day_events.forEach((event) => {
-                generated.push(
-                    <DailyTaskCard event={event} key={event.id} clickEvent={this.props.clickEvent}/>
-                    )
+    groupOverlaps(events){
+        var grouped = [];
+        var already_found = false;
+        events.forEach((_event) => {
+
+            // look for already grouped events colliding
+            grouped.forEach((group) => {
+                if (!already_found &&
+                    checkDateOverlap(_event.date_start, _event.date_end,
+                                     group.overlap_start, group.overlap_end)) {
+                        already_found = true;
+                        if (_event.date_start < group.overlap_start) {
+                            group.overlap_start = _event.date_start
+                        }
+
+                        if (_event.date_end > group.overlap_end) {
+                            group.overlap_end = _event.date_end
+                        }
+                        group.events.push(_event);
                 }
-            )
+            });
+
+            // no colliding, new group
+            if (!already_found) {
+                grouped.push({overlap_start: _event.date_start,
+                              overlap_end: _event.date_end,
+                              events: [_event]});
+            }
+            already_found = false;
+        });
+        return grouped;
+    }
+
+  generateEvents(events, current_time){
+        const day_events = events[current_time.toLocaleDateString()].sort(
+                                (a, b) =>
+                                    increasingFunctionCompare(a.date_start.getTime(),
+                                                              b.date_start.getTime()));
+
+        var col_number = 1;
+        if (day_events) {
+            var tasks = []
+            const grouped_events = this.groupOverlaps(day_events);
+            console.log(grouped_events.map(x => x.events.length));
+            console.log(grouped_events.map(x => x.events.length).filter(onlyUnique))
+            console.log(grouped_events.map(x => x.events.length).filter(onlyUnique).reduce(multiplyReducer, 1));
+            col_number = grouped_events.map(x => x.events.length).filter(onlyUnique).reduce(multiplyReducer, 1);
+            var span = 1;
+            grouped_events.forEach((group) => {
+                span = col_number / group.events.length;
+                group.events.forEach((_event) => {
+                    tasks.push(
+                        <DailyTaskCard event={_event}
+                                       key={_event.id}
+                                       clickEvent={this.props.clickEvent}
+                                       column_span={span}/>
+                        )
+                });
+            })
         }
-        return generated;
+        return <div className="tasks_container"
+                    key="tasks_container"
+                    style={{"gridTemplateColumns": `repeat(${col_number}, 1fr)`}}>
+                    {tasks}
+               </div>;
     }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -114,10 +168,8 @@ export default class DailyCard extends React.Component {
              <div className="daily_tasks" key="daily_tasks">
                  {this.hourTicks()}
                  {this.lines()}
-                 <div className="tasks_container" key="tasks_container">
-                    {this.generateEvents(this.props.events,
+                 {this.generateEvents(this.props.events,
                                          this.props.current_time)}
-                 </div>
              </div>
          </div>
          </div>
