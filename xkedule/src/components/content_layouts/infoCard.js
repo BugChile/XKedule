@@ -1,6 +1,6 @@
 import React from "react"
 import ButtonFunction from '../buttonFunction'
-
+import { isEmpty } from '../../js_helpers/helpers' 
 export default class InfoCard extends React.Component {
     render() {
         return (
@@ -8,7 +8,9 @@ export default class InfoCard extends React.Component {
           switch (this.props.event) {
           case null:   return (<div>asd</div>) ;
           default:  return (
-            <div value='1' className={''.concat(this.props.classesInfoCard).concat(' ').concat(this.props.topValue)}>
+            <div value='1' className={''.concat(this.props.classesInfoCard).concat(' ').concat(this.props.topValue)}
+            style={{left: this.props.left, top: this.props.top}}
+            >
             <div className="button-container">
             <ButtonFunction function={this.props.functionClose} cssClass="trash" cssIcon="glyphicon glyphicon-trash"/>
 
@@ -16,8 +18,8 @@ export default class InfoCard extends React.Component {
             {
               (
                 (() => {
-             switch (this.props.event.link) {
-              case null: case "":   case false: case undefined:   return (<div></div>) ;
+             switch (isEmpty(this.props.event.link)) {
+              case true: return (<div></div>) ;
              default:  return (
             <ButtonFunction function={this.props.functionClose} cssClass="link" cssIcon="glyphicon glyphicon-link"/>
              );

@@ -209,13 +209,15 @@ a:visited{
     flex-wrap: wrap;
     width: 100%;
     justify-content: flex-end;
+
+    padding: 0px 10px 0px 0px;
 }
 .button_min{
     display: block;
-    background-color: rgba(255,255,255,0.7);
-    padding: 10px;
+    background-color: rgba(0,0,0,0.1);;
+    padding: 0px 7px;
     width: auto;
-    margin: 5px;
+    margin: 3px;
     font-size: 25px;
     text-align: center;
     border-radius: 10px;
@@ -224,9 +226,9 @@ a:visited{
     }
 }
 .trash{
-    color: rgba(178,36,36,0.9);
+    color: rgba(216,51,72,1);
     &:hover{
-        color: rgba(178,36,36,0.5);
+        color: rgba(216,51,72,0.5);
     }
 }
 .exit{
@@ -234,23 +236,24 @@ a:visited{
     left: 100%;
     top: 0%;
     transform: translate(-25px,-25px);
-    background-color: rgba(178,36,36,0.9);
-    padding: 6px;
+    padding: 5px 6px 3px 6px;
     color: rgba(255,255,255,0.9);
+    background-color: rgba(216,51,72,1);
     &:hover{
         color: rgba(255,255,255,0.8);
+        background-color: rgba(216,51,72,0.5);
     }
 }
 .link{
-    color: rgba(36,107,178,0.9);
+    color: rgba(58,91,212,1);
     &:hover{
-        color: rgba(36,107,178,0.5);
+        color: rgba(58,91,212,0.5);
     }
 }
 .edit{
-    color: rgba(23,114,68,0.9);
+    color: rgba(18,177,128,1);
     &:hover{
-        color: rgba(23,114,68,0.5);
+        color: rgba(18,177,128,0.5);
     }
 }
 .placeholder_button{
@@ -267,17 +270,20 @@ a:visited{
 // general information card daily - weekly - monthly
 .event_info_card{
     position: absolute;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(250,250,250,1);
     z-index: 4;
-    color: white;
-    padding: 30px;
+    color: black;
+    padding: 10px 30px 10px 30px;
     width: 350px;
-    box-shadow: 7px 10px 30px rgba(0, 0, 0, .4);
-    height: 200px;
+    box-shadow: 7px 10px 30px rgba(0, 0, 0, .2);
+    min-height: 160px;
     word-wrap: break-word;
     border-radius: 10px;
     -webkit-transition: all 0.1s ease;
     top: 41%;
+    h3{
+        margin: 0;
+    }
 }
 .position_daily{
     left: 150px;
