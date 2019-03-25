@@ -108,15 +108,15 @@ export default class DailyCard extends React.Component {
     }
 
   generateEvents(events, current_time){
-        const day_events = events[current_time.toLocaleDateString()].sort(
-                                (a, b) =>
-                                    increasingFunctionCompare(a.date_start.getTime(),
-                                                              b.date_start.getTime()));
-
+        const day_events = events[current_time.toLocaleDateString()]
         var col_number = 1;
         if (day_events) {
-            var tasks = []
-            const grouped_events = this.groupOverlaps(day_events);
+            var tasks = [];
+            const sorted_events = day_events.sort(
+                                    (a, b) =>
+                                        increasingFunctionCompare(a.date_start.getTime(),
+                                                                  b.date_start.getTime()));
+            const grouped_events = this.groupOverlaps(sorted_events);
             col_number = grouped_events.map(x => x.events.length).filter(onlyUnique).reduce(multiplyReducer, 1);
             var span = 1;
             grouped_events.forEach((group) => {

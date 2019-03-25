@@ -1,3 +1,5 @@
+/*global chrome*/
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DailyCard from './components/content_layouts/dailyCard'
@@ -397,7 +399,7 @@ class App extends Component {
             <div>
                 {this.generateComponents(this.state.mode, this.state.creation_mode)}
 
-                
+
                 {<InfoCard
                 classesInfoCard={this.state.classesInfoCard}
                 event={this.state.infoDaily}

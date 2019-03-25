@@ -17,8 +17,8 @@ const events = {
         "title": "Fake2",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('March 24, 2019 18:00:00'),
-        "date_end": new Date('March 24, 2019 19:30:00'),
+        "date_start": new Date('March 25, 2019 18:00:00'),
+        "date_end": new Date('March 25, 2019 19:30:00'),
         "tag_ids": ["2"]
 
     },
