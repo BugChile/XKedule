@@ -5,6 +5,17 @@ function preventDefault(e) {
   e.returnValue = false;
 }
 
+
+// from https://coderwall.com/p/_g3x9q/how-to-check-if-javascript-object-is-empty
+
+function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
+}
+
 function stringRange(start, end, digits){
     var range = [];
     for (var i = start; i < end; i++) {
@@ -52,4 +63,5 @@ export { stringRange,
          increasingFunctionCompare,
          checkDateOverlap,
          onlyUnique,
-         multiplyReducer};
+         multiplyReducer,
+         isEmpty};

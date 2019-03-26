@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DailyCard from './components/content_layouts/dailyCard'
+import InfoCardLinks from './components/content_layouts/infoCardLinks'
 import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
 import MainButton from './components/mainButton'
@@ -35,6 +36,7 @@ class App extends Component {
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
             current_time: new Date(),
             loading: true,
+            linkComponent:null,
             main_button_function: null,
             main_button_icon: "expand",
         }
@@ -69,6 +71,7 @@ class App extends Component {
         this.listenScrollEvent = this.listenScrollEvent.bind(this);
         this.scrollDailyEvent = this.scrollDailyEvent.bind(this);
         this.clickEvent = this.clickEvent.bind(this);
+        this.linkEvent = this.linkEvent.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
@@ -195,11 +198,15 @@ class App extends Component {
        this.setState({infoDaily:event,
                       classesInfoCard:'event_info_card '.concat(this.state.mode),
                       eventInfoCardLeft:left,
-                      eventInfoCardTop:top})
+                      eventInfoCardTop:top,
+                      linkComponent:null})
+    }
+    linkEvent(){
+        (this.state.linkComponent)? this.setState({linkComponent:null}): this.setState({linkComponent:true});
     }
 
     closeEvent(){
-        this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
+        this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card', InfoCardLinks:null})
         const content_div = document.getElementById("content")
         if (content_div) {
             content_div.style["overflow-y"] = "scroll";
@@ -347,7 +354,6 @@ class App extends Component {
 
     }
 
-
     //CALLBACKS (should only call above functions)
 
     expand(){
@@ -405,8 +411,11 @@ class App extends Component {
                 event={this.state.infoDaily}
                 topValue={this.state.infoDailyTop}
                 functionClose={this.closeEvent}
+                functionLink={this.linkEvent}
                 left={this.state.eventInfoCardLeft}
-                top={this.state.eventInfoCardTop}/>}
+                top={this.state.eventInfoCardTop}
+                links={this.state.linkComponent}/>}
+                
             </div>
 
         )

@@ -34,7 +34,13 @@
             display: grid;
             grid-template-rows: 1fr 2fr 1fr 2fr 1fr;
             margin-top: 2px;
+            // margin-left:10%;
+            // margin-right:10%;
+            text-decoration: (none!important);
             .task_title{
+                &:hover{
+                    color:red;
+                }
                 text-align: center;
                 grid-row: 2;
                 font-weight: bold;

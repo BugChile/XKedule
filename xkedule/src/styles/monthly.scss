@@ -113,7 +113,12 @@
     border-radius: 5px;
     margin-bottom: 2px;
     box-shadow: none;
+    text-decoration: (none!important);
+    
     .task_title{
+        &:hover{
+            color:red;
+        }
         height: inherit;
         vertical-align: middle;
         font-size: 14px;
