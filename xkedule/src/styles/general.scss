@@ -76,6 +76,7 @@ a:visited{
 .content_header{
     width: inherit;
     background-color: #FFFFFF;
+    line-height: normal;
     div{
         padding-left: 50px;
         width: 1300px;
@@ -336,7 +337,7 @@ a:visited{
     color: #4f4f4f;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;    
+    overflow: hidden;
     background-color: white;
     &:hover{
         color:red;
