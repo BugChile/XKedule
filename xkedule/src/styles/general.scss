@@ -12,6 +12,7 @@ input{
     background: white;
     padding: 0px;
     border-width: 0px;
+    font-family: "Lato", sans-serif;
 }
 
 .y-unscrollable{
@@ -55,12 +56,13 @@ a:visited{
     width: 600px;
     transition: all 0.5s ease;
     overflow-x: hidden;
+
 }
 
 
 .content_card{
     display: grid;
-    grid-template-rows: 6fr 22fr;
+    grid-template-rows: 150px auto;
     height: 100vh;
     width: inherit;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
@@ -83,14 +85,14 @@ a:visited{
     }
 }
 
-.expand{
+.main_button_container{
     z-index: 2;
     position: absolute;
     top: 20px;
     left: 550px;
     transition: all 0.5s ease;
     cursor: pointer;
-    .expand_button{
+    .main_button{
         border-radius: 50px;
         width: 100px;
         height: 100px;
@@ -106,8 +108,12 @@ a:visited{
     }
 }
 
-.reversed_expand{
+.reversed{
     transform: rotate(-180deg);
+}
+
+.full_loop{
+    transform: rotate(360deg);
 }
 
 .content{
@@ -287,4 +293,54 @@ a:visited{
 }
 .position_daily{
     left: 150px;
+}
+
+.right_aligned_text{
+    text-align: right;
+}
+.infoCardLinksContainer{
+    z-index: 5;
+    display: flex;
+    // flex-direction: row;
+    flex-wrap: wrap;
+    position: absolute;
+    min-width: 150px;
+    min-height: 100px;;
+    max-width: 220px;
+    max-height: 200px;
+    overflow-y: auto;
+    top:50px;
+    left: 260px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+    background-color: #E4E4E4;
+    -webkit-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+    -moz-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+
+}
+.linkInfo{
+    line-height: 33px;
+    text-align: center;
+    height: 20px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    box-shadow: none;
+    text-decoration: (none!important);
+    height: inherit;
+    vertical-align: middle;
+    font-size: 14px;
+    margin-top: 2px;
+    margin-left: 3px;
+    color: #4f4f4f;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;    
+    background-color: white;
+    &:hover{
+        color:red;
+    }
+    width: 100%;
+    max-width: 200px;
 }

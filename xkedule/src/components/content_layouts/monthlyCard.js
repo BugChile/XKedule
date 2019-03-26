@@ -2,34 +2,84 @@ import React from "react"
 import HeaderDate from './headerDate'
 import MonthlyCardCell from './monthlyCardCell'
 import MonthlyTaskCard from './monthlyTaskCard'
+import { get_day_occurrence } from '../../js_helpers/rrule_helpers'
+import { dateToWritenDate } from '../../js_helpers/parsers'
+
 
 export default class MonthlyCard extends React.Component {
+    constructor(props){
+        super(props)
 
-    generateTaskCards(day, events, current_time){
-        // day is a Date object
+        this.state = {
+            tasks_per_cell: this.calculateMaxTasks(),
+            expanded_tasks: [],
+            expanded_class: "expanded_month_cell hidden",
+            expanded_top: 0,
+            expanded_left: 0,
+            expanded_day: null,
+        }
+
+        this.generateTaskCards = this.generateTaskCards.bind(this);
+        this.generateDayCells = this.generateDayCells.bind(this);
+        this.getHeaderDate = this.getHeaderDate.bind(this);
+        this.seeMore = this.seeMore.bind(this);
+        this.closeSeeMore = this.closeSeeMore.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.calculateMaxTasks = this.calculateMaxTasks.bind(this);
+        this.onResize = this.onResize.bind(this);
+    };
+
+    generateTaskCards(day, events, tasks_per_cell, day_id){
+        // day is a string dd/mm/yyyy
         var task_cards = []
-        const day_events = events[day.toLocaleDateString()];
+        const day_string = day.toLocaleDateString();
+        const day_events = events[day_string];
         if (day_events) {
             day_events.forEach((event) => {
-                task_cards.push(
-                    <MonthlyTaskCard event={event}
-                    clickEvent={this.props.clickEvent}/>
-                )
-            })
+                    task_cards.push(
+                            <MonthlyTaskCard event={event}
+                            clickEvent={this.props.clickEvent}/>
+                        );
+                })
+            if (tasks_per_cell && task_cards.length > tasks_per_cell) { // add "see more"
+                const not_shown_count = task_cards.length - tasks_per_cell + 1; // +1 because see more uses 1 space
+                task_cards = task_cards.slice(0, tasks_per_cell - 1);
+                task_cards.push(<MonthlyTaskCard event={{id: "see_more_"+day_string,
+                                                         day: new Date(day),
+                                                         title: `See ${not_shown_count} more`}}
+                                                 clickEvent={(card, id) =>
+                                                                    {this.seeMore(card,
+                                                                                  events,
+                                                                                  day_id)}}
+                                                 className="see_more_card"/>);
+            }
         }
+
+
 
         return task_cards
     }
 
+    calculateMaxTasks(){
+        const next_month = this.props.current_time.getMonth() === 11 ? 0 : this.props.current_time.getMonth() + 1;
+        const week_count = get_day_occurrence(new Date(this.props.current_time.getFullYear(),
+                                                       next_month,
+                                                       0)); //number of weeks on this month
+        const cell_height = (document.getElementById("content").clientHeight / week_count) - 30;
+        return Math.floor(cell_height / 20);
+    }
 
 
-    generateDayCells(current_time, events){
+
+    generateDayCells(current_time, events, tasks_per_cell){
         var day_cells = [];
         const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
         var day_date = new Date(current_time.getFullYear(), current_time.getMonth(), 1); //first day of month
+
         day_date.setDate(day_date.getDate() - (day_date.getDay() + 6) % 7) //first month's week monday date
 
         var i = 0;
+        var day_id = "";
         var day_info = [];
         var day_tasks;
         var cell_class_list = "day_cell_monthly";
@@ -40,7 +90,7 @@ export default class MonthlyCard extends React.Component {
             if (day_date.getMonth() === current_time.getMonth()) {
                 cell_class_list += " month_day" //day of the current month showing
                 if (day_date.getDate() === current_time.getDate()) {
-                    cell_number_class_list += " current_day color_text" //current day
+                    cell_number_class_list += " current_day" //current day
                 }
             }
 
@@ -54,13 +104,15 @@ export default class MonthlyCard extends React.Component {
                               {day_date.getDate()}
                           </div>)
 
-            day_tasks = this.generateTaskCards(day_date, events, current_time);
+            day_id = "monthly_cell"+day_date.getTime()
+            day_tasks = this.generateTaskCards(day_date,
+                                               events,
+                                               tasks_per_cell,
+                                               day_id);
             day_cells[i] = <MonthlyCardCell day_tasks={day_tasks}
-                                            cell_key={"monthly_cell"+day_date.getTime()}
+                                            cell_key={day_id}
                                             day_info={day_info}
-                                            cell_tasks={[]}
-                                            cell_class_list={cell_class_list}
-                                            cell_numer_class_list={cell_number_class_list}/>
+                                            cell_class_list={cell_class_list}/>
             day_info = []
             cell_class_list = "day_cell_monthly";
             cell_number_class_list = "day_cell_number";
@@ -79,19 +131,58 @@ export default class MonthlyCard extends React.Component {
         return {"main": main_text, "sub": sub_text};
     }
 
+    seeMore(see_more_card, events, day_id){
+        const expanded_tasks = this.generateTaskCards(see_more_card.day, events);
+        const expanded_day = dateToWritenDate(see_more_card.day);
+        const expanded_class = "expanded_month_cell visible"
+        const expanded = document.getElementById("monthly_cell_expanded");
+        const day_cell_props = document.getElementById(day_id).getBoundingClientRect();
+        const content_props = document.getElementById("content").getBoundingClientRect();
+
+        expanded.style.top = Math.min(day_cell_props.top - 10,
+                                      content_props.height + 30 - 22 * expanded_tasks.length) + "px";
+        expanded.style.left = Math.max(day_cell_props.left - 4, 30) + "px";
+        expanded.style.width = day_cell_props.width + 12 + "px";
+        expanded.style.opacity = 1;
+
+        this.setState({expanded_tasks, expanded_class, expanded_day});
+
+    }
+
+    closeSeeMore(see_more_card, events, day_id){
+        const expanded_tasks = [];
+        const expanded_class = "expanded_month_cell hidden"
+        this.setState({expanded_tasks, expanded_class});
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
       if (this.props.events === nextProps.events &&
-          this.props.current_time.toLocaleDateString() === nextProps.current_time.toLocaleDateString()) {
+          this.props.current_time.toLocaleDateString() === nextProps.current_time.toLocaleDateString() &&
+          this.state.expanded_tasks === nextState.expanded_tasks &&
+          this.state.expanded_top === nextState.expanded_top &&
+          this.state.expanded_left === nextState.expanded_left) {
         return false;
       } else {
         return true;
       }
+  }
+
+  onResize(){
+      const tasks_per_cell = this.calculateMaxTasks();
+      if (tasks_per_cell !== this.state.tasks_per_cell) {
+          this.setState({tasks_per_cell});
+          this.forceUpdate();
+      }
+  }
+
+    componentDidMount(){
+        window.addEventListener("resize", this.onResize);
     }
 
 
     render() {
         return(
-            <div className="content_card">
+            <div className="content_card" id="content_card">
             <div className="content_header">
                 <div id="this_is_you_line" className="text_15">
                     this is <strong>your</strong> month
@@ -99,11 +190,22 @@ export default class MonthlyCard extends React.Component {
                 <HeaderDate date={this.getHeaderDate(this.props.current_time)}/>
             </div>
             <div className="content" id="content">
+                {<MonthlyCardCell day_tasks={this.state.expanded_tasks}
+                                  cell_key={"monthly_cell_expanded"}
+                                  day_info={this.state.expanded_day}
+                                  cell_class_list={this.state.expanded_class}
+                                  closeEvent={this.closeSeeMore}/>}
+
                  <div className="monthly_schedule">
                      {this.generateDayCells(this.props.current_time,
-                                            this.props.events)}
+                                            this.props.events,
+                                            this.state.tasks_per_cell)}
 
                  </div>
+
+
+
+
             </div>
             </div>
         )

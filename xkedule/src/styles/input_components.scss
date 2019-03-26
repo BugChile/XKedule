@@ -1,0 +1,584 @@
+input, textarea {
+    color: inherit;
+    border-radius: inherit;
+    font-size: inherit;
+    background-color: inherit;
+    font-weight: inherit;
+    outline: 0 none;
+    border: none;
+}
+
+select {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    color: inherit;
+    border-radius: inherit;
+    font-size: inherit;
+    background-color: inherit;
+    font-weight: inherit;
+}
+
+.simple_input_off_state{
+    width: 94%;
+    height: 100%;
+    padding: 0px 3%;
+    font-size: 15px;
+    display: grid;
+    align-items: center;
+}
+
+
+*:focus{
+    outline: 0 none;
+}
+
+.horizontal_flex{
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 10px;
+
+    &.label_input_combo{
+        grid-template-columns: 1fr 4fr;
+    }
+}
+
+.shrink_row{
+    margin: 0 auto;
+    column-gap: 10px;
+}
+
+//text input
+.text_line_input{
+    width: 94%;
+    height: 30px;
+    padding: 0px 3%;
+    &:focus{
+        outline: 0 none;
+        background-color: white;
+        color: #343434;
+    }
+}
+
+.event_form_on_off{
+    font-size: 15px;
+    height: 30px;
+    cursor: pointer;
+
+    //labels
+    .input_label{
+        align-self: center;
+    }
+
+    // anchor
+    .clickable_anchor{
+        cursor: pointer;
+        text-decoration: underline;
+        place-self: center;
+
+        &:visited{
+            color: #343434;
+        }
+    }
+
+    // buttons
+    .button{
+        border-radius: 8px;
+        background-color: #4F4F4F;
+        color: white;
+        width: fit-content;
+        padding: 4px 15px;
+        place-self: center;
+        cursor: pointer;
+
+        &:hover{
+            background: linear-gradient(180deg, #E7042D 0%, #DF0F98 100%);
+        }
+    }
+
+    //calendar input
+    .input_calendar {
+        position: relative;
+        z-index: 1;
+        border: none;
+        border-radius: 10px;
+        font-family: "Lato", sans-serif;
+        padding-bottom: 10px;
+        color: black;
+        .react-calendar__navigation{
+            border-radius: 10px;
+            margin-bottom: 10px;
+            .react-calendar__navigation__label{
+                font-size: 14px;
+                font-weight: 100;
+                padding-top: 8px;
+                font-family: "Lato", sans-serif;
+            }
+            .react-calendar__navigation__arrow{
+                font-family: "Lato", sans-serif;
+                font-size: 30px;
+                font-weight: 100;
+                line-height: 40px;
+                &:first-of-type{
+                    border-top-left-radius: 10px;
+                }
+                &:last-of-type{
+                    border-top-right-radius: 10px;
+                }
+            }
+        }
+
+        .react-calendar__month-view {
+            width: 270px;
+            margin: 0px auto;
+
+            .react-calendar__month-view__weekdays{
+                font-size: 14px;
+                font-weight: 400;
+                text-transform: none;
+                cursor: default;
+            }
+
+            .react-calendar__month-view__days{
+                button {
+                    font-family: "Lato", sans-serif;
+                    font-size: 14px;
+                    font-weight: 100;
+                    height: 35px;
+                    background: none;
+                    color: black;
+                    abbr {
+                        z-index: 4;
+                        position: relative;
+                    }
+
+                    &.react-calendar__tile--active{
+                        color: white;
+                        font-weight: normal;
+                        &::after, &:hover::after{
+                                content: "";
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 15px;
+                                background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+                                display: block;
+                                position: relative;
+                                top: -23px;
+                                left: -2.5px;
+                                z-index: 3;
+                            }
+                    }
+                    &.react-calendar__tile:disabled{
+                        color: #D4D4D4;
+                    }
+                    &.react-calendar__tile:not([disabled]):hover::after{
+                            content: "";
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 15px;
+                            background:#D4D4D4;
+                            display: block;
+                            position: relative;
+                            top: -23px;
+                            left: -2.5px;
+                            z-index: 3;
+                        }
+                }
+
+            }
+        }
+    }
+
+    //wheel selector
+    .wheel_selector_container{
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        font-size: 18px;
+        grid-template-rows: auto repeat(3, 23px) auto;
+        .wheel_selector_next_control{
+            cursor: pointer;
+            .control_arrow{
+                width: 16px;
+                height: 10px;
+                margin: 0 auto;
+            }
+        }
+
+        .wheel_selector_option{
+            color: #D4D4D4;
+        }
+
+        .wheel_selector_actual_value{
+            color: #343434;
+            cursor: text;
+            &:focus{
+                outline: 0 none;
+                background-color: #EDEDED;
+                border-radius: 5px;
+            }
+        }
+
+        span.autocomplete{
+            color: #A9A9A9;
+        }
+
+
+    }
+
+    //time input
+    .hour_minute_input {
+        border-radius: 10px;
+        background-color: white;
+        position: relative;
+        width: 80%;
+        padding: 0 10%;
+        padding-bottom: 10px;
+        display: grid;
+        cursor: default;
+        color: #343434;
+
+        .time_slider{
+            height: 120px;
+            display: grid;
+            grid-template-columns: 30px 10px 30px;
+            justify-content: center;
+        }
+    }
+
+    // tag tool
+    .tag_tool {
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: white;
+        color: #343434;
+        display: grid;
+        row-gap: 10px;
+        cursor: default;
+        margin-bottom: 10px;
+
+        .card_container{
+            display: grid;
+            grid-row-gap: 5px;
+        }
+
+        .text_line_input{
+            background-color: #D4D4D4;
+            border-radius: 10px;
+        }
+
+        .navigation{
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        span{
+            place-self: center;
+            i{
+                color: #9A9A9A;
+            }
+        }
+
+        .tag_color_picker{
+            width: 280px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+
+            .color_choice{
+                box-sizing: border-box;
+                width: 40px;
+                height: 40px;
+                margin: 8px;
+                border-radius: 10px;
+                place-self: center;
+                cursor: pointer;
+            }
+
+            .chosen_color{
+                width: 50px;
+                height: 50px;
+                margin: 3px;
+                display: grid;
+
+                svg {
+                    width: 25px;
+                    place-self: center;
+                }
+            }
+        }
+    }
+
+    // link tool
+    .link_tool{
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: white;
+        color: #343434;
+        display: grid;
+        row-gap: 10px;
+        cursor: default;
+        margin-bottom: 10px;
+
+        .text_line_input{
+            background-color: #D4D4D4;
+            border-radius: 10px;
+        }
+
+        .label_input_combo{
+            grid-template-columns: 2fr 6fr;
+        }
+    }
+
+    // repeat tool
+    .repeat_tool{
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: white;
+        color: #343434;
+        display: grid;
+        row-gap: 10px;
+        cursor: default;
+        margin-bottom: 10px;
+
+        &:focus{
+            outline: 0 none;
+        }
+
+        #custom_row_2{
+            column-gap: 0px;
+        }
+
+        .event_form_big_input{
+            background-color: #D4D4D4;
+            color: #343434;
+            border-radius: 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .select_input{
+            background-color: #D4D4D4;
+            border-radius: 10px;
+            height: 30px;
+            display: grid;
+            align-items: center;
+
+            &:focus{
+                outline: 0 none;
+            }
+
+            .value_container{
+                grid-auto-rows: 30px;
+                align-items: center;
+                display: grid;
+                width: 94%;
+                padding: 0 3%;
+
+            }
+
+            .select_options_container{
+                position: relative;
+                z-index: 2;
+                background-color: #D4D4D4;
+                grid-auto-rows: 30px;
+                align-items: center;
+                display: grid;
+                border-radius: 10px;
+
+                .select_option{
+                    padding: 0 5%;
+                    height: 100%;
+                    display: grid;
+                    align-items: center;
+
+                    &:hover{
+                        color: white;
+                        background-color: #343434;
+                    }
+
+                    &:first-of-type{
+                        border-top-left-radius: 10px;
+                        border-top-right-radius: 10px;
+                    }
+
+                    &:last-of-type{
+                        border-bottom-left-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                    }
+                }
+
+            }
+        }
+
+        .custom_repeat_tool{
+            padding: 10px;
+            background-color: #D4D4D4;
+            border-radius: 10px;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-row-gap: 10px;
+            align-items: center;
+            cursor: default;
+
+            &:focus{
+                outline: 0 none;
+            }
+
+            span{
+                width: 30px;
+            }
+
+            .additional_info{
+                justify-content: center;
+
+                .select_input{
+                    width: 180px;
+                }
+
+                .circle_options_container{
+                    display: grid;
+                    grid-auto-flow: column;
+                    grid-template-rows: 28px;
+                    grid-template-columns: repeat(7, 28px);
+                    grid-column-gap: 2px;
+
+                    .circle_option{
+                        cursor: pointer;
+                        width: 100%;
+                        height: 100%;
+                        display: grid;
+
+                        div{
+                            position: relative;
+                            z-index: 2;
+                            justify-self:center;
+                        }
+
+                        &:hover::after{
+                            content: "";
+                            border-radius: 50%;
+                            background-color: white;
+                            width: 27px;
+                            height: 27px;
+                            position: relative;
+                            z-index: 1;
+                            top: -22px;
+                            left: 1px;
+                        }
+
+                        &.selected_circle_option{
+                            color: white;
+
+                            &::after{
+                                content: "";
+                                border-radius: 50%;
+                                background-color: #4F4F4F;
+                                width: 27px;
+                                height: 27px;
+                                position: relative;
+                                z-index: 1;
+                                top: -22px;
+                                left: 1px;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            #custom_row_1{
+                width: 100%;
+                grid-template-columns: 30px 70px 90px;
+                div{
+                    max-width: 70px;
+                }
+            }
+
+            .wheel_selector_container{
+                place-items: center;
+                display: grid;
+                cursor: default;
+                width: 100%;
+                grid-template-rows: repeat(3, 25px);
+
+                .wheel_selector_next_control{
+                    cursor: pointer;
+                    .control_arrow{
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+
+                .wheel_selector_actual_value{
+                    color: #343434;
+                    cursor: text;
+                    height: 100%;
+                    text-align: center;
+                    &:focus{
+                        outline: 0 none;
+                        background-color: #EDEDED;
+                        border-radius: 5px;
+                        min-width: 20px;
+                        padding: 0 5px;;
+                        position: relative;
+                        z-index: 4;
+                    }
+                }
+            }
+
+            .select_input{
+                background-color: #4F4F4F;
+                color: white;
+                width: 70px;
+                cursor: pointer;
+                align-self: center;
+                position: relative;
+
+                .horizontal_flex{
+                    width: 100%;
+                    grid-template-columns: auto;
+                }
+
+
+                .select_options_container{
+                    background-color: #4F4F4F;
+                    z-index: 3;
+
+                    .select_option:hover{
+                            color: #343434;
+                            background-color: white;
+                    }
+
+            }
+        }
+
+      }
+
+      .input_calendar{
+          color: inherit;
+          margin-bottom: 10px;
+          .react-calendar__month-view {
+              width: 200px;
+              .react-calendar__month-view__weekdays{
+                  font-size: 12px;
+              }
+              .react-calendar__month-view__days{
+                  button {
+                      font-size: 12px;
+                  }
+              }
+
+          }
+      }
+
+    }
+}

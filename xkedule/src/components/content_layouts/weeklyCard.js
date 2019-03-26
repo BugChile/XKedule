@@ -4,8 +4,22 @@ import WeekCardDayHeaders from './weekCardDayHeaders'
 import WeeklyTaskCard from './weeklyTaskCard'
 
 export default class WeeklyCard extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            max_task_container_height: this.calculateMaxContainerHeight(),
+        }
 
-  generateTaskCards(day, events, current_time){
+        this.calculateMaxContainerHeight = this.calculateMaxContainerHeight.bind(this);
+        this.onResize = this.onResize.bind(this);
+
+    };
+
+    calculateMaxContainerHeight(){
+        return document.getElementById("content").clientHeight - 80;
+    }
+
+  generateTaskCards(day, events, current_time, max_task_container_height){
       // day is a Date object
       var task_cards = []
       const day_events = events[day.toLocaleDateString()];
@@ -22,13 +36,16 @@ export default class WeeklyCard extends React.Component {
           })
       }
 
-      return (<div className="day_task_container" style={{"gridColumn": {day_number}}}>
-                  {task_cards}
+      return (<div className="day_task_container_wrapper" style={{"gridColumn": {day_number},
+                                                                  maxHeight:max_task_container_height}}>
+                  <div className="day_task_container" >
+                    {task_cards}
+                  </div>
               </div>)
   }
 
 
-  generateDayCells(current_time, events){
+  generateDayCells(current_time, events, max_task_container_height){
       var day_name_cells = [];
       var week_tasks = [];
       var day_cell_class;
@@ -47,7 +64,7 @@ export default class WeeklyCard extends React.Component {
                                                          {day:"2-digit", month:"2-digit", year:"numeric"})}
                                              card_key = {"week_card_day_header"+i} />
 
-          week_tasks.push(this.generateTaskCards(day_date, events, current_time));
+          week_tasks.push(this.generateTaskCards(day_date, events, current_time, max_task_container_height));
 
           day_date.setDate(day_date.getDate() + 1);
       }
@@ -85,9 +102,21 @@ export default class WeeklyCard extends React.Component {
     }
   }
 
+  onResize(){
+      const max_task_container_height = this.calculateMaxContainerHeight();
+      if (max_task_container_height !== this.state.max_task_container_height) {
+          this.setState({max_task_container_height});
+          this.forceUpdate();
+      }
+  }
+
+    componentDidMount(){
+        window.addEventListener("resize", this.onResize);
+    }
+
   render() {
       return(
-         <div className="content_card">
+         <div className="content_card" id="content_card">
          <div className="content_header">
              <div id="this_is_you_line" className="text_15">
                  this is <strong>your</strong> week
@@ -96,7 +125,9 @@ export default class WeeklyCard extends React.Component {
          </div>
          <div className="content" id="content">
               <div className="weekly_schedule">
-                  {this.generateDayCells(this.props.current_time, this.props.events)}
+                  {this.generateDayCells(this.props.current_time,
+                                         this.props.events,
+                                         this.state.max_task_container_height)}
 
               </div>
          </div>

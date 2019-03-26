@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DailyCard from './components/content_layouts/dailyCard'
+import InfoCardLinks from './components/content_layouts/infoCardLinks'
 import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
-import ExpandButton from './components/expandButton'
+import MainButton from './components/mainButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
 import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
+import {save_event, load_event}  from './js_helpers/data_handling';
 import logo from './assets/logo.svg';
 import './App.css';
 
 
 // development
-
-import { events }  from './js_helpers/dev_data';
+import { events, user_tags }  from './js_helpers/dev_data';
 
 class App extends Component {
     constructor(props){
         super(props)
         this.state = {
             mode: "daily",
-            creation_mode: "create_event",
+            creation_mode: "edit_event",
+            editing_event_id: "1", //id of the event that's being edited, if any, else null
             events: {},
+            user_tags: {},
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
             infoDaily: null,
             classesInfoCard:'hidden event_info_card',
@@ -31,12 +34,18 @@ class App extends Component {
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
             current_time: new Date(),
             loading: true,
+            linkComponent:null,
+            main_button_function: null,
+            main_button_icon: "expand",
         }
 
         //STATE SETTERS
         this.changeMode = this.changeMode.bind(this);
         this.setEvents = this.setEvents.bind(this);
         this.setHashedEvents = this.setHashedEvents.bind(this);
+        this.setUserTags = this.setUserTags.bind(this);
+        this.setMainButtonIcon = this.setMainButtonIcon.bind(this);
+        this.setMainButtonFunction = this.setMainButtonFunction.bind(this);
 
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
@@ -60,6 +69,7 @@ class App extends Component {
         this.listenScrollEvent = this.listenScrollEvent.bind(this);
         this.scrollDailyEvent = this.scrollDailyEvent.bind(this);
         this.clickEvent = this.clickEvent.bind(this);
+        this.linkEvent = this.linkEvent.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
@@ -77,8 +87,20 @@ class App extends Component {
         this.setState({events: this.parseLoadedEvents(events)})
     }
 
+    setUserTags(user_tags){
+        this.setState({user_tags})
+    }
+
     setHashedEvents(events){
         this.setState({hashed_by_date: this.hashEvents(events)})
+    }
+
+    setMainButtonFunction(main_button_function){
+        this.setState({main_button_function})
+    }
+
+    setMainButtonIcon(main_button_icon){
+        this.setState({main_button_icon})
     }
 
     //CONTENT GENERATORS
@@ -174,11 +196,15 @@ class App extends Component {
        this.setState({infoDaily:event,
                       classesInfoCard:'event_info_card '.concat(this.state.mode),
                       eventInfoCardLeft:left,
-                      eventInfoCardTop:top})
+                      eventInfoCardTop:top,
+                      linkComponent:null})
+    }
+    linkEvent(){
+        (this.state.linkComponent)? this.setState({linkComponent:null}): this.setState({linkComponent:true});
     }
 
     closeEvent(){
-        this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
+        this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card', InfoCardLinks:null})
         const content_div = document.getElementById("content")
         if (content_div) {
             content_div.style["overflow-y"] = "scroll";
@@ -195,16 +221,16 @@ class App extends Component {
     }
 
     expandContentContainer(){
-        document.getElementById("expand").classList.add("reversed_expand");
-        document.getElementById("expand").style.left = "1250px";
+        document.getElementById("main_button_container").classList.add("reversed");
+        document.getElementById("main_button_container").style.left = "1250px";
         document.getElementById("content_container").style.width = "1300px";
         document.getElementById("content_container").style.left = "0px";
         document.getElementById("creation_container").style.width = "1300px";
     }
 
     shrinkContentContainer(){
-        document.getElementById("expand").classList.remove("reversed_expand");
-        document.getElementById("expand").style.left = "550px";
+        document.getElementById("main_button_container").classList.remove("reversed");
+        document.getElementById("main_button_container").style.left = "550px";
         document.getElementById("content_container").style.width = "600px";
         document.getElementById("content_container").style.left = "0px";
         document.getElementById("creation_container").style.width = "600px";
@@ -212,27 +238,35 @@ class App extends Component {
     }
 
     showSmallCreationCard(){
+        document.getElementById("main_button_container").classList.add("full_loop");
+        this.setMainButtonIcon("save")
+        this.setMainButtonFunction(save_event)
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "1000px";
-            document.getElementById("expand").style.left = "950px";
+            document.getElementById("main_button_container").style.left = "950px";
         } else {
             document.getElementById("content_container").style.left = "-400px";
         }
     }
 
     hideSmallCreationCard(){
+        document.getElementById("main_button_container").classList.remove("full_loop");
+        this.setMainButtonIcon("expand")
+        this.setMainButtonFunction(this.expand)
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "600px";
-            document.getElementById("expand").style.left = "550px";
+            document.getElementById("main_button_container").style.left = "550px";
         } else {
             document.getElementById("content_container").style.left = "0px";
         }
     }
 
     showLargeCreationCard(){
+        document.getElementById("main_button_container").classList.add("full_loop");
+        this.setMainButtonIcon("save")
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "1300px";
-            document.getElementById("expand").style.left = "1250px";
+            document.getElementById("main_button_container").style.left = "1250px";
             document.getElementById("content_container").style.left = "-400px";
         } else {
             document.getElementById("content_container").style.left = "-1100px";
@@ -240,9 +274,11 @@ class App extends Component {
     }
 
     hideLargeCreationCard(){
+        document.getElementById("main_button_container").classList.remove("full_loop");
+        this.setMainButtonIcon("expand")
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "600px";
-            document.getElementById("expand").style.left = "550px";
+            document.getElementById("main_button_container").style.left = "550px";
             document.getElementById("content_container").style.left = "0px";
         } else {
             document.getElementById("content_container").style.left = "0px";
@@ -295,11 +331,19 @@ class App extends Component {
 
         // Creating and editing content container:
         components.push(
-                <CreationContainer creation_mode = {creation_mode}/>
-            )
+            <CreationContainer creation_mode = {creation_mode}
+                               events = {this.state.events}
+                               user_tags = {this.state.user_tags}
+                               editing_event_id = {this.state.editing_event_id}
+                               close_event_form = {this.hideSmallCreationCard}
+                               current_time={this.state.current_time}
+                               />
+        )
 
         // Expand/Accept button:
-        components.push(<ExpandButton expandCB={this.expand} key="expand_button"/>);
+        components.push(<MainButton function={this.state.main_button_function}
+                                    key="main_button"
+                                    icon_mode={this.state.main_button_icon}/>);
 
 
 
@@ -307,7 +351,6 @@ class App extends Component {
 
 
     }
-
 
     //CALLBACKS (should only call above functions)
 
@@ -338,12 +381,14 @@ class App extends Component {
 
     componentDidMount(){
         // this.scrollDailyEvent();
+        this.setUserTags(user_tags);
         this.setEvents(events);
         this.setHashedEvents(events);
         this.intervalID = setInterval(
             () => this.tick(this),
             1000
         );
+        this.setMainButtonFunction(this.expand)
         this.setState({loading: false})
     }
 
@@ -358,19 +403,17 @@ class App extends Component {
             <div>
                 {this.generateComponents(this.state.mode, this.state.creation_mode)}
 
-                <div className="placeholder_button" onClick={this.showSmallCreationCard}>
-                 1
-                </div>
-                <div className="placeholder_button" onClick={this.hideSmallCreationCard} style={{top: "150px"}}>
-                 2
-                </div>
+                
                 {<InfoCard
                 classesInfoCard={this.state.classesInfoCard}
                 event={this.state.infoDaily}
                 topValue={this.state.infoDailyTop}
                 functionClose={this.closeEvent}
+                functionLink={this.linkEvent}
                 left={this.state.eventInfoCardLeft}
-                top={this.state.eventInfoCardTop}/>}
+                top={this.state.eventInfoCardTop}
+                links={this.state.linkComponent}/>}
+                
             </div>
 
         )

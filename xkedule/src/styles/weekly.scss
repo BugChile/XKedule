@@ -9,7 +9,6 @@
 
 .day_name_cell_weekly{
     vertical-align: middle;
-    margin-left: 10px;
     .day_name{
         text-align: center;
         text-transform: capitalize;
@@ -31,6 +30,7 @@
     grid-row-gap: 10px;
 
     .weekly_task_card{
+        width: 155px;
         display: grid;
         grid-template-rows: 1fr 2fr 1fr 2fr 1fr;
         text-align: center;
@@ -38,6 +38,9 @@
 
         .task_title{
             grid-row: 2;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
         .task_date{
             grid-row: 4;
@@ -45,6 +48,30 @@
             font-weight: lighter;
 
         }
+    }
+
+}
+
+.day_task_container_wrapper{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    overflow: overlay;
+
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
     }
 
 }
