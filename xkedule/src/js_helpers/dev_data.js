@@ -18,7 +18,7 @@ const events = {
         "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('March 25, 2019 18:00:00'),
-        "date_end": new Date('March 25, 2019 19:30:00'),
+        "date_end": new Date('March 25, 2019 19:10:00'),
         "tag_ids": ["2"]
 
     },

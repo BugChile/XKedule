@@ -1,7 +1,7 @@
 import React from "react"
 import EventForm from './eventForm'
 
-export default class CreationContainer extends React.PureComponent {
+export default class CreationContainer extends React.Component {
 
   generateHeader(creation_mode){
       switch (creation_mode) {
@@ -11,6 +11,8 @@ export default class CreationContainer extends React.PureComponent {
               return "Edit event";
           case "schedule":
               return "Manage schedule"
+          default:
+              return <div></div>
       }
   }
 
@@ -18,16 +20,22 @@ export default class CreationContainer extends React.PureComponent {
       switch (creation_mode) {
           case "create_event":
               return <EventForm user_tags={user_tags}
+                                key={"create_form_event"}
                                 close_event_form={this.props.close_event_form}
-                                current_time={this.props.current_time}/>;
+                                current_time={this.props.current_time}
+                                set_new_event_callback={this.props.set_new_event_callback}/>;
           case "edit_event":
               const editing_event = events[editing_event_id];
               return <EventForm event={editing_event}
+                                key={"edit_form_event_"+editing_event.id}
                                 user_tags={user_tags}
                                 close_event_form={this.props.close_event_form}
-                                current_time={this.props.current_time}/>;
+                                current_time={this.props.current_time}
+                                set_new_event_callback={this.props.set_new_event_callback}/>;
           case "schedule":
               return "Manage schedule"
+          default:
+              return <div></div>
       }
   }
 

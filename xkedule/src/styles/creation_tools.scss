@@ -23,6 +23,9 @@
     transition: all 0.5s ease;
     overflow-x: hidden;
     overflow: overlay;
+    -webkit-box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
+    -moz-box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
+    box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
 }
 
 

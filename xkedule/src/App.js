@@ -22,8 +22,8 @@ class App extends Component {
         super(props)
         this.state = {
             mode: "daily",
-            creation_mode: "edit_event",
-            editing_event_id: "1", //id of the event that's being edited, if any, else null
+            creation_mode: "idle",
+            editing_event_id: null, //id of the event that's being edited, if any, else null
             events: {},
             user_tags: {},
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
@@ -39,6 +39,9 @@ class App extends Component {
             main_button_icon: "expand",
         }
 
+        this.new_event_object = {};
+
+
         //STATE SETTERS
         this.changeMode = this.changeMode.bind(this);
         this.setEvents = this.setEvents.bind(this);
@@ -46,6 +49,7 @@ class App extends Component {
         this.setUserTags = this.setUserTags.bind(this);
         this.setMainButtonIcon = this.setMainButtonIcon.bind(this);
         this.setMainButtonFunction = this.setMainButtonFunction.bind(this);
+        this.setNewEventObject = this.setNewEventObject.bind(this);
 
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
@@ -69,7 +73,11 @@ class App extends Component {
         this.listenScrollEvent = this.listenScrollEvent.bind(this);
         this.scrollDailyEvent = this.scrollDailyEvent.bind(this);
         this.clickEvent = this.clickEvent.bind(this);
+        this.editEvent = this.editEvent.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
+        this.createEvent = this.createEvent.bind(this);
+        this.closeEventForm = this.closeEventForm.bind(this);
+        this.saveEvent = this.saveEvent.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -100,6 +108,10 @@ class App extends Component {
 
     setMainButtonIcon(main_button_icon){
         this.setState({main_button_icon})
+    }
+
+    setNewEventObject(key, value){
+        this.new_event_object[key] = value;
     }
 
     //CONTENT GENERATORS
@@ -234,8 +246,6 @@ class App extends Component {
 
     showSmallCreationCard(){
         document.getElementById("main_button_container").classList.add("full_loop");
-        this.setMainButtonIcon("save")
-        this.setMainButtonFunction(save_event)
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "1000px";
             document.getElementById("main_button_container").style.left = "950px";
@@ -246,8 +256,6 @@ class App extends Component {
 
     hideSmallCreationCard(){
         document.getElementById("main_button_container").classList.remove("full_loop");
-        this.setMainButtonIcon("expand")
-        this.setMainButtonFunction(this.expand)
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "600px";
             document.getElementById("main_button_container").style.left = "550px";
@@ -286,26 +294,26 @@ class App extends Component {
             return <DailyCard events={this.state.hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
-                              clickEvent={this.clickEvent}
+                              clickEvent={this.editEvent}
                               current_time={this.state.current_time}/>;
             case "weekly":
                 return <WeeklyCard events={this.state.hashed_by_date}
                                    current_time={this.state.current_time}
-                                   clickEvent={this.clickEvent}/>;
+                                   clickEvent={this.editEvent}/>;
             case "monthly":
                 return <MonthlyCard events={this.state.hashed_by_date}
                                     current_time={this.state.current_time}
-                                    clickEvent={this.clickEvent}/>;
+                                    clickEvent={this.editEvent}/>;
             default:
                 return <DailyCard events={this.state.hashed_by_date}
                                   current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
-                                  clickEvent={this.clickEvent}/>;
+                                  clickEvent={this.editEvent}/>;
         }
     }
 
-    generateComponents(mode, creation_mode){
+    generateComponents(mode, creation_mode, editing_event_id){
         var components = [];
 
         // Main card:
@@ -329,9 +337,10 @@ class App extends Component {
             <CreationContainer creation_mode = {creation_mode}
                                events = {this.state.events}
                                user_tags = {this.state.user_tags}
-                               editing_event_id = {this.state.editing_event_id}
-                               close_event_form = {this.hideSmallCreationCard}
+                               editing_event_id = {editing_event_id}
+                               close_event_form = {this.closeEventForm}
                                current_time={this.state.current_time}
+                               set_new_event_callback={this.setNewEventObject}
                                />
         )
 
@@ -373,6 +382,33 @@ class App extends Component {
         this.closeEvent();
     }
 
+    createEvent(){
+        this.setState({creation_mode: "create_event", editing_event_id: null});
+        this.setMainButtonIcon("save");
+        this.setMainButtonFunction(this.saveEvent);
+        this.showSmallCreationCard();
+
+    }
+
+    editEvent(event){
+        this.setState({creation_mode: "edit_event", editing_event_id: event.id});
+        this.setMainButtonIcon("save");
+        this.setMainButtonFunction(this.saveEvent);
+        this.showSmallCreationCard();
+    }
+
+    closeEventForm(){
+        this.setState({creation_mode: "idle", editing_event_id: null});
+        this.setMainButtonIcon("expand")
+        this.setMainButtonFunction(this.expand);
+        this.hideSmallCreationCard();
+    }
+
+    saveEvent(){
+        // do data check here
+        save_event(this.new_event_object);
+    }
+
     //LIFE CICLE
 
     componentDidMount(){
@@ -397,7 +433,14 @@ class App extends Component {
             this.state.loading ? <div> loading </div>
             :
             <div>
-                {this.generateComponents(this.state.mode, this.state.creation_mode)}
+                {this.generateComponents(this.state.mode,
+                                         this.state.creation_mode,
+                                         this.state.editing_event_id)}
+                <div id="create_event_button" onClick={this.createEvent}>
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 19V1C19 0.447715 19.4477 0 20 0H25C25.5523 0 26 0.447715 26 1V19H44C44.5523 19 45 19.4477 45 20V25C45 25.5523 44.5523 26 44 26H26V44C26 44.5523 25.5523 45 25 45H20C19.4477 45 19 44.5523 19 44V26H1C0.447715 26 0 25.5523 0 25V20C0 19.4477 0.447715 19 1 19H19Z" fill="white"/>
+                    </svg>
+                </div>
 
 
                 {<InfoCard

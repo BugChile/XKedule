@@ -13,7 +13,7 @@ import { dateToWritenDate, dateToHourMinute, capitalizeFirstLetter } from "../..
 import { getRepeatsSummary } from "../../js_helpers/rrule_helpers";
 import Calendar from 'react-calendar';
 
-export default class EventForm extends React.PureComponent {
+export default class EventForm extends React.Component {
   constructor(props){
       super(props)
       this.state = {
@@ -23,10 +23,18 @@ export default class EventForm extends React.PureComponent {
           from: new Date(),
           to: new Date(),
           repeat_rrule: "Never",
-          minDateRepeatEnd: new Date(),
           eventTags: {},
           eventLinks: {},
       };
+
+      props.set_new_event_callback("title", "");
+      props.set_new_event_callback("description", "");
+      props.set_new_event_callback("date", this.state.date);
+      props.set_new_event_callback("from", this.state.from);
+      props.set_new_event_callback("to", this.state.to);
+      props.set_new_event_callback("rrule", this.state.repeat_rrule);
+      props.set_new_event_callback("tags", this.state.eventTags);
+      props.set_new_event_callback("links", this.state.eventLinks);
 
       // the following are used because of stacked setState calls on prevState
       // based operations
@@ -59,15 +67,18 @@ export default class EventForm extends React.PureComponent {
   };
 
   setTitle(title){
-      this.setState({title})
+      this.setState({title});
+      this.props.set_new_event_callback("title", title);
   }
 
   setDescription(description){
-      this.setState({description})
+      this.setState({description});
+      this.props.set_new_event_callback("description", description);
   }
 
   setDate(date){
-      this.setState({date})
+      this.setState({date});
+      this.props.set_new_event_callback("date", date);
   }
 
   setFrom(from){
@@ -75,7 +86,8 @@ export default class EventForm extends React.PureComponent {
          if (this.state.to < this.state.from) {
              this.setTo(from);
          }
-     })
+     });
+     this.props.set_new_event_callback("from", from);
   }
 
   setFromHourMinute(from_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
@@ -90,11 +102,13 @@ export default class EventForm extends React.PureComponent {
           if (this.state.to < this.state.from) {
               this.setFrom(to);
           }
-      })
+      });
+      this.props.set_new_event_callback("to", to);
   }
 
   setRepeatRRule(repeat_rrule){
       this.setState({repeat_rrule});
+      this.props.set_new_event_callback("rrule", repeat_rrule);
   }
 
   setToHourMinute(to_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
@@ -155,7 +169,8 @@ export default class EventForm extends React.PureComponent {
       this.updatedEventTags = {...new_key_value_pair, ...this.updatedEventTags};
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventTags as a reference
-      this.setState({ eventTags : this.updatedEventTags})
+      this.setState({ eventTags : this.updatedEventTags});
+      this.props.set_new_event_callback("tags", this.updatedEventTags);
   }
 
   createAndAddNewTag(new_tag){ //tag format {name: string, style: string, actual_uses: 0}
@@ -172,12 +187,14 @@ export default class EventForm extends React.PureComponent {
       this.updatedEventTags = {...this.updatedEventTags}; // deep copy to trigger re-render
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventTags as a reference
-      this.setState({ eventTags : this.updatedEventTags})
+      this.setState({ eventTags : this.updatedEventTags});
+      this.props.set_new_event_callback("tags", this.updatedEventTags);
   }
 
   loadEventLinks(editing_event){
       this.updatedEventLinks = {...editing_event["links"]}
-      this.setState({ eventLinks : this.updatedEventLinks})
+      this.setState({ eventLinks : this.updatedEventLinks});
+      this.props.set_new_event_callback("links", this.updatedEventLinks);
   }
 
   addEventLink(link){
@@ -186,7 +203,8 @@ export default class EventForm extends React.PureComponent {
       this.updatedEventLinks = {...new_key_value_pair, ...this.updatedEventLinks};
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventLinks as a reference
-      this.setState({ eventLinks : this.updatedEventLinks})
+      this.setState({ eventLinks : this.updatedEventLinks});
+      this.props.set_new_event_callback("links", this.updatedEventLinks);
   }
 
   removeEventLink(link){
@@ -194,8 +212,10 @@ export default class EventForm extends React.PureComponent {
       this.updatedEventLinks = {...this.updatedEventLinks}; // deep copy to trigger re-render
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventLinks as a reference
-      this.setState({ eventLinks : this.updatedEventLinks})
+      this.setState({ eventLinks : this.updatedEventLinks});
+      this.props.set_new_event_callback("links", this.updatedEventLinks);
   }
+
 
   componentDidMount(){
       if (this.props.event) {

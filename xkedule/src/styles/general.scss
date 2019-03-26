@@ -24,15 +24,11 @@ input{
     display: grid;
     grid-template-columns: 1fr 2fr;
     background-color: #170f0a;
-    background-size: cover;
-    background-repeat: repeat;
-    background-position: right;
     #background_image{
-        content: url("assets/deer_DA.PNG");
-        width:50%;
+        content: url("assets/chile-1463830_1920.jpg");
+        height:100%;
         position: absolute;
-        left: 700px;
-        top: -50px;
+        right: 0;
 
     }
 }
@@ -97,7 +93,9 @@ a:visited{
         width: 100px;
         height: 100px;
         background: linear-gradient(180deg, #DF0F98 0%, #E7042D 100%);
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
+        -moz-box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
+        box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
         transform: matrix(-1, 0, 0, 1, 0, 0);
     }
     .expand_arrow{
@@ -226,15 +224,25 @@ a:visited{
         border-color: rgba(255, 255, 255, .7);
     }
 }
-.placeholder_button{
+#create_event_button{
     position: absolute;
-    right: 0;
-    top: 0;
-    height: 100px;
-    width: 100px;
+    right: 15px;
+    bottom: 15px;
     z-index: 3;
-    background: white;
+    padding: 15px;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
     cursor: pointer;
+    -webkit-box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
+    -moz-box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
+    box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
+    svg{
+        height: 30px;
+        width: 30px;
+
+    }
 }
 
 // general information card daily - weekly - monthly
