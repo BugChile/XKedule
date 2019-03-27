@@ -1,6 +1,7 @@
 import React from "react"
 import DailyTaskCard from './dailyTaskCard'
 import HeaderDate from './headerDate'
+import BackToToday from './backToToday'
 import { checkDateOverlap, onlyUnique, multiplyReducer, increasingFunctionCompare } from "../../js_helpers/helpers"
 
 export default class DailyCard extends React.Component {
@@ -67,10 +68,10 @@ export default class DailyCard extends React.Component {
         )
     }
 
-  getHeaderDate(current_time){
+  getHeaderDate(aux_view_time){
         var date_dict = {};
-        date_dict["main"] = current_time.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
-        date_dict["sub"] = current_time.toLocaleString('en-GB', {month:"long", year: "numeric"});
+        date_dict["main"] = aux_view_time.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
+        date_dict["sub"] = aux_view_time.toLocaleString('en-GB', {month:"long", year: "numeric"});
         return date_dict;
     }
 
@@ -107,8 +108,8 @@ export default class DailyCard extends React.Component {
         return grouped;
     }
 
-  generateEvents(events, current_time){
-        const day_events = events[current_time.toLocaleDateString()]
+  generateEvents(events, aux_view_time){
+        const day_events = events[aux_view_time.toLocaleDateString()]
         var col_number = 1;
         if (day_events) {
             var tasks = [];
@@ -140,7 +141,7 @@ export default class DailyCard extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.events === nextProps.events &&
-        this.props.current_time.toLocaleDateString() === nextProps.current_time.toLocaleDateString()) {
+        this.props.aux_view_time.toLocaleDateString() === nextProps.aux_view_time.toLocaleDateString()) {
       return false;
     } else {
       return true;
@@ -156,17 +157,32 @@ export default class DailyCard extends React.Component {
       return(
          <div className="content_card" id="content_card">
          <div className="content_header" key="content_header">
-             <div id="this_is_you_line" className="text_15" key="this_is_you_line">
-                 this is <strong>your</strong> day
-             </div>
-             <HeaderDate date={this.getHeaderDate(this.props.current_time)}/>
+            
+         {(() => {
+             var day_aux = this.props.aux_view_time.getDate();
+             var month_aux = this.props.aux_view_time.getMonth();
+             var year_aux = this.props.aux_view_time.getFullYear();
+             var day = this.props.current_time.getDate();
+             var month = this.props.current_time.getMonth();
+             var year = this.props.current_time.getFullYear(); 
+             
+             if (day_aux === day && month_aux === month && year_aux === year) {
+                    return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
+                    this is <strong>your</strong> day
+                    </div>
+             
+             }else{
+                return <BackToToday type={"day"} onClickReturn={this.props.onClickReturn}/>
+         }})()}
+             
+             <HeaderDate date={this.getHeaderDate(this.props.aux_view_time)} clickEventDate={this.props.clickEventDate}/>
          </div>
          <div className="content" key="content" id='content' onScroll={this.props.scrollEvent}>
              <div className="daily_tasks" key="daily_tasks">
                  {this.hourTicks()}
                  {this.lines()}
                  {this.generateEvents(this.props.events,
-                                         this.props.current_time)}
+                                         this.props.aux_view_time)}
              </div>
          </div>
          </div>
