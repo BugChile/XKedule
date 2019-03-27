@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DailyCard from './components/content_layouts/dailyCard'
-import InfoCardLinks from './components/content_layouts/infoCardLinks'
 import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
 import MainButton from './components/mainButton'
@@ -34,13 +33,13 @@ class App extends Component {
             eventInfoCardLeft: null,
             eventInfoCardTop:null,
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
+            aux_view_time: new Date(),
             current_time: new Date(),
             loading: true,
             linkComponent:null,
             main_button_function: null,
             main_button_icon: "expand",
         }
-
         //STATE SETTERS
         this.changeMode = this.changeMode.bind(this);
         this.setEvents = this.setEvents.bind(this);
@@ -51,7 +50,9 @@ class App extends Component {
 
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
+        this.tick_current_time = this.tick_current_time.bind(this);
         this.hashEvents = this.hashEvents.bind(this);
+        this.onClickReturn = this.onClickReturn.bind(this);
 
         //HTML HANDLERS
         this.changeHTMLProperty = this.changeHTMLProperty.bind(this);
@@ -73,6 +74,7 @@ class App extends Component {
         this.clickEvent = this.clickEvent.bind(this);
         this.linkEvent = this.linkEvent.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
+        this.clickEventDate = this.clickEventDate.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -129,9 +131,14 @@ class App extends Component {
     }
 
     tick(){
+        var date = new Date(this.state.aux_view_time);
+        date.setSeconds(this.state.aux_view_time.getSeconds() + 1);
+        this.setState({aux_view_time: date});
+    }
+    tick_current_time(){
         var date = new Date(this.state.current_time);
-        date.setDate(this.state.current_time.getDate() + 1);
-        this.setState({current_time: new Date()});
+        date.setSeconds(this.state.current_time.getSeconds() + 1);
+        this.setState({current_time: date});
     }
 
 
@@ -157,7 +164,42 @@ class App extends Component {
     listenScrollEvent(){
         this.setState({dailyComponentScroll:document.getElementById('content').scrollTop});
     }
-
+    clickEventDate(length, type){
+        var date = this.state.aux_view_time;
+        if (type === 'prev'){
+            switch (length){
+                case 2: 
+                    date.setDate(this.state.aux_view_time.getDate() - 1);
+                    break;
+                case 4: 
+                    date.setDate(this.state.aux_view_time.getDate() - 7);
+                    break;
+                case 5: 
+                    date.setDate(this.state.aux_view_time.getDate() + 7);
+                    break;
+                case 1: 
+                    date.setMonth(this.state.aux_view_time.getMonth() - 1);
+                    break;
+                }
+        }else{
+                switch (length){
+                    case 2: 
+                        date.setDate(this.state.aux_view_time.getDate() + 1);
+                        break;
+                    case 4: 
+                        date.setDate(this.state.aux_view_time.getDate() + 7);
+                        break;
+                    case 5: 
+                        date.setDate(this.state.aux_view_time.getDate() + 7);
+                        break;
+                    case 1: 
+                        date.setMonth(this.state.aux_view_time.getMonth() + 1);
+                        break;
+                }
+        }
+        this.setState({aux_view_time: date});
+        
+    }
     clickEvent(event, card_id=null){
        const content_div = document.getElementById("content")
        if (content_div) {
@@ -212,7 +254,9 @@ class App extends Component {
             content_div.style["overflow-y"] = "scroll";
         }
     }
-
+    onClickReturn(){
+        this.setState({aux_view_time: this.state.current_time})
+    }
     // onClickAnywhereEvent(event, data){
     //     alert(event.target.type);
     //     // this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
@@ -294,21 +338,37 @@ class App extends Component {
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
                               clickEvent={this.clickEvent}
-                              current_time={this.state.current_time}/>;
+                              onClickReturn={this.onClickReturn}
+                              aux_view_time={this.state.aux_view_time}
+                              current_time={this.state.current_time}
+                              key={"daily_view"+this.state.aux_view_time}
+                              clickEventDate={this.clickEventDate}/>;
             case "weekly":
                 return <WeeklyCard events={this.state.hashed_by_date}
+                                   onClickReturn={this.onClickReturn}
+                                   aux_view_time={this.state.aux_view_time}
                                    current_time={this.state.current_time}
-                                   clickEvent={this.clickEvent}/>;
+                                   clickEvent={this.clickEvent}
+                                   key={"weekly_view"+this.state.aux_view_time}
+                                   clickEventDate={this.clickEventDate}/>;
             case "monthly":
                 return <MonthlyCard events={this.state.hashed_by_date}
+                                    onClickReturn={this.onClickReturn}
+                                    aux_view_time={this.state.aux_view_time}
                                     current_time={this.state.current_time}
-                                    clickEvent={this.clickEvent}/>;
+                                    clickEvent={this.clickEvent}
+                                    key={"monthliy_view"+this.state.aux_view_time}
+                                    clickEventDate={this.clickEventDate}/>;
             default:
                 return <DailyCard events={this.state.hashed_by_date}
+                                  onClickReturn={this.onClickReturn}  
+                                  aux_view_time={this.state.aux_view_time}
                                   current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
-                                  clickEvent={this.clickEvent}/>;
+                                  clickEvent={this.clickEvent}
+                                  key={"daily_view"+this.state.aux_view_time}
+                                  clickEventDate={this.clickEventDate}/>;
         }
     }
 
@@ -338,7 +398,7 @@ class App extends Component {
                                user_tags = {this.state.user_tags}
                                editing_event_id = {this.state.editing_event_id}
                                close_event_form = {this.hideSmallCreationCard}
-                               current_time={this.state.current_time}
+                               aux_view_time={this.state.aux_view_time}
                                />
         )
 
@@ -390,12 +450,17 @@ class App extends Component {
             () => this.tick(this),
             1000
         );
+        this.intervalIDAUX = setInterval(
+            () => this.tick_current_time(this),
+            1000
+        );
         this.setMainButtonFunction(this.expand)
         this.setState({loading: false})
     }
 
     componentWillUnmount() {
         clearInterval(this.intervalID);
+        clearInterval(this.intervalIDAUX);
     }
 
     render() {

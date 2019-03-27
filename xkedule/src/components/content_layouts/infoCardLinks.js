@@ -1,5 +1,4 @@
 import React from "react"
-import { isEmpty } from '../../js_helpers/helpers' 
 
 export default class InfoCardLinks extends React.Component {
     render() {
