@@ -19,13 +19,13 @@ export default class CreationContainer extends React.PureComponent {
           case "create_event":
               return <EventForm user_tags={user_tags}
                                 close_event_form={this.props.close_event_form}
-                                current_time={this.props.current_time}/>;
+                                aux_view_time={this.props.aux_view_time}/>;
           case "edit_event":
               const editing_event = events[editing_event_id];
               return <EventForm event={editing_event}
                                 user_tags={user_tags}
                                 close_event_form={this.props.close_event_form}
-                                current_time={this.props.current_time}/>;
+                                aux_view_time={this.props.aux_view_time}/>;
           case "schedule":
               return "Manage schedule"
       }
