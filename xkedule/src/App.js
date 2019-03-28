@@ -39,6 +39,7 @@ class App extends Component {
             linkComponent:null,
             main_button_function: null,
             main_button_icon: "expand",
+            refresh_aux: null,
         }
         //STATE SETTERS
         this.changeMode = this.changeMode.bind(this);
@@ -165,6 +166,11 @@ class App extends Component {
         this.setState({dailyComponentScroll:document.getElementById('content').scrollTop});
     }
     clickEventDate(length, type){
+
+        var aux_bool = true;
+        if (this.state.refresh_aux){
+            aux_bool = null;
+        }
         var date = this.state.aux_view_time;
         if (type === 'prev'){
             switch (length){
@@ -197,7 +203,7 @@ class App extends Component {
                         break;
                 }
         }
-        this.setState({aux_view_time: date});
+        this.setState({aux_view_time: date, refresh_aux:aux_bool});
         
     }
     clickEvent(event, card_id=null){
@@ -255,7 +261,11 @@ class App extends Component {
         }
     }
     onClickReturn(){
-        this.setState({aux_view_time: this.state.current_time})
+        var aux_bool = true;
+        if (this.state.refresh_aux){
+            aux_bool = null;
+        }
+        this.setState({aux_view_time: this.state.current_time, refresh_aux:aux_bool})
     }
     // onClickAnywhereEvent(event, data){
     //     alert(event.target.type);
@@ -341,7 +351,7 @@ class App extends Component {
                               onClickReturn={this.onClickReturn}
                               aux_view_time={this.state.aux_view_time}
                               current_time={this.state.current_time}
-                              key={"daily_view"+this.state.aux_view_time}
+                              key={this.state.refresh_aux}
                               clickEventDate={this.clickEventDate}/>;
             case "weekly":
                 return <WeeklyCard events={this.state.hashed_by_date}
@@ -349,7 +359,7 @@ class App extends Component {
                                    aux_view_time={this.state.aux_view_time}
                                    current_time={this.state.current_time}
                                    clickEvent={this.clickEvent}
-                                   key={"weekly_view"+this.state.aux_view_time}
+                                   key={this.state.refresh_aux}
                                    clickEventDate={this.clickEventDate}/>;
             case "monthly":
                 return <MonthlyCard events={this.state.hashed_by_date}
@@ -357,7 +367,7 @@ class App extends Component {
                                     aux_view_time={this.state.aux_view_time}
                                     current_time={this.state.current_time}
                                     clickEvent={this.clickEvent}
-                                    key={"monthliy_view"+this.state.aux_view_time}
+                                    key={this.state.refresh_aux}
                                     clickEventDate={this.clickEventDate}/>;
             default:
                 return <DailyCard events={this.state.hashed_by_date}
@@ -367,7 +377,7 @@ class App extends Component {
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
                                   clickEvent={this.clickEvent}
-                                  key={"daily_view"+this.state.aux_view_time}
+                                  key={this.state.refresh_aux}
                                   clickEventDate={this.clickEventDate}/>;
         }
     }
