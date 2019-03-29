@@ -3,6 +3,8 @@ import HeaderDate from './headerDate'
 import WeekCardDayHeaders from './weekCardDayHeaders'
 import WeeklyTaskCard from './weeklyTaskCard'
 import BackToToday from './backToToday'
+import { checkTodayFunction } from '../../js_helpers/helpers'
+
 
 export default class WeeklyCard extends React.Component {
     constructor(props){
@@ -46,7 +48,7 @@ export default class WeeklyCard extends React.Component {
   }
 
 
-  generateDayCells(aux_view_time, events, max_task_container_height){
+  generateDayCells(aux_view_time, current_time, events, max_task_container_height){
       var day_name_cells = [];
       var week_tasks = [];
       var day_cell_class;
@@ -55,9 +57,10 @@ export default class WeeklyCard extends React.Component {
       day_date.setDate(aux_view_time.getDate() - (aux_view_time.getDay() + 6) % 7); //week monday
       const day_names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
       for (var i = 0; i < 7; i++) {
-          day_cell_class = "day_name_cell_weekly"
-          if (aux_view_time.getDate() === day_date.getDate()) {
-              day_cell_class += " color_text"
+          day_cell_class = "day_name_cell_weekly";
+          var isToday = checkTodayFunction(current_time, day_date);
+          if (isToday && day_date.getDate() === current_time.getDate()){
+            day_cell_class += " color_text";
           }
 
           day_name_cells[i] = <WeekCardDayHeaders day_cell_class = {day_cell_class}
@@ -121,26 +124,32 @@ export default class WeeklyCard extends React.Component {
          <div className="content_card" id="content_card">
          <div className="content_header">
          {(() => {
-             var day_aux = this.props.aux_view_time.getDate();
-             var month_aux = this.props.aux_view_time.getMonth();
-             var year_aux = this.props.aux_view_time.getFullYear();
-             var day = this.props.current_time.getDate();
-             var month = this.props.current_time.getMonth();
-             var year = this.props.current_time.getFullYear(); 
-             
-             if (day_aux === day && month_aux === month && year_aux === year) {
-                    return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
-                    this is <strong>your</strong> week
-                    </div>
-             
-             }else{
-                return <BackToToday type={"week"} onClickReturn={this.props.onClickReturn}/>
-         }})()}
+            
+            var isToday = false
+            var day_date = new Date(this.props.aux_view_time); //current day
+            day_date.setDate(this.props.aux_view_time.getDate() - (this.props.aux_view_time.getDay() + 6) % 7);
+            for (var i = 0; i < 7; i++) {
+                
+               isToday = checkTodayFunction(this.props.current_time, day_date);
+            
+               if (isToday) {
+                       return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
+                       this is <strong>your</strong> week
+                       </div>
+               
+               }
+               day_date.setDate(day_date.getDate() + 1);
+           }
+           
+               return <BackToToday type={"week"} onClickReturn={this.props.onClickReturn}/>
+        
+            })()}
              <HeaderDate date={this.getHeaderDate(this.props.aux_view_time)} clickEventDate={this.props.clickEventDate}/>
          </div>
          <div className="content" id="content">
               <div className="weekly_schedule">
                   {this.generateDayCells(this.props.aux_view_time,
+                                         this.props.current_time,
                                          this.props.events,
                                          this.state.max_task_container_height)}
 

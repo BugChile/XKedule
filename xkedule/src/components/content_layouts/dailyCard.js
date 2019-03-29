@@ -2,7 +2,7 @@ import React from "react"
 import DailyTaskCard from './dailyTaskCard'
 import HeaderDate from './headerDate'
 import BackToToday from './backToToday'
-import { checkDateOverlap, onlyUnique, multiplyReducer, increasingFunctionCompare } from "../../js_helpers/helpers"
+import { checkDateOverlap, onlyUnique, multiplyReducer, increasingFunctionCompare, checkTodayFunction} from "../../js_helpers/helpers"
 
 export default class DailyCard extends React.Component {
 
@@ -159,14 +159,10 @@ export default class DailyCard extends React.Component {
          <div className="content_header" key="content_header">
             
          {(() => {
-             var day_aux = this.props.aux_view_time.getDate();
-             var month_aux = this.props.aux_view_time.getMonth();
-             var year_aux = this.props.aux_view_time.getFullYear();
-             var day = this.props.current_time.getDate();
-             var month = this.props.current_time.getMonth();
-             var year = this.props.current_time.getFullYear(); 
              
-             if (day_aux === day && month_aux === month && year_aux === year) {
+             var isToday = checkTodayFunction(this.props.current_time, this.props.aux_view_time);
+             
+             if (isToday) {
                     return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
                     this is <strong>your</strong> day
                     </div>
