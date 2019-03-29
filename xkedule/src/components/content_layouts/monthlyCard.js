@@ -5,7 +5,7 @@ import MonthlyTaskCard from './monthlyTaskCard'
 import BackToToday from './backToToday'
 import { get_day_occurrence } from '../../js_helpers/rrule_helpers'
 import { dateToWritenDate } from '../../js_helpers/parsers'
-
+import { checkTodayFunction } from '../../js_helpers/helpers'
 
 export default class MonthlyCard extends React.Component {
     constructor(props){
@@ -72,12 +72,11 @@ export default class MonthlyCard extends React.Component {
 
 
 
-    generateDayCells(aux_view_time, events, tasks_per_cell){
+    generateDayCells(aux_view_time, current_time, events, tasks_per_cell){
         var day_cells = [];
         // var aux_view_time = new Date();
         const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
         var day_date = new Date(aux_view_time.getFullYear(), aux_view_time.getMonth(), 1); //first day of month
-
         day_date.setDate(day_date.getDate() - (day_date.getDay() + 6) % 7) //first month's week monday date
 
         var i = 0;
@@ -91,7 +90,8 @@ export default class MonthlyCard extends React.Component {
             //define cell style
             if (day_date.getMonth() === aux_view_time.getMonth()) {
                 cell_class_list += " month_day" //day of the current month showing
-                if (day_date.getDate() === aux_view_time.getDate()) {
+                    var isToday = checkTodayFunction(current_time, day_date);
+                    if (isToday && day_date.getDate() === current_time.getDate()                       ){
                     cell_number_class_list += " current_day" //current day
                 }
             }
@@ -188,21 +188,20 @@ export default class MonthlyCard extends React.Component {
             <div className="content_header">
                 
          {(() => {
-             var day_aux = this.props.aux_view_time.getDate();
-             var month_aux = this.props.aux_view_time.getMonth();
-             var year_aux = this.props.aux_view_time.getFullYear();
-             var day = this.props.current_time.getDate();
-             var month = this.props.current_time.getMonth();
-             var year = this.props.current_time.getFullYear(); 
              
-             if (day_aux === day && month_aux === month && year_aux === year) {
+             var day_date = new Date(this.props.aux_view_time.getFullYear(), this.props.aux_view_time.getMonth(), 1); 
+             while (day_date.getDay() !== 1 || day_date.getMonth() !== (this.props.aux_view_time.getMonth() + 1) % 12) {
+                var isToday = checkTodayFunction(this.props.current_time, day_date);
+                if (isToday){
                     return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
                     this is <strong>your</strong> month
                     </div>
+                }
+                day_date.setDate(day_date.getDate() + 1);
+            }
+            return <BackToToday type={"month"} onClickReturn={this.props.onClickReturn}/>
              
-             }else{
-                    return <BackToToday type={"month"} onClickReturn={this.props.onClickReturn}/>
-             }
+             
              })()}
                 <HeaderDate date={this.getHeaderDate(this.props.aux_view_time)} clickEventDate={this.props.clickEventDate}/>
             </div>
@@ -215,6 +214,7 @@ export default class MonthlyCard extends React.Component {
 
                  <div className="monthly_schedule">
                      {this.generateDayCells(this.props.aux_view_time,
+                                            this.props.current_time,
                                             this.props.events,
                                             this.state.tasks_per_cell)}
 
