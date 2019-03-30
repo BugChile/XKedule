@@ -6,7 +6,7 @@
  "author": "Bug Chile",
 "browser_action": {
    "default_icon": "logo-small.png",
-   "default_popup": "index.html",
+   "default_popup": "popup.html",
    "default_title": "Have a good day"
  },
 "chrome_url_overrides" : {
