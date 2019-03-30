@@ -27,7 +27,7 @@ export default class CreationContainer extends React.PureComponent {
                                 close_event_form={this.props.close_event_form}
                                 aux_view_time={this.props.aux_view_time}/>;
           case "schedule":
-              return "Manage schedule"
+              return "Manage schedule";
       }
   }
 

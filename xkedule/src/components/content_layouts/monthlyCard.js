@@ -3,6 +3,7 @@ import HeaderDate from './headerDate'
 import MonthlyCardCell from './monthlyCardCell'
 import MonthlyTaskCard from './monthlyTaskCard'
 import BackToToday from './backToToday'
+import DayMonth from './dayMonth'
 import { get_day_occurrence } from '../../js_helpers/rrule_helpers'
 import { dateToWritenDate } from '../../js_helpers/parsers'
 import { checkTodayFunction } from '../../js_helpers/helpers'
@@ -84,7 +85,7 @@ export default class MonthlyCard extends React.Component {
         var day_info = [];
         var day_tasks;
         var cell_class_list = "day_cell_monthly";
-        var cell_number_class_list = "day_cell_number";
+        var cell_number_class_list = "day_cell_number hover";
 
         while (day_date.getDay() !== 1 || day_date.getMonth() !== (aux_view_time.getMonth() + 1) % 12) {
             //define cell style
@@ -102,9 +103,7 @@ export default class MonthlyCard extends React.Component {
                                   {days[i]}
                               </div>)
             }
-            day_info.push(<div className={cell_number_class_list}>
-                              {day_date.getDate()}
-                          </div>)
+            day_info.push(<DayMonth onClickDay={this.props.onClickDay} classCss={cell_number_class_list} day={new Date(day_date)}/>);
 
             day_id = "monthly_cell"+day_date.getTime()
             day_tasks = this.generateTaskCards(day_date,
@@ -117,7 +116,7 @@ export default class MonthlyCard extends React.Component {
                                             cell_class_list={cell_class_list}/>
             day_info = []
             cell_class_list = "day_cell_monthly";
-            cell_number_class_list = "day_cell_number";
+            cell_number_class_list = "day_cell_number hover";
             i += 1;
 
             //set day_date to next day

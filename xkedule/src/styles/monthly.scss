@@ -72,6 +72,8 @@
 .day_cell_task_container{
     display: grid;
     justify-content: center;
+    max-height: 200px;
+    overflow: auto;
 }
 
 

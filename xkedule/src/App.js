@@ -16,6 +16,7 @@ import './App.css';
 
 // development
 import { events, user_tags }  from './js_helpers/dev_data';
+import DayMonth from './components/content_layouts/dayMonth';
 
 class App extends Component {
     constructor(props){
@@ -76,6 +77,7 @@ class App extends Component {
         this.linkEvent = this.linkEvent.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
         this.clickEventDate = this.clickEventDate.bind(this);
+        this.onClickDay = this.onClickDay.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -181,7 +183,7 @@ class App extends Component {
                     date.setDate(this.state.aux_view_time.getDate() - 7);
                     break;
                 case 5: 
-                    date.setDate(this.state.aux_view_time.getDate() + 7);
+                    date.setDate(this.state.aux_view_time.getDate() - 7);
                     break;
                 case 1: 
                     date.setMonth(this.state.aux_view_time.getMonth() - 1);
@@ -248,6 +250,10 @@ class App extends Component {
                       eventInfoCardLeft:left,
                       eventInfoCardTop:top,
                       linkComponent:null})
+    }
+    onClickDay(day){
+        this.setState({aux_view_time:day, mode:"daily"})
+            this.expand();
     }
     linkEvent(){
         (this.state.linkComponent)? this.setState({linkComponent:null}): this.setState({linkComponent:true});
@@ -360,6 +366,7 @@ class App extends Component {
                                    current_time={this.state.current_time}
                                    clickEvent={this.clickEvent}
                                    key={this.state.refresh_aux}
+                                   onClickDay = {this.onClickDay}
                                    clickEventDate={this.clickEventDate}/>;
             case "monthly":
                 return <MonthlyCard events={this.state.hashed_by_date}
@@ -368,7 +375,8 @@ class App extends Component {
                                     current_time={this.state.current_time}
                                     clickEvent={this.clickEvent}
                                     key={this.state.refresh_aux}
-                                    clickEventDate={this.clickEventDate}/>;
+                                    clickEventDate={this.clickEventDate}
+                                    onClickDay={this.onClickDay}/>;
             default:
                 return <DailyCard events={this.state.hashed_by_date}
                                   onClickReturn={this.onClickReturn}  

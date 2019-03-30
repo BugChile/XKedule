@@ -65,9 +65,11 @@ export default class WeeklyCard extends React.Component {
 
           day_name_cells[i] = <WeekCardDayHeaders day_cell_class = {day_cell_class}
                                              day_name = {day_names[i]}
+                                             day = {new Date(day_date)}
                                              day_date = {day_date.toLocaleDateString('en-GB',
                                                          {day:"2-digit", month:"2-digit", year:"numeric"})}
-                                             card_key = {"week_card_day_header"+i} />
+                                             card_key = {"week_card_day_header"+i} 
+                                             onClickDay={this.props.onClickDay}/>
 
           week_tasks.push(this.generateTaskCards(day_date, events, aux_view_time, max_task_container_height));
 
