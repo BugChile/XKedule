@@ -47,7 +47,6 @@ chrome.storage.sync.get(['user_id'], function(result) {
                         event_data.id = _event.id
                         events[_event.id] = event_data;
                     });
-                    console.log(events);
                     ReactDOM.render(<App events={events}
                                          save_event_callback={save_event}
                                          update_event_callback={update_event}

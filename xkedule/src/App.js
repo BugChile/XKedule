@@ -57,7 +57,6 @@ class App extends Component {
         this.tick = this.tick.bind(this);
         this.hashEvents = this.hashEvents.bind(this);
         this.getEventSaveForm = this.getEventSaveForm.bind(this);
-        this.getEventAddForm = this.getEventAddForm.bind(this);
 
         //HTML HANDLERS
         this.changeHTMLProperty = this.changeHTMLProperty.bind(this);
@@ -157,19 +156,6 @@ class App extends Component {
             tag_ids: this.new_event_object.tag_ids,
             date_start: toDataDate(this.new_event_object.date, this.new_event_object.date_start),
             date_end: toDataDate(this.new_event_object.date, this.new_event_object.date_end),
-        }
-    }
-
-    getEventAddForm(from, event_id){
-        return {
-            id: event_id,
-            title: this.new_event_object.title,
-            description: this.new_event_object.description,
-            rrule: this.new_event_object.rrule,
-            links: this.new_event_object.links,
-            tag_ids: this.new_event_object.tag_ids,
-            date_start: this.new_event_object.date_start,
-            date_end: this.new_event_object.date_end,
         }
     }
 
@@ -436,19 +422,24 @@ class App extends Component {
 
     saveEvent(){
         // do data check here
+        // this is necessary, for some reason without this date_start gets set to date_end
+        const date_start = new Date(this.new_event_object.date_start.getTime());
 
         var to_save = this.getEventSaveForm();
-        const event_id = this.props.save_event_callback(to_save,
+        const id = this.props.save_event_callback(to_save,
                                        this.props.uid);
         // check if save event is successful
 
-        var to_add = this.getEventAddForm(event_id);
+        var to_add = {...this.new_event_object, ...{id, date_start}};
+        console.log("to_add", to_add);
 
         var to_update_events = this.state.events;
-        to_update_events[event_id] = to_add
+        to_update_events[id] = to_add
 
         var to_update_hashed = this.state.hashed_by_date;
         const hashed_date = to_add.date_start.toLocaleDateString();
+        console.log("to_update_hashed", to_update_hashed);
+        console.log(`to_update_hashed[${hashed_date}]`, to_update_hashed[hashed_date]);
         if (hashed_date in to_update_hashed) {
             to_update_hashed[hashed_date].push(to_add)
         } else {

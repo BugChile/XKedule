@@ -155,18 +155,6 @@ export default class MonthlyCard extends React.Component {
         this.setState({expanded_tasks, expanded_class});
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-      if (this.props.events === nextProps.events &&
-          this.props.current_time.toLocaleDateString() === nextProps.current_time.toLocaleDateString() &&
-          this.state.expanded_tasks === nextState.expanded_tasks &&
-          this.state.expanded_top === nextState.expanded_top &&
-          this.state.expanded_left === nextState.expanded_left) {
-        return false;
-      } else {
-        return true;
-      }
-  }
-
   onResize(){
       const tasks_per_cell = this.calculateMaxTasks();
       if (tasks_per_cell !== this.state.tasks_per_cell) {
