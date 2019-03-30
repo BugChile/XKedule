@@ -56,6 +56,8 @@ class App extends Component {
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
         this.hashEvents = this.hashEvents.bind(this);
+        this.getEventSaveForm = this.getEventSaveForm.bind(this);
+        this.getEventAddForm = this.getEventAddForm.bind(this);
 
         //HTML HANDLERS
         this.changeHTMLProperty = this.changeHTMLProperty.bind(this);
@@ -80,6 +82,7 @@ class App extends Component {
         this.createEvent = this.createEvent.bind(this);
         this.closeEventForm = this.closeEventForm.bind(this);
         this.saveEvent = this.saveEvent.bind(this);
+        this.updateEvent = this.updateEvent.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -143,6 +146,31 @@ class App extends Component {
         var date = new Date(this.state.current_time);
         date.setDate(this.state.current_time.getDate() + 1);
         this.setState({current_time: new Date()});
+    }
+
+    getEventSaveForm(){
+        return {
+            title: this.new_event_object.title,
+            description: this.new_event_object.description,
+            rrule: getRepeatsString(this.new_event_object.rrule),
+            links: toLinkDataModel(this.new_event_object.links),
+            tag_ids: toTagIds(this.new_event_object.tags),
+            date_start: toDataDate(this.new_event_object.date, this.new_event_object.from),
+            date_end: toDataDate(this.new_event_object.date, this.new_event_object.to),
+        }
+    }
+
+    getEventAddForm(event_id){
+        return {
+            id: event_id,
+            title: this.new_event_object.title,
+            description: this.new_event_object.description,
+            rrule: this.new_event_object.rrule,
+            links: toLinkDataModel(this.new_event_object.links),
+            tag_ids: toTagIds(this.new_event_object.tags),
+            date_start: new Date(toDataDate(this.new_event_object.date, this.new_event_object.from)),
+            date_end: new Date(toDataDate(this.new_event_object.date, this.new_event_object.to)),
+        }
     }
 
 
@@ -296,22 +324,22 @@ class App extends Component {
             return <DailyCard events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
-                              clickEvent={this.editEvent}
+                              clickEvent={this.clickEvent}
                               current_time={this.state.current_time}/>;
             case "weekly":
                 return <WeeklyCard events={hashed_by_date}
                                    current_time={this.state.current_time}
-                                   clickEvent={this.editEvent}/>;
+                                   clickEvent={this.clickEvent}/>;
             case "monthly":
                 return <MonthlyCard events={hashed_by_date}
                                     current_time={this.state.current_time}
-                                    clickEvent={this.editEvent}/>;
+                                    clickEvent={this.clickEvent}/>;
             default:
                 return <DailyCard events={hashed_by_date}
                                   current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
-                                  clickEvent={this.editEvent}/>;
+                                  clickEvent={this.clickEvent}/>;
         }
     }
 
@@ -395,7 +423,7 @@ class App extends Component {
     editEvent(event){
         this.setState({creation_mode: "edit_event", editing_event_id: event.id});
         this.setMainButtonIcon("save");
-        this.setMainButtonFunction(this.saveEvent);
+        this.setMainButtonFunction(this.updateEvent);
         this.showSmallCreationCard();
     }
 
@@ -409,30 +437,12 @@ class App extends Component {
     saveEvent(){
         // do data check here
 
-        var to_save = {
-            title: this.new_event_object.title,
-            description: this.new_event_object.description,
-            rrule: getRepeatsString(this.new_event_object.rrule),
-            links: toLinkDataModel(this.new_event_object.links),
-            tag_ids: toTagIds(this.new_event_object.tags),
-            date_start: toDataDate(this.new_event_object.date, this.new_event_object.from),
-            date_end: toDataDate(this.new_event_object.date, this.new_event_object.to),
-        };
-
+        var to_save = this.getEventSaveForm();
         const event_id = this.props.save_event_callback(to_save,
                                        this.props.uid);
         // check if save event is successful
 
-        var to_add = {
-            id: event_id,
-            title: this.new_event_object.title,
-            description: this.new_event_object.description,
-            rrule: this.new_event_object.rrule,
-            links: toLinkDataModel(this.new_event_object.links),
-            tag_ids: toTagIds(this.new_event_object.tags),
-            date_start: new Date(toDataDate(this.new_event_object.date, this.new_event_object.from)),
-            date_end: new Date(toDataDate(this.new_event_object.date, this.new_event_object.to)),
-        };
+        var to_add = this.getEventAddForm(event_id);
 
         var to_update_events = this.state.events;
         to_update_events[event_id] = to_add
@@ -449,13 +459,42 @@ class App extends Component {
         this.closeEventForm();
     }
 
+    updateEvent(){
+        // do data check here
+        console.log("1 from", this.new_event_object.from);
+        console.log("1 to", this.new_event_object.to);
+
+        var to_save = this.getEventSaveForm();
+        const event_id = this.props.update_event_callback(to_save,
+                                       this.props.uid,
+                                       this.state.editing_event_id);
+        // check if save event is successful
+
+        var to_add = this.getEventAddForm(event_id);
+
+        var to_update_events = this.state.events;
+        to_update_events[event_id] = to_add
+        var to_update_hashed = this.state.hashed_by_date;
+        const hashed_date = to_add.date_start.toLocaleDateString();
+        var index = 0;
+        to_update_hashed[hashed_date].forEach((_event) => {
+            if (_event.id === event_id) {
+                to_update_hashed[hashed_date].splice(index, 1, to_add);
+            }
+            index += 1;
+        });
+
+        this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
+        this.closeEventForm();
+    }
+
     //LIFE CICLE
 
     componentDidMount(){
         // this.scrollDailyEvent();
         this.setUserTags(user_tags);
-        this.setEvents(this.props.events);
-        this.setHashedEvents(this.props.events);
+        this.setEvents(events);
+        this.setHashedEvents(events);
         this.intervalID = setInterval(
             () => this.tick(this),
             1000

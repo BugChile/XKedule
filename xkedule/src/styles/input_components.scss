@@ -109,14 +109,14 @@ select {
             margin-bottom: 10px;
             .react-calendar__navigation__label{
                 font-size: 14px;
-                font-weight: 100;
+                font-weight: 300;
                 padding-top: 8px;
                 font-family: "Lato", sans-serif;
             }
             .react-calendar__navigation__arrow{
                 font-family: "Lato", sans-serif;
                 font-size: 30px;
-                font-weight: 100;
+                font-weight: 300;
                 line-height: 40px;
                 &:first-of-type{
                     border-top-left-radius: 10px;
@@ -142,7 +142,7 @@ select {
                 button {
                     font-family: "Lato", sans-serif;
                     font-size: 14px;
-                    font-weight: 100;
+                    font-weight: 300;
                     height: 35px;
                     background: none;
                     color: black;

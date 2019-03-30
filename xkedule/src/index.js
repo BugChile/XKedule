@@ -20,12 +20,19 @@ var db = firebase.firestore();
 var provider = new firebase.auth.GoogleAuthProvider();
 
 function save_event(json, uid){
-    console.log("bla: ", json);
     var new_event_ref = db.collection("users").doc(uid)
                         .collection("events").doc();
     json.id = new_event_ref.id;
     new_event_ref.set(json);
     return new_event_ref.id;
+}
+
+function update_event(json, uid, event_id){
+    var updated_event_ref = db.collection("users").doc(uid)
+                        .collection("events").doc(event_id);
+    json.id = updated_event_ref.id;
+    updated_event_ref.update(json);
+    return updated_event_ref.id;
 }
 
 
@@ -43,6 +50,7 @@ chrome.storage.sync.get(['user_id'], function(result) {
                     console.log(events);
                     ReactDOM.render(<App events={events}
                                          save_event_callback={save_event}
+                                         update_event_callback={update_event}
                                          uid={"ECrUR0rRnLflN10PqPjcNj2otEQ2"}
                                          />, document.getElementById('app_root'));
 
