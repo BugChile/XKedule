@@ -10,6 +10,8 @@ import SwitchWeekMonth from './components/switchWeekMonth'
 import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
 import {save_event, load_event}  from './js_helpers/data_handling';
+import { toLinkDataModel, toTagIds, toDataDate }  from './js_helpers/parsers';
+import { getRepeatsString }  from './js_helpers/rrule_helpers';
 import logo from './assets/logo.svg';
 import './App.css';
 
@@ -288,24 +290,24 @@ class App extends Component {
         }
     }
 
-    switchCard(mode){
+    switchCard(mode, hashed_by_date){
         switch (mode) {
             case "daily":
-            return <DailyCard events={this.state.hashed_by_date}
+            return <DailyCard events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
                               clickEvent={this.editEvent}
                               current_time={this.state.current_time}/>;
             case "weekly":
-                return <WeeklyCard events={this.state.hashed_by_date}
+                return <WeeklyCard events={hashed_by_date}
                                    current_time={this.state.current_time}
                                    clickEvent={this.editEvent}/>;
             case "monthly":
-                return <MonthlyCard events={this.state.hashed_by_date}
+                return <MonthlyCard events={hashed_by_date}
                                     current_time={this.state.current_time}
                                     clickEvent={this.editEvent}/>;
             default:
-                return <DailyCard events={this.state.hashed_by_date}
+                return <DailyCard events={hashed_by_date}
                                   current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
@@ -313,12 +315,12 @@ class App extends Component {
         }
     }
 
-    generateComponents(mode, creation_mode, editing_event_id){
+    generateComponents(mode, creation_mode, editing_event_id, events, hashed_by_date){
         var components = [];
 
         // Main card:
         var content_container_components = []
-        content_container_components.push(this.switchCard(this.state.mode))
+        content_container_components.push(this.switchCard(this.state.mode, hashed_by_date))
 
         // Switch button for week and month
         if (mode != "daily") {
@@ -335,7 +337,7 @@ class App extends Component {
         // Creating and editing content container:
         components.push(
             <CreationContainer creation_mode = {creation_mode}
-                               events = {this.state.events}
+                               events = {events}
                                user_tags = {this.state.user_tags}
                                editing_event_id = {editing_event_id}
                                close_event_form = {this.closeEventForm}
@@ -406,7 +408,45 @@ class App extends Component {
 
     saveEvent(){
         // do data check here
-        save_event(this.new_event_object);
+
+        var to_save = {
+            title: this.new_event_object.title,
+            description: this.new_event_object.description,
+            rrule: getRepeatsString(this.new_event_object.rrule),
+            links: toLinkDataModel(this.new_event_object.links),
+            tag_ids: toTagIds(this.new_event_object.tags),
+            date_start: toDataDate(this.new_event_object.date, this.new_event_object.from),
+            date_end: toDataDate(this.new_event_object.date, this.new_event_object.to),
+        };
+
+        const event_id = this.props.save_event_callback(to_save,
+                                       this.props.uid);
+        // check if save event is successful
+
+        var to_add = {
+            id: event_id,
+            title: this.new_event_object.title,
+            description: this.new_event_object.description,
+            rrule: this.new_event_object.rrule,
+            links: toLinkDataModel(this.new_event_object.links),
+            tag_ids: toTagIds(this.new_event_object.tags),
+            date_start: new Date(toDataDate(this.new_event_object.date, this.new_event_object.from)),
+            date_end: new Date(toDataDate(this.new_event_object.date, this.new_event_object.to)),
+        };
+
+        var to_update_events = this.state.events;
+        to_update_events[event_id] = to_add
+
+        var to_update_hashed = this.state.hashed_by_date;
+        const hashed_date = to_add.date_start.toLocaleDateString();
+        if (hashed_date in to_update_hashed) {
+            to_update_hashed[hashed_date].push(to_add)
+        } else {
+            to_update_hashed[hashed_date] = [to_add]
+        }
+
+        this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
+        this.closeEventForm();
     }
 
     //LIFE CICLE
@@ -435,7 +475,9 @@ class App extends Component {
             <div>
                 {this.generateComponents(this.state.mode,
                                          this.state.creation_mode,
-                                         this.state.editing_event_id)}
+                                         this.state.editing_event_id,
+                                         this.state.events,
+                                         this.state.hashed_by_date)}
                 <div id="create_event_button" onClick={this.createEvent}>
                     <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 19V1C19 0.447715 19.4477 0 20 0H25C25.5523 0 26 0.447715 26 1V19H44C44.5523 19 45 19.4477 45 20V25C45 25.5523 44.5523 26 44 26H26V44C26 44.5523 25.5523 45 25 45H20C19.4477 45 19 44.5523 19 44V26H1C0.447715 26 0 25.5523 0 25V20C0 19.4477 0.447715 19 1 19H19Z" fill="white"/>

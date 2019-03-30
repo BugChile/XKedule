@@ -80,6 +80,14 @@ function getRepeatsSummary(value){
     }
 }
 
+function getRepeatsString(value){
+    if (typeof(value) === "string") {
+        return value;
+    } else {
+        return value.toString();
+    }
+}
+
 export { rrule_day_dict,
          everyday_rrule,
          everyweekday_rrule,
@@ -88,4 +96,5 @@ export { rrule_day_dict,
          yearly_on_month_day,
          get_day_occurrence,
          day_ordinal,
-         getRepeatsSummary };
+         getRepeatsSummary,
+         getRepeatsString};

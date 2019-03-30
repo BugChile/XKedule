@@ -138,14 +138,7 @@ export default class DailyCard extends React.Component {
                </div>;
     }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.events === nextProps.events &&
-        this.props.current_time.toLocaleDateString() === nextProps.current_time.toLocaleDateString()) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+
 
 
   componentDidMount(){
