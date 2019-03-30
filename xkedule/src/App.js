@@ -423,14 +423,15 @@ class App extends Component {
     saveEvent(){
         // do data check here
         // this is necessary, for some reason without this date_start gets set to date_end
-        const date_start = new Date(this.new_event_object.date_start.getTime());
+        const date_start = new Date(toDataDate(this.new_event_object.date, this.new_event_object.date_start));
+        const date_end = new Date(toDataDate(this.new_event_object.date, this.new_event_object.date_end));
 
         var to_save = this.getEventSaveForm();
         const id = this.props.save_event_callback(to_save,
                                        this.props.uid);
         // check if save event is successful
 
-        var to_add = {...this.new_event_object, ...{id, date_start}};
+        var to_add = {...this.new_event_object, ...{id, date_start, date_end}};
         console.log("to_add", to_add);
 
         var to_update_events = this.state.events;
@@ -453,8 +454,10 @@ class App extends Component {
     updateEvent(){
         // do data check here
 
+        const previous_date = this.new_event_object.date_start;
         // this is necessary, for some reason without this date_start gets set to date_end
-        const date_start = new Date(this.new_event_object.date_start.getTime());
+        const date_start = new Date(toDataDate(this.new_event_object.date, this.new_event_object.date_start));
+        const date_end = new Date(toDataDate(this.new_event_object.date, this.new_event_object.date_end));
 
 
         const to_save = this.getEventSaveForm();
@@ -462,18 +465,21 @@ class App extends Component {
                                        this.props.uid,
                                        this.state.editing_event_id);
         // check if save event is successful
-        const to_add = {...this.new_event_object, ...{id, date_start}};
-        var to_update_events = this.state.events;
+        const to_add = {...this.new_event_object, ...{id, date_start, date_end}};
+        var to_update_events = Object.assign({}, this.state.events);
         to_update_events[id] = to_add;
-        var to_update_hashed = this.state.hashed_by_date;
-        const hashed_date = to_add.date_start.toLocaleDateString();
+        var to_update_hashed = Object.assign({}, this.state.hashed_by_date);
+        const previous_hashed_date = previous_date.toLocaleDateString();
+        console.log(previous_hashed_date);
+        const hashed_date = date_start.toLocaleDateString();
         var index = 0;
-        to_update_hashed[hashed_date].forEach((_event) => {
+        to_update_hashed[previous_hashed_date].forEach((_event) => {
             if (_event.id === id) {
-                to_update_hashed[hashed_date].splice(index, 1, to_add);
+                to_update_hashed[previous_hashed_date].splice(index, 1);
             }
             index += 1;
         });
+        to_update_hashed[hashed_date].push(to_add);
 
         this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
         this.closeEventForm();
