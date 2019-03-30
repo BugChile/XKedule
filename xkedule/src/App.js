@@ -414,8 +414,8 @@ class App extends Component {
     componentDidMount(){
         // this.scrollDailyEvent();
         this.setUserTags(user_tags);
-        this.setEvents(events);
-        this.setHashedEvents(events);
+        this.setEvents(this.props.events);
+        this.setHashedEvents(this.props.events);
         this.intervalID = setInterval(
             () => this.tick(this),
             1000
