@@ -9,7 +9,11 @@ import SimpleInputOffState from "../input_components/simpleInputOffState";
 import SelectInput from "../input_components/selectInput";
 import TextLineInput from "../input_components/textLineInput";
 import HourMinuteInput from "../input_components/hourMinuteInput";
-import { dateToWritenDate, dateToHourMinute, capitalizeFirstLetter } from "../../js_helpers/parsers";
+import { dateToWritenDate,
+         dateToHourMinute,
+         capitalizeFirstLetter,
+         toLinkDataModel,
+         toTagIds } from "../../js_helpers/parsers";
 import { getRepeatsSummary } from "../../js_helpers/rrule_helpers";
 import Calendar from 'react-calendar';
 
@@ -30,11 +34,11 @@ export default class EventForm extends React.Component {
       props.set_new_event_callback("title", "");
       props.set_new_event_callback("description", "");
       props.set_new_event_callback("date", this.state.date);
-      props.set_new_event_callback("from", this.state.from);
-      props.set_new_event_callback("to", this.state.to);
+      props.set_new_event_callback("date_start", this.state.from);
+      props.set_new_event_callback("date_end", this.state.to);
       props.set_new_event_callback("rrule", this.state.repeat_rrule);
-      props.set_new_event_callback("tags", this.state.eventTags);
-      props.set_new_event_callback("links", this.state.eventLinks);
+      props.set_new_event_callback("tag_ids", toTagIds(this.state.eventTags));
+      props.set_new_event_callback("links", toLinkDataModel(this.state.eventLinks));
 
       // the following are used because of stacked setState calls on prevState
       // based operations
@@ -86,8 +90,8 @@ export default class EventForm extends React.Component {
          if (this.state.to < this.state.from) {
              this.setTo(from);
          }
+         this.props.set_new_event_callback("date_start", from);
      });
-     this.props.set_new_event_callback("from", from);
   }
 
   setFromHourMinute(from_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
@@ -102,8 +106,8 @@ export default class EventForm extends React.Component {
           if (this.state.to < this.state.from) {
               this.setFrom(to);
           }
+          this.props.set_new_event_callback("date_end", to);
       });
-      this.props.set_new_event_callback("to", to);
   }
 
   setRepeatRRule(repeat_rrule){
@@ -151,7 +155,6 @@ export default class EventForm extends React.Component {
 
       const to_date = new Date([_event["date_end"]]);
       const to_hour = {hour: to_date.getHours(), minute: to_date.getMinutes()};
-
       this.setDate(from_date);
       this.setFrom(from_date);
       this.setTo(to_date);
@@ -170,7 +173,7 @@ export default class EventForm extends React.Component {
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventTags as a reference
       this.setState({ eventTags : this.updatedEventTags});
-      this.props.set_new_event_callback("tags", this.updatedEventTags);
+      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
   }
 
   createAndAddNewTag(new_tag){ //tag format {name: string, style: string, actual_uses: 0}
@@ -188,13 +191,13 @@ export default class EventForm extends React.Component {
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventTags as a reference
       this.setState({ eventTags : this.updatedEventTags});
-      this.props.set_new_event_callback("tags", this.updatedEventTags);
+      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
   }
 
   loadEventLinks(editing_event){
       this.updatedEventLinks = {...editing_event["links"]}
       this.setState({ eventLinks : this.updatedEventLinks});
-      this.props.set_new_event_callback("links", this.updatedEventLinks);
+      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
   }
 
   addEventLink(link){
@@ -204,7 +207,7 @@ export default class EventForm extends React.Component {
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventLinks as a reference
       this.setState({ eventLinks : this.updatedEventLinks});
-      this.props.set_new_event_callback("links", this.updatedEventLinks);
+      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
   }
 
   removeEventLink(link){
@@ -213,7 +216,7 @@ export default class EventForm extends React.Component {
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventLinks as a reference
       this.setState({ eventLinks : this.updatedEventLinks});
-      this.props.set_new_event_callback("links", this.updatedEventLinks);
+      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
   }
 
 

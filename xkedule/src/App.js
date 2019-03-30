@@ -153,23 +153,23 @@ class App extends Component {
             title: this.new_event_object.title,
             description: this.new_event_object.description,
             rrule: getRepeatsString(this.new_event_object.rrule),
-            links: toLinkDataModel(this.new_event_object.links),
-            tag_ids: toTagIds(this.new_event_object.tags),
-            date_start: toDataDate(this.new_event_object.date, this.new_event_object.from),
-            date_end: toDataDate(this.new_event_object.date, this.new_event_object.to),
+            links: this.new_event_object.links,
+            tag_ids: this.new_event_object.tag_ids,
+            date_start: toDataDate(this.new_event_object.date, this.new_event_object.date_start),
+            date_end: toDataDate(this.new_event_object.date, this.new_event_object.date_end),
         }
     }
 
-    getEventAddForm(event_id){
+    getEventAddForm(from, event_id){
         return {
             id: event_id,
             title: this.new_event_object.title,
             description: this.new_event_object.description,
             rrule: this.new_event_object.rrule,
-            links: toLinkDataModel(this.new_event_object.links),
-            tag_ids: toTagIds(this.new_event_object.tags),
-            date_start: new Date(toDataDate(this.new_event_object.date, this.new_event_object.from)),
-            date_end: new Date(toDataDate(this.new_event_object.date, this.new_event_object.to)),
+            links: this.new_event_object.links,
+            tag_ids: this.new_event_object.tag_ids,
+            date_start: this.new_event_object.date_start,
+            date_end: this.new_event_object.date_end,
         }
     }
 
@@ -324,22 +324,22 @@ class App extends Component {
             return <DailyCard events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
-                              clickEvent={this.clickEvent}
+                              clickEvent={this.editEvent}
                               current_time={this.state.current_time}/>;
             case "weekly":
                 return <WeeklyCard events={hashed_by_date}
                                    current_time={this.state.current_time}
-                                   clickEvent={this.clickEvent}/>;
+                                   clickEvent={this.editEvent}/>;
             case "monthly":
                 return <MonthlyCard events={hashed_by_date}
                                     current_time={this.state.current_time}
-                                    clickEvent={this.clickEvent}/>;
+                                    clickEvent={this.editEvent}/>;
             default:
                 return <DailyCard events={hashed_by_date}
                                   current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
-                                  clickEvent={this.clickEvent}/>;
+                                  clickEvent={this.editEvent}/>;
         }
     }
 
@@ -461,24 +461,24 @@ class App extends Component {
 
     updateEvent(){
         // do data check here
-        console.log("1 from", this.new_event_object.from);
-        console.log("1 to", this.new_event_object.to);
 
-        var to_save = this.getEventSaveForm();
-        const event_id = this.props.update_event_callback(to_save,
+        // this is necessary, for some reason without this date_start gets set to date_end
+        const date_start = new Date(this.new_event_object.date_start.getTime());
+
+
+        const to_save = this.getEventSaveForm();
+        const id = this.props.update_event_callback(to_save,
                                        this.props.uid,
                                        this.state.editing_event_id);
         // check if save event is successful
-
-        var to_add = this.getEventAddForm(event_id);
-
+        const to_add = {...this.new_event_object, ...{id, date_start}};
         var to_update_events = this.state.events;
-        to_update_events[event_id] = to_add
+        to_update_events[id] = to_add;
         var to_update_hashed = this.state.hashed_by_date;
         const hashed_date = to_add.date_start.toLocaleDateString();
         var index = 0;
         to_update_hashed[hashed_date].forEach((_event) => {
-            if (_event.id === event_id) {
+            if (_event.id === id) {
                 to_update_hashed[hashed_date].splice(index, 1, to_add);
             }
             index += 1;
@@ -493,8 +493,8 @@ class App extends Component {
     componentDidMount(){
         // this.scrollDailyEvent();
         this.setUserTags(user_tags);
-        this.setEvents(events);
-        this.setHashedEvents(events);
+        this.setEvents(this.props.events);
+        this.setHashedEvents(this.props.events);
         this.intervalID = setInterval(
             () => this.tick(this),
             1000

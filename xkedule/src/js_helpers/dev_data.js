@@ -1,58 +1,58 @@
 const events = {
     "1" : {
         "id": "1",
-        "title": "Fake1",
-        "description": "Wena choro",
+        "title": "Tennis match",
+        "description": "On El Alba courts, with T. Toledo",
         "links": {
-            "CSS height": {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
-            "CSS width": {"name": "CSS width", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/width#Values"}
+            0: {id: 0, "name": "Reservation", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
+            1: {id: 1, "name": "Courts site", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
         },
-        "date_start": new Date('March 24, 2019 12:09:00'),
-        "date_end": new Date('March 24, 2019 15:59:00'),
+        "date_start": new Date('March 15, 2019 12:00:00'),
+        "date_end": new Date('March 15, 2019 13:00:00'),
         "tag_ids": []
 
     },
     "2" : {
         "id": "2",
-        "title": "Fake2",
+        "title": "Meeting with J. Doe",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('March 25, 2019 18:00:00'),
-        "date_end": new Date('March 25, 2019 19:10:00'),
+        "date_start": new Date('March 15, 2019 18:00:00'),
+        "date_end": new Date('March 15, 2019 19:10:00'),
         "tag_ids": ["2"]
 
     },
     "3" : {
         "id": "3",
-        "title": "Fake3",
+        "title": "Patriots game",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('March 24, 2019 15:00:00'),
-        "date_end": new Date('March 24, 2019 16:59:00'),
+        "date_start": new Date('March 15, 2019 15:00:00'),
+        "date_end": new Date('March 15, 2019 16:59:00'),
         "tag_ids": []
 
     },
     "4" : {
         "id": "4",
-        "title": "Fake4",
+        "title": "Lunch with mom",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('March 24, 2019 5:30:00'),
-        "date_end": new Date('March 24, 2019 11:59:00')
+        "date_start": new Date('March 15, 2019 5:30:00'),
+        "date_end": new Date('March 15, 2019 11:59:00')
 
     },
     "5" : {
         "id": "5",
-        "title": "Fake5",
+        "title": "Economics 101",
         "description": "",
         "link": "https://www.ausopen.com",
-        "date_start": new Date('March 24, 2019 06:00:00'),
-        "date_end": new Date('March 24, 2019 10:00:00')
+        "date_start": new Date('March 15, 2019 06:00:00'),
+        "date_end": new Date('March 15, 2019 10:00:00')
 
     },
     "6" : {
         "id": "6",
-        "title": "Fake6",
+        "title": "Work on IIC2233 essay",
         "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('March 24, 2019 05:00:00'),
@@ -61,7 +61,7 @@ const events = {
     },
     "7" : {
         "id": "7",
-        "title": "Fake7",
+        "title": "Greta Van Fleet concert",
         "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('March 24, 2019 21:00:00'),
@@ -70,7 +70,7 @@ const events = {
     },
     "8" : {
         "id": "8",
-        "title": "Fake8",
+        "title": "Greta Van Fleet concert",
         "description": "",
         "link": "https://www.ausopen.com",
         "date_start": new Date('March 24, 2019 19:00:00'),
@@ -104,7 +104,7 @@ const events = {
     },
     "12" : {
         "id": "12",
-        "title": "Fake12",
+        "title": "Dinner reservation",
         "link": "https://www.ausopen.com",
         "date_start": new Date('March 20, 2019 05:00:00'),
         "date_end": new Date('March 20, 2019 06:59:00')
