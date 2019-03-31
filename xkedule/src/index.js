@@ -35,6 +35,19 @@ function update_event(json, uid, event_id){
     return updated_event_ref.id;
 }
 
+function delete_event(uid, event_id){
+    db.collection("users").doc(uid)
+    .collection("events").doc(event_id)
+    .delete()
+    .then(
+        function() {
+            console.log("Document successfully deleted!");
+        })
+    .catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+}
+
 
 chrome.storage.sync.get(['user_id'], function(result) {
     // change this, only for quick testing
@@ -50,6 +63,7 @@ chrome.storage.sync.get(['user_id'], function(result) {
                     ReactDOM.render(<App events={events}
                                          save_event_callback={save_event}
                                          update_event_callback={update_event}
+                                         delete_event_callback={delete_event}
                                          uid={"ECrUR0rRnLflN10PqPjcNj2otEQ2"}
                                          />, document.getElementById('app_root'));
 

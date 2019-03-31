@@ -13,6 +13,7 @@ export default class InfoCard extends React.Component {
                  style={{left: this.props.left, top: this.props.top}}
             >
             <ButtonFunction function={this.props.functionClose} text='X'/>
+            <ButtonFunction function={() => {this.props.functionDelete(this.props.event)}} text='borrar'/>
             {/* <ButtonFunction function={this.props.functionClose} text='X'/> */}
             <h3>Event: {this.props.event.title}</h3>
             <h5>{this.props.event.date_start.toDateString()},</h5>

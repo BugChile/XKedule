@@ -82,6 +82,7 @@ class App extends Component {
         this.closeEventForm = this.closeEventForm.bind(this);
         this.saveEvent = this.saveEvent.bind(this);
         this.updateEvent = this.updateEvent.bind(this);
+        this.deleteEvent = this.deleteEvent.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -310,22 +311,22 @@ class App extends Component {
             return <DailyCard events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
-                              clickEvent={this.editEvent}
+                              clickEvent={this.clickEvent}
                               current_time={this.state.current_time}/>;
             case "weekly":
                 return <WeeklyCard events={hashed_by_date}
                                    current_time={this.state.current_time}
-                                   clickEvent={this.editEvent}/>;
+                                   clickEvent={this.clickEvent}/>;
             case "monthly":
                 return <MonthlyCard events={hashed_by_date}
                                     current_time={this.state.current_time}
-                                    clickEvent={this.editEvent}/>;
+                                    clickEvent={this.clickEvent}/>;
             default:
                 return <DailyCard events={hashed_by_date}
                                   current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
-                                  clickEvent={this.editEvent}/>;
+                                  clickEvent={this.clickEvent}/>;
         }
     }
 
@@ -447,6 +448,7 @@ class App extends Component {
 
         this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
         this.closeEventForm();
+        // add confirmation
     }
 
     updateEvent(){
@@ -487,7 +489,28 @@ class App extends Component {
 
         this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
         this.closeEventForm();
+        // add confirmation
     }
+
+    deleteEvent(to_delete_event){
+        this.props.delete_event_callback(this.props.uid, to_delete_event.id);
+        // add confirmation
+
+        //then
+        var to_update_hashed = Object.assign({}, this.state.hashed_by_date);
+        const hashed_date = to_delete_event.date_start.toLocaleDateString();
+        var index = 0;
+        to_update_hashed[hashed_date].forEach((aux_event) => {
+            if (aux_event.id === to_delete_event.id) {
+                to_update_hashed[hashed_date].splice(index, 1);
+            }
+            index += 1;
+        });
+        this.setState({hashed_by_date: to_update_hashed});
+        this.closeEvent();
+    }
+
+
 
     //LIFE CICLE
 
@@ -530,6 +553,7 @@ class App extends Component {
                 event={this.state.infoDaily}
                 topValue={this.state.infoDailyTop}
                 functionClose={this.closeEvent}
+                functionDelete={this.deleteEvent}
                 left={this.state.eventInfoCardLeft}
                 top={this.state.eventInfoCardTop}/>}
             </div>
