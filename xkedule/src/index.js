@@ -19,25 +19,25 @@ firebase.initializeApp(config);
 var db = firebase.firestore();
 var provider = new firebase.auth.GoogleAuthProvider();
 
-function save_event(json, uid){
+function save_user_doc(doc_reference, json, uid){
     var new_event_ref = db.collection("users").doc(uid)
-                        .collection("events").doc();
+                        .collection(doc_reference).doc();
     json.id = new_event_ref.id;
     new_event_ref.set(json);
     return new_event_ref.id;
 }
 
-function update_event(json, uid, event_id){
+function update_user_doc(doc_reference, json, uid, event_id){
     var updated_event_ref = db.collection("users").doc(uid)
-                        .collection("events").doc(event_id);
+                        .collection(doc_reference).doc(event_id);
     json.id = updated_event_ref.id;
     updated_event_ref.update(json);
     return updated_event_ref.id;
 }
 
-function delete_event(uid, event_id){
+function delete_user_doc(doc_reference, uid, event_id){
     db.collection("users").doc(uid)
-    .collection("events").doc(event_id)
+    .collection(doc_reference).doc(event_id)
     .delete()
     .then(
         function() {
@@ -52,22 +52,28 @@ function delete_event(uid, event_id){
 chrome.storage.sync.get(['user_id'], function(result) {
     // change this, only for quick testing
           if ("ECrUR0rRnLflN10PqPjcNj2otEQ2") {
-              db.collection("users").doc("ECrUR0rRnLflN10PqPjcNj2otEQ2").collection("events").get().then(function(querySnapshot) {
-                    var events = {}
-                    var event_data = {};
-                    querySnapshot.forEach(function(_event) {
-                        event_data = _event.data();
-                        event_data.id = _event.id
-                        events[_event.id] = event_data;
-                    });
-                    ReactDOM.render(<App events={events}
-                                         save_event_callback={save_event}
-                                         update_event_callback={update_event}
-                                         delete_event_callback={delete_event}
-                                         uid={"ECrUR0rRnLflN10PqPjcNj2otEQ2"}
-                                         />, document.getElementById('app_root'));
+              Promise.all([ db.collection("users").doc("ECrUR0rRnLflN10PqPjcNj2otEQ2").collection("events").get(),
+                            db.collection("users").doc("ECrUR0rRnLflN10PqPjcNj2otEQ2").collection("tags").get()])
+              .then(function(responses) {
+                        const fetched_events = responses[0];
+                        const fetched_tags = responses[1];
+                        var events = {}
+                        var tags = {}
+                        fetched_events.forEach(function(_event) {
+                            events[_event.id] = _event.data();
+                        });
+                        fetched_tags.forEach(function(_tag) {
+                            tags[_tag.id] = _tag.data();
+                        });
+                        ReactDOM.render(<App events={events}
+                                             tags={tags}
+                                             save_callback={save_user_doc}
+                                             update_callback={update_user_doc}
+                                             delete_callback={delete_user_doc}
+                                             uid={"ECrUR0rRnLflN10PqPjcNj2otEQ2"}
+                                             />, document.getElementById('app_root'));
 
-                });
+                    });
 
 
           } else {

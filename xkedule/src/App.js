@@ -83,6 +83,7 @@ class App extends Component {
         this.saveEvent = this.saveEvent.bind(this);
         this.updateEvent = this.updateEvent.bind(this);
         this.deleteEvent = this.deleteEvent.bind(this);
+        this.saveTag = this.saveTag.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -311,7 +312,7 @@ class App extends Component {
             return <DailyCard events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
-                              clickEvent={this.clickEvent}
+                              clickEvent={this.editEvent}
                               current_time={this.state.current_time}/>;
             case "weekly":
                 return <WeeklyCard events={hashed_by_date}
@@ -358,6 +359,7 @@ class App extends Component {
                                close_event_form = {this.closeEventForm}
                                current_time={this.state.current_time}
                                set_new_event_callback={this.setNewEventObject}
+                               save_tag_callback={this.saveTag}
                                />
         )
 
@@ -428,7 +430,8 @@ class App extends Component {
         const date_end = toDataDate(this.new_event_object.date, this.new_event_object.date_end);
 
         var to_save = this.getEventSaveForm(date_start, date_end);
-        const id = this.props.save_event_callback(to_save,
+        const id = this.props.save_callback("events",
+                                        to_save,
                                        this.props.uid);
         // check if save event is successful
 
@@ -449,6 +452,7 @@ class App extends Component {
         this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
         this.closeEventForm();
         // add confirmation
+        return id;
     }
 
     updateEvent(){
@@ -461,9 +465,10 @@ class App extends Component {
 
 
         const to_save = this.getEventSaveForm(date_start, date_end);
-        const id = this.props.update_event_callback(to_save,
-                                       this.props.uid,
-                                       this.state.editing_event_id);
+        const id = this.props.update_callback("events",
+                                                    to_save,
+                                                    this.props.uid,
+                                                    this.state.editing_event_id);
         // check if save event is successful
         const to_add = {...this.new_event_object, ...{id,
                                                       date_start: new Date(date_start),
@@ -490,10 +495,11 @@ class App extends Component {
         this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
         this.closeEventForm();
         // add confirmation
+        return id;
     }
 
     deleteEvent(to_delete_event){
-        this.props.delete_event_callback(this.props.uid, to_delete_event.id);
+        this.props.delete_callback("events", this.props.uid, to_delete_event.id);
         // add confirmation
 
         //then
@@ -508,6 +514,18 @@ class App extends Component {
         });
         this.setState({hashed_by_date: to_update_hashed});
         this.closeEvent();
+        return to_delete_event.id;
+    }
+
+    saveTag(tag){
+        const tag_id = this.props.save_callback("tags", tag, this.props.uid);
+
+        // add confirmation;
+
+        var to_update_user_tags = Object.assign({}, this.state.user_tags);
+        to_update_user_tags[tag_id] = tag;
+        this.setState({user_tags: to_update_user_tags});
+        return tag_id;
     }
 
 
@@ -516,7 +534,7 @@ class App extends Component {
 
     componentDidMount(){
         // this.scrollDailyEvent();
-        this.setUserTags(user_tags);
+        this.setUserTags(this.props.tags);
         this.setEvents(this.props.events);
         this.setHashedEvents(this.props.events);
         this.intervalID = setInterval(

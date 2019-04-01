@@ -23,7 +23,8 @@ export default class CreationContainer extends React.Component {
                                 key={"create_form_event"}
                                 close_event_form={this.props.close_event_form}
                                 current_time={this.props.current_time}
-                                set_new_event_callback={this.props.set_new_event_callback}/>;
+                                set_new_event_callback={this.props.set_new_event_callback}
+                                save_tag_callback={this.props.save_tag_callback}/>;
           case "edit_event":
               const editing_event = events[editing_event_id];
               return <EventForm event={editing_event}
@@ -31,7 +32,8 @@ export default class CreationContainer extends React.Component {
                                 user_tags={user_tags}
                                 close_event_form={this.props.close_event_form}
                                 current_time={this.props.current_time}
-                                set_new_event_callback={this.props.set_new_event_callback}/>;
+                                set_new_event_callback={this.props.set_new_event_callback}
+                                save_tag_callback={this.props.save_tag_callback}/>;
           case "schedule":
               return "Manage schedule"
           default:

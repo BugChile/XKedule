@@ -177,7 +177,7 @@ export default class EventForm extends React.Component {
   }
 
   createAndAddNewTag(new_tag){ //tag format {name: string, style: string, actual_uses: 0}
-      const new_id = (Object.keys(this.props.user_tags).length + 1).toString();
+      const new_id = this.props.save_tag_callback(new_tag);
       const tag = {
           id: new_id
       };
