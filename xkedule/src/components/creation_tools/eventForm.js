@@ -161,9 +161,12 @@ export default class EventForm extends React.Component {
   }
 
   loadEventTags(editing_event, user_tags){
+      this.updatedEventTags = {}
       editing_event["tag_ids"].forEach((tag_id) => {
-          this.addEventTag(user_tags[tag_id]);
-      })
+          this.updatedEventTags[tag_id] = user_tags[tag_id];
+      });
+      this.setState({ eventTags : this.updatedEventTags});
+      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
   }
 
   addEventTag(tag){
@@ -234,7 +237,7 @@ export default class EventForm extends React.Component {
               <div  className="event_form_whole_row right_aligned_text">
                     <span id="event_form_discard"
                           onClick={this.props.close_event_form}>
-                    Cancel
+                    Undo changes
                     </span>
               </div>
               <div className="event_form_input_gap"></div>

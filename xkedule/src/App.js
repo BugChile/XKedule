@@ -80,10 +80,11 @@ class App extends Component {
         this.closeEvent = this.closeEvent.bind(this);
         this.createEvent = this.createEvent.bind(this);
         this.closeEventForm = this.closeEventForm.bind(this);
-        this.saveEvent = this.saveEvent.bind(this);
+        this.saveNewEvent = this.saveNewEvent.bind(this);
         this.updateEvent = this.updateEvent.bind(this);
         this.deleteEvent = this.deleteEvent.bind(this);
-        this.saveTag = this.saveTag.bind(this);
+        this.saveNewTag = this.saveNewTag.bind(this);
+        this.changeTagUsage = this.changeTagUsage.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -359,7 +360,7 @@ class App extends Component {
                                close_event_form = {this.closeEventForm}
                                current_time={this.state.current_time}
                                set_new_event_callback={this.setNewEventObject}
-                               save_tag_callback={this.saveTag}
+                               save_tag_callback={this.saveNewTag}
                                />
         )
 
@@ -404,7 +405,7 @@ class App extends Component {
     createEvent(){
         this.setState({creation_mode: "create_event", editing_event_id: null});
         this.setMainButtonIcon("save");
-        this.setMainButtonFunction(this.saveEvent);
+        this.setMainButtonFunction(this.saveNewEvent);
         this.showSmallCreationCard();
 
     }
@@ -423,7 +424,7 @@ class App extends Component {
         this.hideSmallCreationCard();
     }
 
-    saveEvent(){
+    saveNewEvent(){
         // do data check here
         // this is necessary, for some reason without this date_start gets set to date_end
         const date_start = toDataDate(this.new_event_object.date, this.new_event_object.date_start);
@@ -433,6 +434,10 @@ class App extends Component {
         const id = this.props.save_callback("events",
                                         to_save,
                                        this.props.uid);
+        // change tag usage
+        this.new_event_object.tag_ids.forEach((tag_id) => {
+            this.changeTagUsage(this.state.user_tags[tag_id], "increase");
+        });
         // check if save event is successful
 
         var to_add = {...this.new_event_object, ...{id,
@@ -448,6 +453,8 @@ class App extends Component {
         } else {
             to_update_hashed[hashed_date] = [to_add]
         }
+
+
 
         this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
         this.closeEventForm();
@@ -469,6 +476,19 @@ class App extends Component {
                                                     to_save,
                                                     this.props.uid,
                                                     this.state.editing_event_id);
+        // change tag usage
+        // new ones
+        const additions = this.new_event_object.tag_ids.filter(
+                    tag_id  => this.state.events[this.state.editing_event_id].tag_ids.indexOf(tag_id) === -1);
+        additions.forEach((tag_id) => {
+            this.changeTagUsage(this.state.user_tags[tag_id], "increase");
+        });
+        // deleted ones
+        const deletions = this.state.events[this.state.editing_event_id].tag_ids.filter(
+                    tag_id  => this.new_event_object.tag_ids.indexOf(tag_id) === -1);
+        deletions.forEach((tag_id) => {
+            this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
+        });
         // check if save event is successful
         const to_add = {...this.new_event_object, ...{id,
                                                       date_start: new Date(date_start),
@@ -500,6 +520,10 @@ class App extends Component {
 
     deleteEvent(to_delete_event){
         this.props.delete_callback("events", this.props.uid, to_delete_event.id);
+        // change tag usage
+        this.new_event_object.tag_ids.forEach((tag_id) => {
+            this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
+        });
         // add confirmation
 
         //then
@@ -517,8 +541,24 @@ class App extends Component {
         return to_delete_event.id;
     }
 
-    saveTag(tag){
+    saveNewTag(tag){
         const tag_id = this.props.save_callback("tags", tag, this.props.uid);
+
+        // add confirmation;
+
+        var to_update_user_tags = Object.assign({}, this.state.user_tags);
+        to_update_user_tags[tag_id] = tag;
+        this.setState({user_tags: to_update_user_tags});
+        return tag_id;
+    }
+
+    changeTagUsage(tag, mode){ // increases/decreases actual uses by one
+        if (mode === "increase") {
+            tag.actual_uses += 1;
+        } else {
+            tag.actual_uses -= 1;
+        }
+        const tag_id = this.props.update_callback("tags", tag, this.props.uid, tag.id);
 
         // add confirmation;
 

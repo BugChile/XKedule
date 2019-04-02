@@ -30,7 +30,6 @@ function toLinkDataModel(links_from_event_form){
 }
 
 function toTagIds(tags_from_event_form){
-    console.log(tags_from_event_form)
     var tag_ids = [];
     Object.keys(tags_from_event_form).forEach((key) => {
         tag_ids.push(tags_from_event_form[key].id);
