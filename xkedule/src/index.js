@@ -82,14 +82,32 @@ chrome.storage.sync.get(['uid'], function(result) {
                   var user = result.user;
                   chrome.storage.sync.set({"uid": user.uid});
                   db.collection("users").doc(user.uid).set({
-                            name: user.displayName});
-                  ReactDOM.render(<App events={{}}
-                                          tags={{}}
-                                          save_callback={save_user_doc}
-                                          update_callback={update_user_doc}
-                                          delete_callback={delete_user_doc}
-                                          uid={user.uid}
-                                          />, document.getElementById('app_root'));
+                                        name: user.displayName});
+
+                  Promise.all([ db.collection("users").doc(user.uid).collection("events").get(),
+                                db.collection("users").doc(user.uid).collection("tags").get()])
+                  .then(function(responses) {
+                            const fetched_events = responses[0];
+                            const fetched_tags = responses[1];
+                            var events = {}
+                            var tags = {}
+                            fetched_events.forEach(function(_event) {
+                                events[_event.id] = _event.data();
+                            });
+                            fetched_tags.forEach(function(_tag) {
+                                tags[_tag.id] = _tag.data();
+                            });
+                            ReactDOM.render(<App events={events}
+                                                 tags={tags}
+                                                 save_callback={save_user_doc}
+                                                 update_callback={update_user_doc}
+                                                 delete_callback={delete_user_doc}
+                                                 uid={user.uid}
+                                                 />, document.getElementById('app_root'));
+
+                        });
+
+
 
                 }).catch(function(error) {
                   var errorCode = error.code;
