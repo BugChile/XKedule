@@ -84,6 +84,7 @@ class App extends Component {
         this.updateEvent = this.updateEvent.bind(this);
         this.deleteEvent = this.deleteEvent.bind(this);
         this.saveNewTag = this.saveNewTag.bind(this);
+        this.deleteTag = this.deleteTag.bind(this);
         this.changeTagUsage = this.changeTagUsage.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
@@ -313,7 +314,7 @@ class App extends Component {
             return <DailyCard events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
-                              clickEvent={this.editEvent}
+                              clickEvent={this.clickEvent}
                               current_time={this.state.current_time}/>;
             case "weekly":
                 return <WeeklyCard events={hashed_by_date}
@@ -332,7 +333,7 @@ class App extends Component {
         }
     }
 
-    generateComponents(mode, creation_mode, editing_event_id, events, hashed_by_date){
+    generateComponents(mode, creation_mode, editing_event_id, events, hashed_by_date, user_tags){
         var components = [];
 
         // Main card:
@@ -355,12 +356,13 @@ class App extends Component {
         components.push(
             <CreationContainer creation_mode = {creation_mode}
                                events = {events}
-                               user_tags = {this.state.user_tags}
+                               user_tags = {user_tags}
                                editing_event_id = {editing_event_id}
                                close_event_form = {this.closeEventForm}
                                current_time={this.state.current_time}
                                set_new_event_callback={this.setNewEventObject}
                                save_tag_callback={this.saveNewTag}
+                               delete_tag_callback={this.deleteTag}
                                />
         )
 
@@ -552,6 +554,17 @@ class App extends Component {
         return tag_id;
     }
 
+    deleteTag(tag){
+        this.props.delete_callback("tags", this.props.uid, tag.id);
+
+        // add confirmation;
+
+        var to_update_user_tags = Object.assign({}, this.state.user_tags);
+        delete to_update_user_tags[tag.id];
+        this.setState({user_tags: to_update_user_tags});
+        return tag.id;
+    }
+
     changeTagUsage(tag, mode){ // increases/decreases actual uses by one
         if (mode === "increase") {
             tag.actual_uses += 1;
@@ -598,7 +611,8 @@ class App extends Component {
                                          this.state.creation_mode,
                                          this.state.editing_event_id,
                                          this.state.events,
-                                         this.state.hashed_by_date)}
+                                         this.state.hashed_by_date,
+                                         this.state.user_tags)}
                 <div id="create_event_button" onClick={this.createEvent}>
                     <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 19V1C19 0.447715 19.4477 0 20 0H25C25.5523 0 26 0.447715 26 1V19H44C44.5523 19 45 19.4477 45 20V25C45 25.5523 44.5523 26 44 26H26V44C26 44.5523 25.5523 45 25 45H20C19.4477 45 19 44.5523 19 44V26H1C0.447715 26 0 25.5523 0 25V20C0 19.4477 0.447715 19 1 19H19Z" fill="white"/>

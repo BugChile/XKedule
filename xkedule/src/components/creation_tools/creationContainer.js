@@ -19,21 +19,23 @@ export default class CreationContainer extends React.Component {
   generateContent(creation_mode, events, user_tags, editing_event_id){
       switch (creation_mode) {
           case "create_event":
-              return <EventForm user_tags={user_tags}
+              return <EventForm user_tags={this.props.user_tags}
                                 key={"create_form_event"}
                                 close_event_form={this.props.close_event_form}
                                 current_time={this.props.current_time}
                                 set_new_event_callback={this.props.set_new_event_callback}
-                                save_tag_callback={this.props.save_tag_callback}/>;
+                                save_tag_callback={this.props.save_tag_callback}
+                                delete_tag_callback={this.props.delete_tag_callback}/>;
           case "edit_event":
               const editing_event = events[editing_event_id];
               return <EventForm event={editing_event}
                                 key={"edit_form_event_"+editing_event.id}
-                                user_tags={user_tags}
+                                user_tags={this.props.user_tags}
                                 close_event_form={this.props.close_event_form}
                                 current_time={this.props.current_time}
                                 set_new_event_callback={this.props.set_new_event_callback}
-                                save_tag_callback={this.props.save_tag_callback}/>;
+                                save_tag_callback={this.props.save_tag_callback}
+                                delete_tag_callback={this.props.delete_tag_callback}/>;
           case "schedule":
               return "Manage schedule"
           default:

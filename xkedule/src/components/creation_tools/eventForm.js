@@ -128,7 +128,7 @@ export default class EventForm extends React.Component {
       event_tags_list.forEach((tag) => {
           tag_divs.push(<EventFormCard  className={`event_form_big_input event_form_card ${tag.style}_tag`}
                      element={tag}
-                     onDelete={this.removeEventTag}/>
+                     onRemove={this.removeEventTag}/>
                  );
       })
       return tag_divs;
@@ -140,7 +140,7 @@ export default class EventForm extends React.Component {
       event_links_list.forEach((link) => {
           link_divs.push(<EventFormCard  className={`event_form_big_input event_form_card grey_tag`}
                      element={link}
-                     onDelete={this.removeEventLink}
+                     onRemove={this.removeEventLink}
                      onGoTo={link.href}/>
                  );
       })
@@ -317,7 +317,8 @@ export default class EventForm extends React.Component {
                  container_style='event_form_big_input grey_tag event_form_on_off'
                  on_component_props={{className: "tag_tool",
                                       user_tags: this.props.user_tags,
-                                      onCreateNewTag: this.createAndAddNewTag}}
+                                      onCreateNewTag: this.createAndAddNewTag,
+                                      delete_tag_callback: this.props.delete_tag_callback}}
                 off_text="+ Add tags"
                 />
                 <div className="event_form_input_gap"></div>
