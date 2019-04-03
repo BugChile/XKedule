@@ -35,7 +35,7 @@ export default class NewTagTool extends React.PureComponent {
       const tag = {
           name: this.state.new_tag_name,
           style: this.state.chosen_color,
-          actual_uses: 0
+          actual_uses: 0,
       };
       this.props.onSubmit(tag);
   }

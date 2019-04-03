@@ -88,7 +88,7 @@ export default class TagTool extends React.Component {
                 unused_tags_divs.push(<EventFormCard  className={`event_form_card ${tag.style}_tag`}
                                element={tag}
                                key={`unused_tag_${tag.id}`}
-                               onAdd={() => {this.props.onChange(tag);}}/>
+                               onAdd={() => {this.props.onChange(tag)}}/>
                            );
             });
             return unused_tags_divs;

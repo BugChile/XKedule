@@ -1,6 +1,6 @@
 import React from "react"
 import ButtonFunction from '../buttonFunction'
-import { isEmpty } from '../../js_helpers/helpers' 
+import { isEmpty } from '../../js_helpers/helpers'
 import InfoCardLinks from './infoCardLinks'
 
 export default class InfoCard extends React.Component {
@@ -29,7 +29,7 @@ export default class InfoCard extends React.Component {
             style={{left: this.props.left, top: this.props.top}}
             >
             <div className="button-container">
-            <ButtonFunction function={this.props.functionClose} cssClass="trash" cssIcon="glyphicon glyphicon-trash"/>
+            <ButtonFunction function={() => {this.props.functionDelete(this.props.event);this.props.functionClose()}} cssClass="trash" cssIcon="glyphicon glyphicon-trash"/>
 
             <ButtonFunction function={this.props.functionClose} cssClass="exit" cssIcon="glyphicon glyphicon-remove"/>
             {
@@ -43,8 +43,8 @@ export default class InfoCard extends React.Component {
              }
          })())
             }
-            <ButtonFunction function={this.props.functionClose} cssClass="edit" cssIcon="glyphicon glyphicon-edit"/>
-            
+            <ButtonFunction function={() => {this.props.functionEdit(this.props.event);this.props.functionClose()}} cssClass="edit" cssIcon="glyphicon glyphicon-edit"/>
+
 
             </div>
             <h3 className="title_event">Event: {this.props.event.title}</h3>

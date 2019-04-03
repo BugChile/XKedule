@@ -23,6 +23,9 @@
     transition: all 0.5s ease;
     overflow-x: hidden;
     overflow: overlay;
+    -webkit-box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
+    -moz-box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
+    box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
 }
 
 
@@ -49,7 +52,7 @@
     grid-row-gap: 5px;
     grid-column-gap: 10px;
     font-size: 15px;
-    font-weight: lighter;
+    font-weight: 300;
 
     .event_form_input_gap{
         height: 5px;
@@ -66,7 +69,7 @@
         width: 94%;
         padding: 5px 3%;
         height: 50px;
-        font-weight: 100;
+        font-weight: 300;
         font-family: "Lato", sans-serif;
 
         &:focus{
@@ -93,7 +96,7 @@
         margin-top: 10px;
         color: white;
         font-size: 15px;
-        font-weight: lighter;
+        font-weight: 300;
         vertical-align: middle;
     }
     .div_input{

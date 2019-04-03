@@ -100,14 +100,6 @@ export default class WeeklyCard extends React.Component {
       return {"main": main_text, "sub": sub_text};
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.events === nextProps.events &&
-        this.props.aux_view_time.toLocaleDateString() === nextProps.aux_view_time.toLocaleDateString()) {
-      return false;
-    } else {
-      return true;
-    }
-  }
 
   onResize(){
       const max_task_container_height = this.calculateMaxContainerHeight();

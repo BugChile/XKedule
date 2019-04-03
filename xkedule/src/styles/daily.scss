@@ -54,8 +54,15 @@
                     margin-right:0;
                     text-overflow: ellipsis;
                     white-space: nowrap;
-                    overflow: hidden;              
+                    overflow-y: hidden;              
                 }
+                // font-size: 20px;
+                // margin-left:10%;
+                // margin-right:10%;
+                // text-overflow: ellipsis;
+                // overflow-x: hidden;
+                // white-space: nowrap;
+                // overflow-y: hidden;
             }
             .task_date{
                 text-align: center;

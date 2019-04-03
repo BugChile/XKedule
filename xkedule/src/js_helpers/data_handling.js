@@ -1,5 +1,5 @@
 function save_event(json){
-    console.log("Save placeholder")
+    console.log("Save placeholder to save: ", json);
 }
 
 function load_event(json){
