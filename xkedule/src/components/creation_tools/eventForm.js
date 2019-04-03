@@ -9,11 +9,15 @@ import SimpleInputOffState from "../input_components/simpleInputOffState";
 import SelectInput from "../input_components/selectInput";
 import TextLineInput from "../input_components/textLineInput";
 import HourMinuteInput from "../input_components/hourMinuteInput";
-import { dateToWritenDate, dateToHourMinute, capitalizeFirstLetter } from "../../js_helpers/parsers";
+import { dateToWritenDate,
+         dateToHourMinute,
+         capitalizeFirstLetter,
+         toLinkDataModel,
+         toTagIds } from "../../js_helpers/parsers";
 import { getRepeatsSummary } from "../../js_helpers/rrule_helpers";
 import Calendar from 'react-calendar';
 
-export default class EventForm extends React.PureComponent {
+export default class EventForm extends React.Component {
   constructor(props){
       super(props)
       this.state = {
@@ -23,10 +27,18 @@ export default class EventForm extends React.PureComponent {
           from: new Date(),
           to: new Date(),
           repeat_rrule: "Never",
-          minDateRepeatEnd: new Date(),
           eventTags: {},
           eventLinks: {},
       };
+
+      props.set_new_event_callback("title", "");
+      props.set_new_event_callback("description", "");
+      props.set_new_event_callback("date", this.state.date);
+      props.set_new_event_callback("date_start", this.state.from);
+      props.set_new_event_callback("date_end", this.state.to);
+      props.set_new_event_callback("rrule", this.state.repeat_rrule);
+      props.set_new_event_callback("tag_ids", toTagIds(this.state.eventTags));
+      props.set_new_event_callback("links", toLinkDataModel(this.state.eventLinks));
 
       // the following are used because of stacked setState calls on prevState
       // based operations
@@ -59,15 +71,18 @@ export default class EventForm extends React.PureComponent {
   };
 
   setTitle(title){
-      this.setState({title})
+      this.setState({title});
+      this.props.set_new_event_callback("title", title);
   }
 
   setDescription(description){
-      this.setState({description})
+      this.setState({description});
+      this.props.set_new_event_callback("description", description);
   }
 
   setDate(date){
-      this.setState({date})
+      this.setState({date});
+      this.props.set_new_event_callback("date", date);
   }
 
   setFrom(from){
@@ -75,7 +90,8 @@ export default class EventForm extends React.PureComponent {
          if (this.state.to < this.state.from) {
              this.setTo(from);
          }
-     })
+         this.props.set_new_event_callback("date_start", from);
+     });
   }
 
   setFromHourMinute(from_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
@@ -90,11 +106,13 @@ export default class EventForm extends React.PureComponent {
           if (this.state.to < this.state.from) {
               this.setFrom(to);
           }
-      })
+          this.props.set_new_event_callback("date_end", to);
+      });
   }
 
   setRepeatRRule(repeat_rrule){
       this.setState({repeat_rrule});
+      this.props.set_new_event_callback("rrule", repeat_rrule);
   }
 
   setToHourMinute(to_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
@@ -110,7 +128,7 @@ export default class EventForm extends React.PureComponent {
       event_tags_list.forEach((tag) => {
           tag_divs.push(<EventFormCard  className={`event_form_big_input event_form_card ${tag.style}_tag`}
                      element={tag}
-                     onDelete={this.removeEventTag}/>
+                     onRemove={this.removeEventTag}/>
                  );
       })
       return tag_divs;
@@ -122,7 +140,7 @@ export default class EventForm extends React.PureComponent {
       event_links_list.forEach((link) => {
           link_divs.push(<EventFormCard  className={`event_form_big_input event_form_card grey_tag`}
                      element={link}
-                     onDelete={this.removeEventLink}
+                     onRemove={this.removeEventLink}
                      onGoTo={link.href}/>
                  );
       })
@@ -137,16 +155,18 @@ export default class EventForm extends React.PureComponent {
 
       const to_date = new Date([_event["date_end"]]);
       const to_hour = {hour: to_date.getHours(), minute: to_date.getMinutes()};
-
       this.setDate(from_date);
       this.setFrom(from_date);
       this.setTo(to_date);
   }
 
   loadEventTags(editing_event, user_tags){
+      this.updatedEventTags = {}
       editing_event["tag_ids"].forEach((tag_id) => {
-          this.addEventTag(user_tags[tag_id]);
-      })
+          this.updatedEventTags[tag_id] = user_tags[tag_id];
+      });
+      this.setState({ eventTags : this.updatedEventTags});
+      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
   }
 
   addEventTag(tag){
@@ -155,11 +175,12 @@ export default class EventForm extends React.PureComponent {
       this.updatedEventTags = {...new_key_value_pair, ...this.updatedEventTags};
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventTags as a reference
-      this.setState({ eventTags : this.updatedEventTags})
+      this.setState({ eventTags : this.updatedEventTags});
+      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
   }
 
   createAndAddNewTag(new_tag){ //tag format {name: string, style: string, actual_uses: 0}
-      const new_id = (Object.keys(this.props.user_tags).length + 1).toString();
+      const new_id = this.props.save_tag_callback(new_tag);
       const tag = {
           id: new_id
       };
@@ -172,12 +193,14 @@ export default class EventForm extends React.PureComponent {
       this.updatedEventTags = {...this.updatedEventTags}; // deep copy to trigger re-render
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventTags as a reference
-      this.setState({ eventTags : this.updatedEventTags})
+      this.setState({ eventTags : this.updatedEventTags});
+      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
   }
 
   loadEventLinks(editing_event){
       this.updatedEventLinks = {...editing_event["links"]}
-      this.setState({ eventLinks : this.updatedEventLinks})
+      this.setState({ eventLinks : this.updatedEventLinks});
+      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
   }
 
   addEventLink(link){
@@ -186,7 +209,8 @@ export default class EventForm extends React.PureComponent {
       this.updatedEventLinks = {...new_key_value_pair, ...this.updatedEventLinks};
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventLinks as a reference
-      this.setState({ eventLinks : this.updatedEventLinks})
+      this.setState({ eventLinks : this.updatedEventLinks});
+      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
   }
 
   removeEventLink(link){
@@ -194,8 +218,10 @@ export default class EventForm extends React.PureComponent {
       this.updatedEventLinks = {...this.updatedEventLinks}; // deep copy to trigger re-render
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventLinks as a reference
-      this.setState({ eventLinks : this.updatedEventLinks})
+      this.setState({ eventLinks : this.updatedEventLinks});
+      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
   }
+
 
   componentDidMount(){
       if (this.props.event) {
@@ -211,7 +237,7 @@ export default class EventForm extends React.PureComponent {
               <div  className="event_form_whole_row right_aligned_text">
                     <span id="event_form_discard"
                           onClick={this.props.close_event_form}>
-                    Cancel
+                    Undo changes
                     </span>
               </div>
               <div className="event_form_input_gap"></div>
@@ -291,7 +317,8 @@ export default class EventForm extends React.PureComponent {
                  container_style='event_form_big_input grey_tag event_form_on_off'
                  on_component_props={{className: "tag_tool",
                                       user_tags: this.props.user_tags,
-                                      onCreateNewTag: this.createAndAddNewTag}}
+                                      onCreateNewTag: this.createAndAddNewTag,
+                                      delete_tag_callback: this.props.delete_tag_callback}}
                 off_text="+ Add tags"
                 />
                 <div className="event_form_input_gap"></div>

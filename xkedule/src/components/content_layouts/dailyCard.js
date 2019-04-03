@@ -151,15 +151,6 @@ export default class DailyCard extends React.Component {
                </div>;
     }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.events === nextProps.events &&
-        this.props.aux_view_time.toLocaleDateString() === nextProps.aux_view_time.toLocaleDateString()) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
 
   componentDidMount(){
     this.props.scrollDailyEvent();

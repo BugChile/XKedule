@@ -1,5 +1,4 @@
 const events = {
-
 	"0":{
 	"id": "0",
 	"title": "Clases1",

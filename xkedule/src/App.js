@@ -10,6 +10,8 @@ import SwitchWeekMonth from './components/switchWeekMonth'
 import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
 import {save_event, load_event}  from './js_helpers/data_handling';
+import { toLinkDataModel, toTagIds, toDataDate }  from './js_helpers/parsers';
+import { getRepeatsString }  from './js_helpers/rrule_helpers';
 import logo from './assets/logo.svg';
 import './App.css';
 
@@ -22,8 +24,8 @@ class App extends Component {
         super(props)
         this.state = {
             mode: "daily",
-            creation_mode: "edit_event",
-            editing_event_id: "1", //id of the event that's being edited, if any, else null
+            creation_mode: "idle",
+            editing_event_id: null, //id of the event that's being edited, if any, else null
             events: {},
             user_tags: {},
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
@@ -41,6 +43,9 @@ class App extends Component {
             main_button_icon: "expand",
             refresh_aux: null,
         }
+
+        this.new_event_object = {};
+
         //STATE SETTERS
         this.changeMode = this.changeMode.bind(this);
         this.setEvents = this.setEvents.bind(this);
@@ -48,11 +53,13 @@ class App extends Component {
         this.setUserTags = this.setUserTags.bind(this);
         this.setMainButtonIcon = this.setMainButtonIcon.bind(this);
         this.setMainButtonFunction = this.setMainButtonFunction.bind(this);
+        this.setNewEventObject = this.setNewEventObject.bind(this);
 
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
         this.tick_current_time = this.tick_current_time.bind(this);
         this.hashEvents = this.hashEvents.bind(this);
+        this.getEventSaveForm = this.getEventSaveForm.bind(this);
         this.onClickReturn = this.onClickReturn.bind(this);
 
         //HTML HANDLERS
@@ -73,8 +80,17 @@ class App extends Component {
         this.listenScrollEvent = this.listenScrollEvent.bind(this);
         this.scrollDailyEvent = this.scrollDailyEvent.bind(this);
         this.clickEvent = this.clickEvent.bind(this);
-        this.linkEvent = this.linkEvent.bind(this);
+        this.editEvent = this.editEvent.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
+        this.createEvent = this.createEvent.bind(this);
+        this.closeEventForm = this.closeEventForm.bind(this);
+        this.saveNewEvent = this.saveNewEvent.bind(this);
+        this.updateEvent = this.updateEvent.bind(this);
+        this.deleteEvent = this.deleteEvent.bind(this);
+        this.saveNewTag = this.saveNewTag.bind(this);
+        this.deleteTag = this.deleteTag.bind(this);
+        this.changeTagUsage = this.changeTagUsage.bind(this);
+        this.linkEvent = this.linkEvent.bind(this);
         this.clickEventDate = this.clickEventDate.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
@@ -106,6 +122,10 @@ class App extends Component {
 
     setMainButtonIcon(main_button_icon){
         this.setState({main_button_icon})
+    }
+
+    setNewEventObject(key, value){
+        this.new_event_object[key] = value;
     }
 
     //CONTENT GENERATORS
@@ -140,6 +160,18 @@ class App extends Component {
         var date = new Date(this.state.current_time);
         date.setSeconds(this.state.current_time.getSeconds() + 1);
         this.setState({current_time: date});
+    }
+
+    getEventSaveForm(date_start, date_end){
+        return {
+            title: this.new_event_object.title,
+            description: this.new_event_object.description,
+            rrule: getRepeatsString(this.new_event_object.rrule),
+            links: this.new_event_object.links,
+            tag_ids: this.new_event_object.tag_ids,
+            date_start,
+            date_end,
+        }
     }
 
 
@@ -295,8 +327,6 @@ class App extends Component {
 
     showSmallCreationCard(){
         document.getElementById("main_button_container").classList.add("full_loop");
-        this.setMainButtonIcon("save")
-        this.setMainButtonFunction(save_event)
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "1000px";
             document.getElementById("main_button_container").style.left = "950px";
@@ -307,8 +337,6 @@ class App extends Component {
 
     hideSmallCreationCard(){
         document.getElementById("main_button_container").classList.remove("full_loop");
-        this.setMainButtonIcon("expand")
-        this.setMainButtonFunction(this.expand)
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "600px";
             document.getElementById("main_button_container").style.left = "550px";
@@ -341,10 +369,10 @@ class App extends Component {
         }
     }
 
-    switchCard(mode){
+    switchCard(mode, hashed_by_date){
         switch (mode) {
             case "daily":
-            return <DailyCard events={this.state.hashed_by_date}
+            return <DailyCard events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
                               clickEvent={this.clickEvent}
@@ -354,7 +382,7 @@ class App extends Component {
                               key={this.state.refresh_aux}
                               clickEventDate={this.clickEventDate}/>;
             case "weekly":
-                return <WeeklyCard events={this.state.hashed_by_date}
+                return <WeeklyCard events={hashed_by_date}
                                    onClickReturn={this.onClickReturn}
                                    aux_view_time={this.state.aux_view_time}
                                    current_time={this.state.current_time}
@@ -362,7 +390,7 @@ class App extends Component {
                                    key={this.state.refresh_aux}
                                    clickEventDate={this.clickEventDate}/>;
             case "monthly":
-                return <MonthlyCard events={this.state.hashed_by_date}
+                return <MonthlyCard events={hashed_by_date}
                                     onClickReturn={this.onClickReturn}
                                     aux_view_time={this.state.aux_view_time}
                                     current_time={this.state.current_time}
@@ -370,7 +398,7 @@ class App extends Component {
                                     key={this.state.refresh_aux}
                                     clickEventDate={this.clickEventDate}/>;
             default:
-                return <DailyCard events={this.state.hashed_by_date}
+                return <DailyCard events={hashed_by_date}
                                   onClickReturn={this.onClickReturn}  
                                   aux_view_time={this.state.aux_view_time}
                                   current_time={this.state.current_time}
@@ -382,12 +410,12 @@ class App extends Component {
         }
     }
 
-    generateComponents(mode, creation_mode){
+    generateComponents(mode, creation_mode, editing_event_id, events, hashed_by_date, user_tags){
         var components = [];
 
         // Main card:
         var content_container_components = []
-        content_container_components.push(this.switchCard(this.state.mode))
+        content_container_components.push(this.switchCard(this.state.mode, hashed_by_date))
 
         // Switch button for week and month
         if (mode != "daily") {
@@ -404,10 +432,14 @@ class App extends Component {
         // Creating and editing content container:
         components.push(
             <CreationContainer creation_mode = {creation_mode}
-                               events = {this.state.events}
-                               user_tags = {this.state.user_tags}
-                               editing_event_id = {this.state.editing_event_id}
-                               close_event_form = {this.hideSmallCreationCard}
+                               events = {events}
+                               user_tags = {user_tags}
+                               editing_event_id = {editing_event_id}
+                               close_event_form = {this.closeEventForm}
+                               current_time={this.state.current_time}
+                               set_new_event_callback={this.setNewEventObject}
+                               save_tag_callback={this.saveNewTag}
+                               delete_tag_callback={this.deleteTag}
                                aux_view_time={this.state.aux_view_time}
                                />
         )
@@ -449,13 +481,192 @@ class App extends Component {
         this.closeEvent();
     }
 
+    createEvent(){
+        this.setState({creation_mode: "create_event", editing_event_id: null});
+        this.setMainButtonIcon("save");
+        this.setMainButtonFunction(this.saveNewEvent);
+        this.showSmallCreationCard();
+
+    }
+
+    editEvent(event){
+        this.setState({creation_mode: "edit_event", editing_event_id: event.id});
+        this.setMainButtonIcon("save");
+        this.setMainButtonFunction(this.updateEvent);
+        this.showSmallCreationCard();
+    }
+
+    closeEventForm(){
+        this.setState({creation_mode: "idle", editing_event_id: null});
+        this.setMainButtonIcon("expand")
+        this.setMainButtonFunction(this.expand);
+        this.hideSmallCreationCard();
+    }
+
+    saveNewEvent(){
+        // do data check here
+        // this is necessary, for some reason without this date_start gets set to date_end
+        const date_start = toDataDate(this.new_event_object.date, this.new_event_object.date_start);
+        const date_end = toDataDate(this.new_event_object.date, this.new_event_object.date_end);
+
+        var to_save = this.getEventSaveForm(date_start, date_end);
+        const id = this.props.save_callback("events",
+                                        to_save,
+                                       this.props.uid);
+        // change tag usage
+        this.new_event_object.tag_ids.forEach((tag_id) => {
+            this.changeTagUsage(this.state.user_tags[tag_id], "increase");
+        });
+        // check if save event is successful
+
+        var to_add = {...this.new_event_object, ...{id,
+                                                    date_start: new Date(date_start),
+                                                    date_end: new Date(date_end)}};
+        var to_update_events = this.state.events;
+        to_update_events[id] = to_add
+
+        var to_update_hashed = this.state.hashed_by_date;
+        const hashed_date = to_add.date_start.toLocaleDateString();
+        if (hashed_date in to_update_hashed) {
+            to_update_hashed[hashed_date].push(to_add)
+        } else {
+            to_update_hashed[hashed_date] = [to_add]
+        }
+
+
+
+        this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
+        this.closeEventForm();
+        // add confirmation
+        return id;
+    }
+
+    updateEvent(){
+        // do data check here
+
+        const previous_date = this.new_event_object.date_start;
+        // this is necessary, for some reason without this date_start gets set to date_end
+        const date_start = toDataDate(this.new_event_object.date, this.new_event_object.date_start);
+        const date_end = toDataDate(this.new_event_object.date, this.new_event_object.date_end);
+
+
+        const to_save = this.getEventSaveForm(date_start, date_end);
+        const id = this.props.update_callback("events",
+                                                    to_save,
+                                                    this.props.uid,
+                                                    this.state.editing_event_id);
+        // change tag usage
+        // new ones
+        const additions = this.new_event_object.tag_ids.filter(
+                    tag_id  => this.state.events[this.state.editing_event_id].tag_ids.indexOf(tag_id) === -1);
+        additions.forEach((tag_id) => {
+            this.changeTagUsage(this.state.user_tags[tag_id], "increase");
+        });
+        // deleted ones
+        const deletions = this.state.events[this.state.editing_event_id].tag_ids.filter(
+                    tag_id  => this.new_event_object.tag_ids.indexOf(tag_id) === -1);
+        deletions.forEach((tag_id) => {
+            this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
+        });
+        // check if save event is successful
+        const to_add = {...this.new_event_object, ...{id,
+                                                      date_start: new Date(date_start),
+                                                      date_end: new Date(date_end)}};
+
+        var to_update_events = Object.assign({}, this.state.events);
+        to_update_events[id] = to_add;
+        var to_update_hashed = Object.assign({}, this.state.hashed_by_date);
+        const previous_hashed_date = previous_date.toLocaleDateString();
+        const hashed_date = to_add.date_start.toLocaleDateString();
+        var index = 0;
+        to_update_hashed[previous_hashed_date].forEach((_event) => {
+            if (_event.id === id) {
+                to_update_hashed[previous_hashed_date].splice(index, 1);
+            }
+            index += 1;
+        });
+        if (hashed_date in to_update_hashed) {
+            to_update_hashed[hashed_date].push(to_add)
+        } else {
+            to_update_hashed[hashed_date] = [to_add]
+        }
+
+        this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
+        this.closeEventForm();
+        // add confirmation
+        return id;
+    }
+
+    deleteEvent(to_delete_event){
+        this.props.delete_callback("events", this.props.uid, to_delete_event.id);
+        // change tag usage
+        this.new_event_object.tag_ids.forEach((tag_id) => {
+            this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
+        });
+        // add confirmation
+
+        //then
+        var to_update_hashed = Object.assign({}, this.state.hashed_by_date);
+        const hashed_date = to_delete_event.date_start.toLocaleDateString();
+        var index = 0;
+        to_update_hashed[hashed_date].forEach((aux_event) => {
+            if (aux_event.id === to_delete_event.id) {
+                to_update_hashed[hashed_date].splice(index, 1);
+            }
+            index += 1;
+        });
+        this.setState({hashed_by_date: to_update_hashed});
+        this.closeEvent();
+        return to_delete_event.id;
+    }
+
+    saveNewTag(tag){
+        const tag_id = this.props.save_callback("tags", tag, this.props.uid);
+
+        // add confirmation;
+
+        var to_update_user_tags = Object.assign({}, this.state.user_tags);
+        to_update_user_tags[tag_id] = tag;
+        this.setState({user_tags: to_update_user_tags});
+        return tag_id;
+    }
+
+    deleteTag(tag){
+        this.props.delete_callback("tags", this.props.uid, tag.id);
+
+        // add confirmation;
+
+        var to_update_user_tags = Object.assign({}, this.state.user_tags);
+        delete to_update_user_tags[tag.id];
+        this.setState({user_tags: to_update_user_tags});
+        return tag.id;
+    }
+
+    changeTagUsage(tag, mode){ // increases/decreases actual uses by one
+        if (mode === "increase") {
+            tag.actual_uses += 1;
+        } else {
+            tag.actual_uses -= 1;
+        }
+        const tag_id = this.props.update_callback("tags", tag, this.props.uid, tag.id);
+
+        // add confirmation;
+
+        var to_update_user_tags = Object.assign({}, this.state.user_tags);
+        to_update_user_tags[tag_id] = tag;
+        this.setState({user_tags: to_update_user_tags});
+        return tag_id;
+    }
+
+
+
     //LIFE CICLE
 
     componentDidMount(){
         // this.scrollDailyEvent();
-        this.setUserTags(user_tags);
-        this.setEvents(events);
-        this.setHashedEvents(events);
+        this.setUserTags(this.props.tags);
+        this.setEvents(this.props.events);
+        this.setHashedEvents(this.props.events);
         this.intervalID = setInterval(
             () => this.tick(this),
             1000
@@ -478,7 +689,17 @@ class App extends Component {
             this.state.loading ? <div> loading </div>
             :
             <div>
-                {this.generateComponents(this.state.mode, this.state.creation_mode)}
+                {this.generateComponents(this.state.mode,
+                                         this.state.creation_mode,
+                                         this.state.editing_event_id,
+                                         this.state.events,
+                                         this.state.hashed_by_date,
+                                         this.state.user_tags)}
+                <div id="create_event_button" onClick={this.createEvent}>
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 19V1C19 0.447715 19.4477 0 20 0H25C25.5523 0 26 0.447715 26 1V19H44C44.5523 19 45 19.4477 45 20V25C45 25.5523 44.5523 26 44 26H26V44C26 44.5523 25.5523 45 25 45H20C19.4477 45 19 44.5523 19 44V26H1C0.447715 26 0 25.5523 0 25V20C0 19.4477 0.447715 19 1 19H19Z" fill="white"/>
+                    </svg>
+                </div>
 
 
                 {<InfoCard
@@ -486,6 +707,7 @@ class App extends Component {
                 event={this.state.infoDaily}
                 topValue={this.state.infoDailyTop}
                 functionClose={this.closeEvent}
+                functionDelete={this.deleteEvent}
                 functionLink={this.linkEvent}
                 left={this.state.eventInfoCardLeft}
                 top={this.state.eventInfoCardTop}

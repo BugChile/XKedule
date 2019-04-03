@@ -16,8 +16,10 @@ export default class EventFormCard extends React.PureComponent {
 
   getTagOptions(){
       // posible options:
-      // onDelete: pass a delete function on props and a 'x' button will appear
+      // onDelete: pass a delete function on props and a trash button will appear
       //           this function should receive the to-be-erased element
+      // onRemove: pass a delete function on props and a 'x' button will appear
+      //           this function should receive the to-be-removed element
       // onEdit:   pass an edit function on props and an edit symbol will appear
       //           said function should receive the to-be-edited element
       // onAdd:    pass an add function and a '+' symbol will appear
@@ -30,8 +32,11 @@ export default class EventFormCard extends React.PureComponent {
       if (this.props.onAdd) {
           options_divs.push(<i className='fas fa-plus' onClick={() => {this.props.onAdd(this.props.element)}}></i>)
       }
+      if (this.props.onRemove) {
+          options_divs.push(<i className='fas fa-times' onClick={() => {this.props.onRemove(this.props.element)}}></i>)
+      }
       if (this.props.onDelete) {
-          options_divs.push(<i className='fas fa-times' onClick={() => {this.props.onDelete(this.props.element)}}></i>)
+          options_divs.push(<i className='fas fa-trash-alt' onClick={() => {this.props.onDelete(this.props.element)}}></i>)
       }
       return options_divs
   }
