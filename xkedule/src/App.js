@@ -16,13 +16,10 @@ import logo from './assets/logo.svg';
 import './App.css';
 
 
-<<<<<<< HEAD
 // development
 import { events, user_tags }  from './js_helpers/dev_data';
 import DayMonth from './components/content_layouts/dayMonth';
 
-=======
->>>>>>> dev
 class App extends Component {
     constructor(props){
         super(props)
