@@ -34,6 +34,8 @@
         display: grid;
         grid-template-rows: 1fr 2fr 1fr 2fr 1fr;
         text-align: center;
+        text-decoration: none;
+
         .task_title{
             grid-row: 2;
             text-overflow: ellipsis;

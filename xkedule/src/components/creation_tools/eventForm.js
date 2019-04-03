@@ -266,7 +266,7 @@ export default class EventForm extends React.Component {
                 value_to_summary={dateToWritenDate}
                 off_component={SimpleInputOffState}
                 container_style='event_form_big_input grey_tag event_form_on_off'
-                on_component_props={{minDate: this.props.current_time,
+                on_component_props={{minDate: this.props.aux_view_time,
                                      className: "input_calendar"}}
                 submit_on_change
               />

@@ -35,14 +35,16 @@ class App extends Component {
             eventInfoCardLeft: null,
             eventInfoCardTop:null,
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
+            aux_view_time: new Date(),
             current_time: new Date(),
             loading: true,
+            linkComponent:null,
             main_button_function: null,
             main_button_icon: "expand",
+            refresh_aux: null,
         }
 
         this.new_event_object = {};
-
 
         //STATE SETTERS
         this.changeMode = this.changeMode.bind(this);
@@ -55,8 +57,10 @@ class App extends Component {
 
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
+        this.tick_current_time = this.tick_current_time.bind(this);
         this.hashEvents = this.hashEvents.bind(this);
         this.getEventSaveForm = this.getEventSaveForm.bind(this);
+        this.onClickReturn = this.onClickReturn.bind(this);
 
         //HTML HANDLERS
         this.changeHTMLProperty = this.changeHTMLProperty.bind(this);
@@ -86,6 +90,8 @@ class App extends Component {
         this.saveNewTag = this.saveNewTag.bind(this);
         this.deleteTag = this.deleteTag.bind(this);
         this.changeTagUsage = this.changeTagUsage.bind(this);
+        this.linkEvent = this.linkEvent.bind(this);
+        this.clickEventDate = this.clickEventDate.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -146,9 +152,14 @@ class App extends Component {
     }
 
     tick(){
+        var date = new Date(this.state.aux_view_time);
+        date.setSeconds(this.state.aux_view_time.getSeconds() + 1);
+        this.setState({aux_view_time: date});
+    }
+    tick_current_time(){
         var date = new Date(this.state.current_time);
-        date.setDate(this.state.current_time.getDate() + 1);
-        this.setState({current_time: new Date()});
+        date.setSeconds(this.state.current_time.getSeconds() + 1);
+        this.setState({current_time: date});
     }
 
     getEventSaveForm(date_start, date_end){
@@ -186,7 +197,47 @@ class App extends Component {
     listenScrollEvent(){
         this.setState({dailyComponentScroll:document.getElementById('content').scrollTop});
     }
+    clickEventDate(length, type){
 
+        var aux_bool = true;
+        if (this.state.refresh_aux){
+            aux_bool = null;
+        }
+        var date = this.state.aux_view_time;
+        if (type === 'prev'){
+            switch (length){
+                case 2: 
+                    date.setDate(this.state.aux_view_time.getDate() - 1);
+                    break;
+                case 4: 
+                    date.setDate(this.state.aux_view_time.getDate() - 7);
+                    break;
+                case 5: 
+                    date.setDate(this.state.aux_view_time.getDate() + 7);
+                    break;
+                case 1: 
+                    date.setMonth(this.state.aux_view_time.getMonth() - 1);
+                    break;
+                }
+        }else{
+                switch (length){
+                    case 2: 
+                        date.setDate(this.state.aux_view_time.getDate() + 1);
+                        break;
+                    case 4: 
+                        date.setDate(this.state.aux_view_time.getDate() + 7);
+                        break;
+                    case 5: 
+                        date.setDate(this.state.aux_view_time.getDate() + 7);
+                        break;
+                    case 1: 
+                        date.setMonth(this.state.aux_view_time.getMonth() + 1);
+                        break;
+                }
+        }
+        this.setState({aux_view_time: date, refresh_aux:aux_bool});
+        
+    }
     clickEvent(event, card_id=null){
        const content_div = document.getElementById("content")
        if (content_div) {
@@ -227,17 +278,27 @@ class App extends Component {
        this.setState({infoDaily:event,
                       classesInfoCard:'event_info_card '.concat(this.state.mode),
                       eventInfoCardLeft:left,
-                      eventInfoCardTop:top})
+                      eventInfoCardTop:top,
+                      linkComponent:null})
+    }
+    linkEvent(){
+        (this.state.linkComponent)? this.setState({linkComponent:null}): this.setState({linkComponent:true});
     }
 
     closeEvent(){
-        this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
+        this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card', InfoCardLinks:null})
         const content_div = document.getElementById("content")
         if (content_div) {
             content_div.style["overflow-y"] = "scroll";
         }
     }
-
+    onClickReturn(){
+        var aux_bool = true;
+        if (this.state.refresh_aux){
+            aux_bool = null;
+        }
+        this.setState({aux_view_time: this.state.current_time, refresh_aux:aux_bool})
+    }
     // onClickAnywhereEvent(event, data){
     //     alert(event.target.type);
     //     // this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
@@ -315,21 +376,37 @@ class App extends Component {
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
                               clickEvent={this.clickEvent}
-                              current_time={this.state.current_time}/>;
+                              onClickReturn={this.onClickReturn}
+                              aux_view_time={this.state.aux_view_time}
+                              current_time={this.state.current_time}
+                              key={this.state.refresh_aux}
+                              clickEventDate={this.clickEventDate}/>;
             case "weekly":
                 return <WeeklyCard events={hashed_by_date}
+                                   onClickReturn={this.onClickReturn}
+                                   aux_view_time={this.state.aux_view_time}
                                    current_time={this.state.current_time}
-                                   clickEvent={this.clickEvent}/>;
+                                   clickEvent={this.clickEvent}
+                                   key={this.state.refresh_aux}
+                                   clickEventDate={this.clickEventDate}/>;
             case "monthly":
                 return <MonthlyCard events={hashed_by_date}
+                                    onClickReturn={this.onClickReturn}
+                                    aux_view_time={this.state.aux_view_time}
                                     current_time={this.state.current_time}
-                                    clickEvent={this.clickEvent}/>;
+                                    clickEvent={this.clickEvent}
+                                    key={this.state.refresh_aux}
+                                    clickEventDate={this.clickEventDate}/>;
             default:
                 return <DailyCard events={hashed_by_date}
+                                  onClickReturn={this.onClickReturn}  
+                                  aux_view_time={this.state.aux_view_time}
                                   current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
-                                  clickEvent={this.clickEvent}/>;
+                                  clickEvent={this.clickEvent}
+                                  key={this.state.refresh_aux}
+                                  clickEventDate={this.clickEventDate}/>;
         }
     }
 
@@ -363,6 +440,7 @@ class App extends Component {
                                set_new_event_callback={this.setNewEventObject}
                                save_tag_callback={this.saveNewTag}
                                delete_tag_callback={this.deleteTag}
+                               aux_view_time={this.state.aux_view_time}
                                />
         )
 
@@ -377,7 +455,6 @@ class App extends Component {
 
 
     }
-
 
     //CALLBACKS (should only call above functions)
 
@@ -594,12 +671,17 @@ class App extends Component {
             () => this.tick(this),
             1000
         );
+        this.intervalIDAUX = setInterval(
+            () => this.tick_current_time(this),
+            1000
+        );
         this.setMainButtonFunction(this.expand)
         this.setState({loading: false})
     }
 
     componentWillUnmount() {
         clearInterval(this.intervalID);
+        clearInterval(this.intervalIDAUX);
     }
 
     render() {
@@ -626,8 +708,11 @@ class App extends Component {
                 topValue={this.state.infoDailyTop}
                 functionClose={this.closeEvent}
                 functionDelete={this.deleteEvent}
+                functionLink={this.linkEvent}
                 left={this.state.eventInfoCardLeft}
-                top={this.state.eventInfoCardTop}/>}
+                top={this.state.eventInfoCardTop}
+                links={this.state.linkComponent}/>}
+                
             </div>
 
         )

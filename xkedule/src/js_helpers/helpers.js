@@ -5,6 +5,17 @@ function preventDefault(e) {
   e.returnValue = false;
 }
 
+
+// from https://coderwall.com/p/_g3x9q/how-to-check-if-javascript-object-is-empty
+
+function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
+}
+
 function stringRange(start, end, digits){
     var range = [];
     for (var i = start; i < end; i++) {
@@ -24,7 +35,17 @@ function decreasingFunctionCompare(a, b){
 function increasingFunctionCompare(a, b){
     return a - b
 }
-
+function checkTodayFunction(current_time, aux_view_time){
+    var day_aux = aux_view_time.getDate();
+    var month_aux = aux_view_time.getMonth();
+    var year_aux = aux_view_time.getFullYear();
+    var day = current_time.getDate();
+    var month = current_time.getMonth();
+    var year = current_time.getFullYear(); 
+    if (day_aux === day && month_aux === month && year_aux === year) {
+        return true;
+    }return false;
+}
 // this function returns true if two date ranges overlap
 function checkDateOverlap(a_start, a_end, b_start, b_end){
     // a and b start at the same time
@@ -52,4 +73,6 @@ export { stringRange,
          increasingFunctionCompare,
          checkDateOverlap,
          onlyUnique,
-         multiplyReducer};
+         multiplyReducer,
+         isEmpty,
+         checkTodayFunction};
