@@ -25,7 +25,7 @@ export default class CreationContainer extends React.Component {
                                 current_time={this.props.current_time}
                                 set_new_event_callback={this.props.set_new_event_callback}
                                 save_tag_callback={this.props.save_tag_callback}
-                                delete_tag_callback={this.props.delete_tag_callback}/>;
+                                delete_tag_callback={this.props.delete_tag_callback}
                                 aux_view_time={this.props.aux_view_time}/>;
           case "edit_event":
               const editing_event = events[editing_event_id];
@@ -36,7 +36,7 @@ export default class CreationContainer extends React.Component {
                                 current_time={this.props.current_time}
                                 set_new_event_callback={this.props.set_new_event_callback}
                                 save_tag_callback={this.props.save_tag_callback}
-                                delete_tag_callback={this.props.delete_tag_callback}/>;
+                                delete_tag_callback={this.props.delete_tag_callback}
                                 aux_view_time={this.props.aux_view_time}/>;
           case "schedule":
               return "Manage schedule"

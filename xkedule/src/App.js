@@ -16,9 +16,6 @@ import logo from './assets/logo.svg';
 import './App.css';
 
 
-// development
-import { events, user_tags }  from './js_helpers/dev_data';
-
 class App extends Component {
     constructor(props){
         super(props)
@@ -206,37 +203,37 @@ class App extends Component {
         var date = this.state.aux_view_time;
         if (type === 'prev'){
             switch (length){
-                case 2: 
+                case 2:
                     date.setDate(this.state.aux_view_time.getDate() - 1);
                     break;
-                case 4: 
+                case 4:
                     date.setDate(this.state.aux_view_time.getDate() - 7);
                     break;
-                case 5: 
+                case 5:
                     date.setDate(this.state.aux_view_time.getDate() + 7);
                     break;
-                case 1: 
+                case 1:
                     date.setMonth(this.state.aux_view_time.getMonth() - 1);
                     break;
                 }
         }else{
                 switch (length){
-                    case 2: 
+                    case 2:
                         date.setDate(this.state.aux_view_time.getDate() + 1);
                         break;
-                    case 4: 
+                    case 4:
                         date.setDate(this.state.aux_view_time.getDate() + 7);
                         break;
-                    case 5: 
+                    case 5:
                         date.setDate(this.state.aux_view_time.getDate() + 7);
                         break;
-                    case 1: 
+                    case 1:
                         date.setMonth(this.state.aux_view_time.getMonth() + 1);
                         break;
                 }
         }
         this.setState({aux_view_time: date, refresh_aux:aux_bool});
-        
+
     }
     clickEvent(event, card_id=null){
        const content_div = document.getElementById("content")
@@ -399,7 +396,7 @@ class App extends Component {
                                     clickEventDate={this.clickEventDate}/>;
             default:
                 return <DailyCard events={hashed_by_date}
-                                  onClickReturn={this.onClickReturn}  
+                                  onClickReturn={this.onClickReturn}
                                   aux_view_time={this.state.aux_view_time}
                                   current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
@@ -708,11 +705,12 @@ class App extends Component {
                 topValue={this.state.infoDailyTop}
                 functionClose={this.closeEvent}
                 functionDelete={this.deleteEvent}
+                functionEdit={this.editEvent}
                 functionLink={this.linkEvent}
                 left={this.state.eventInfoCardLeft}
                 top={this.state.eventInfoCardTop}
                 links={this.state.linkComponent}/>}
-                
+
             </div>
 
         )

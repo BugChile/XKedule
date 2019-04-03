@@ -8,8 +8,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 
-
-var config = {
+// for production and database testing:
+/*var config = {
     apiKey: "AIzaSyDXr3ZgSUDwQSoqFySYmoboBGpSlHdyCG4",
     authDomain: "xkedule.firebaseapp.com",
     projectId: "xkedule",
@@ -116,7 +116,18 @@ chrome.storage.sync.get(['uid'], function(result) {
                   var credential = error.credential;
                 });
           }
-        });
+      });*/
+
+
+// for development:
+import { events, user_tags }  from './js_helpers/dev_data';
+ReactDOM.render(<App events={events}
+                     tags={user_tags}
+                     save_callback={() => {console.log("save placeholder");return "0"}}
+                     update_callback={() => {console.log("update placeholder");return "0"}}
+                     delete_callback={() => {console.log("delete placeholder");return "0"}}
+                     uid={"uid"}
+                     />, document.getElementById('app_root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
