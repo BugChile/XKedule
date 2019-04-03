@@ -49,11 +49,11 @@ function delete_user_doc(doc_reference, uid, event_id){
 }
 
 
-chrome.storage.sync.get(['user_id'], function(result) {
+chrome.storage.sync.get(['uid'], function(result) {
     // change this, only for quick testing
-          if ("ECrUR0rRnLflN10PqPjcNj2otEQ2") {
-              Promise.all([ db.collection("users").doc("ECrUR0rRnLflN10PqPjcNj2otEQ2").collection("events").get(),
-                            db.collection("users").doc("ECrUR0rRnLflN10PqPjcNj2otEQ2").collection("tags").get()])
+          if (result.uid) {
+              Promise.all([ db.collection("users").doc(result.uid).collection("events").get(),
+                            db.collection("users").doc(result.uid).collection("tags").get()])
               .then(function(responses) {
                         const fetched_events = responses[0];
                         const fetched_tags = responses[1];
@@ -70,7 +70,7 @@ chrome.storage.sync.get(['user_id'], function(result) {
                                              save_callback={save_user_doc}
                                              update_callback={update_user_doc}
                                              delete_callback={delete_user_doc}
-                                             uid={"ECrUR0rRnLflN10PqPjcNj2otEQ2"}
+                                             uid={result.uid}
                                              />, document.getElementById('app_root'));
 
                     });
@@ -80,9 +80,17 @@ chrome.storage.sync.get(['user_id'], function(result) {
               firebase.auth().signInWithPopup(provider).then(function(result) {
                   var token = result.credential.accessToken;
                   var user = result.user;
-                  chrome.storage.sync.set({"user_id": user.uid});
+                  chrome.storage.sync.set({"uid": user.uid});
                   db.collection("users").doc(user.uid).set({
                             name: user.displayName});
+                  ReactDOM.render(<App events={{}}
+                                          tags={{}}
+                                          save_callback={save_user_doc}
+                                          update_callback={update_user_doc}
+                                          delete_callback={delete_user_doc}
+                                          uid={user.uid}
+                                          />, document.getElementById('app_root'));
+
                 }).catch(function(error) {
                   var errorCode = error.code;
                   var errorMessage = error.message;
