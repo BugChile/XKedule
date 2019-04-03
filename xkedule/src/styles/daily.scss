@@ -42,19 +42,19 @@
                 height: 100%;
                 grid-row: 2;
                 font-weight: bold;
-                font-size: 20px;
-                text-overflow: ellipsis;
-                overflow-x: hidden;
-                white-space: nowrap;
+                font-size: 20px;  
                 .centered_container{
                     height: 100%;
-                    widows: 100%;
+                    max-width:400px;
                     display: table-cell;
                     vertical-align: middle;
                     margin-top: 0;
                     margin-bottom: 0;
                     margin-left:0;
                     margin-right:0;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;              
                 }
             }
             .task_date{

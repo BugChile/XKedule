@@ -253,6 +253,17 @@ a:visited{
         color: rgba(18,177,128,0.5);
     }
 }
+.description_event{
+    margin-top: 10px;
+    max-height: 100px;
+    overflow: auto;
+}
+.title_event{
+    word-break: break-all;
+    min-height: 105px;
+    max-height: 105px;
+    overflow-y: auto;
+}
 .placeholder_button{
     position: absolute;
     right: 0;
