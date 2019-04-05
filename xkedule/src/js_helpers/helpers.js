@@ -66,7 +66,11 @@ function onlyUnique(value, index, self) {  // from https://stackoverflow.com/que
 function multiplyReducer(accumulator, currentValue){
     return accumulator * currentValue
 };
-
+function searchOnGoogle(search){
+    // alert(1);
+    window.location.assign('https://www.google.com');
+    // alert(search);
+}
 
 export { stringRange,
          decreasingFunctionCompare,
@@ -75,4 +79,5 @@ export { stringRange,
          onlyUnique,
          multiplyReducer,
          isEmpty,
-         checkTodayFunction};
+         checkTodayFunction,
+         searchOnGoogle};
