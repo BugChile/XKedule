@@ -41,13 +41,29 @@ function checkTodayFunction(current_time, aux_view_time){
     var year_aux = aux_view_time.getFullYear();
     var day = current_time.getDate();
     var month = current_time.getMonth();
-    var year = current_time.getFullYear(); 
+    var year = current_time.getFullYear();
     if (day_aux === day && month_aux === month && year_aux === year) {
         return true;
     }return false;
 }
 // this function returns true if two date ranges overlap
 function checkDateOverlap(a_start, a_end, b_start, b_end){
+    a_start.setSeconds(0);
+    a_start.setMilliseconds(0);
+    a_end.setSeconds(0);
+    a_end.setMilliseconds(0);
+
+    b_start.setSeconds(0);
+    b_start.setMilliseconds(0);
+    b_end.setSeconds(0);
+    b_end.setMilliseconds(0);
+
+    console.log(a_start);
+    console.log(a_end);
+    console.log(b_start);
+    console.log(b_end);
+
+
     // a and b start at the same time
     if (a_start.getTime() === b_start.getTime()) return true;
 

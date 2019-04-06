@@ -570,7 +570,10 @@ class App extends Component {
             this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
         });
         // check if save event is successful
+        // for some reason, it's necessary to set dates manually, if not date
+        // and date_start get set to date_end
         const to_add = {...this.new_event_object, ...{id,
+                                                      date: new Date(date_start),
                                                       date_start: new Date(date_start),
                                                       date_end: new Date(date_end)}};
 
