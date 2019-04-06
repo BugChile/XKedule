@@ -42,6 +42,7 @@ function toDataDate(date, hour){
     data_date.setHours(hour.getHours());
     data_date.setMinutes(hour.getMinutes());
     data_date.setSeconds(0);
+    data_date.setMilliseconds(0);
     return data_date.getTime();
 }
 

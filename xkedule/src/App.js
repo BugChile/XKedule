@@ -601,6 +601,8 @@ class App extends Component {
     deleteEvent(to_delete_event){
         this.props.delete_callback("events", this.props.uid, to_delete_event.id);
         // change tag usage
+
+        // aca esta el bug
         this.new_event_object.tag_ids.forEach((tag_id) => {
             this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
         });
