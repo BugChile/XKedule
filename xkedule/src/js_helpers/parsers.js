@@ -41,6 +41,7 @@ function toDataDate(date, hour){
     var data_date = date;
     data_date.setHours(hour.getHours());
     data_date.setMinutes(hour.getMinutes());
+    data_date.setSeconds(0);
     return data_date.getTime();
 }
 

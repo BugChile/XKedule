@@ -121,10 +121,11 @@ chrome.storage.sync.get(['uid'], function(result) {
 
 // for development:
 import { events, user_tags }  from './js_helpers/dev_data';
+var index = 0;
 ReactDOM.render(<App events={events}
                      tags={user_tags}
-                     save_callback={() => {console.log("save placeholder");return "0"}}
-                     update_callback={() => {console.log("update placeholder");return "0"}}
+                     save_callback={(a,b,c) => {console.log("save placeholder"); index +=1;console.log(b);return `${index}`;}}
+                     update_callback={(a,b,c,d) => {console.log("update placeholder");console.log(b);return d}}
                      delete_callback={() => {console.log("delete placeholder");return "0"}}
                      uid={"uid"}
                      />, document.getElementById('app_root'));

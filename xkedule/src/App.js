@@ -503,22 +503,26 @@ class App extends Component {
     saveNewEvent(){
         // do data check here
         // this is necessary, for some reason without this date_start gets set to date_end
-        const date_start = toDataDate(this.new_event_object.date, this.new_event_object.date_start);
-        const date_end = toDataDate(this.new_event_object.date, this.new_event_object.date_end);
+        const new_event_object = this.new_event_object;
+        const date_start = toDataDate(new_event_object.date, new_event_object.date_start);
+        const date_end = toDataDate(new_event_object.date, new_event_object.date_end);
 
         var to_save = this.getEventSaveForm(date_start, date_end);
         const id = this.props.save_callback("events",
                                         to_save,
                                        this.props.uid);
         // change tag usage
-        this.new_event_object.tag_ids.forEach((tag_id) => {
+        new_event_object.tag_ids.forEach((tag_id) => {
             this.changeTagUsage(this.state.user_tags[tag_id], "increase");
         });
         // check if save event is successful
 
-        var to_add = {...this.new_event_object, ...{id,
-                                                    date_start: new Date(date_start),
-                                                    date_end: new Date(date_end)}};
+        // for some reason, it's necessary to set dates manually, if not date
+        // and date_start get set to date_end
+        var to_add = {...new_event_object, ...{id,
+                                               date: new Date(date_start),
+                                               date_start: new Date(date_start),
+                                               date_end: new Date(date_end)}};
         var to_update_events = this.state.events;
         to_update_events[id] = to_add
 
