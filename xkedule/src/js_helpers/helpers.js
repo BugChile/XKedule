@@ -58,11 +58,6 @@ function checkDateOverlap(a_start, a_end, b_start, b_end){
     b_end.setSeconds(0);
     b_end.setMilliseconds(0);
 
-    console.log(a_start);
-    console.log(a_end);
-    console.log(b_start);
-    console.log(b_end);
-
 
     // a and b start at the same time
     if (a_start.getTime() === b_start.getTime()) return true;
