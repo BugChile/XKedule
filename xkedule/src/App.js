@@ -1,7 +1,6 @@
 /*global chrome*/
 
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import DailyCard from './components/content_layouts/dailyCard'
 import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
@@ -9,8 +8,7 @@ import MainButton from './components/mainButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
 import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
-import {save_event, load_event}  from './js_helpers/data_handling';
-import { toLinkDataModel, toTagIds, toDataDate }  from './js_helpers/parsers';
+import { toDataDate }  from './js_helpers/parsers';
 import { getRepeatsString }  from './js_helpers/rrule_helpers';
 import logo from './assets/logo.svg';
 import './App.css';
@@ -179,11 +177,11 @@ class App extends Component {
     }
 
     setSwitchWeekMonth(mode){
-        if (mode == "weekly") {
+        if (mode === "weekly") {
             this.changeHTMLProperty("switch_to_week", "color", "#FFFFFF")
             this.changeHTMLProperty("switch_to_month", "color", "#333333")
             this.changeHTMLProperty("switch_week_month_button", "left", "0px")
-        } else if (mode == "monthly") {
+        } else if (mode === "monthly") {
             this.changeHTMLProperty("switch_to_week", "color", "#333333")
             this.changeHTMLProperty("switch_to_month", "color", "#FFFFFF")
             this.changeHTMLProperty("switch_week_month_button", "left", "70px")
