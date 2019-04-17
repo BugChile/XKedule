@@ -5,7 +5,7 @@ import MonthlyTaskCard from './monthlyTaskCard'
 import BackToToday from './backToToday'
 import { get_day_occurrence } from '../../js_helpers/rrule_helpers'
 import { dateToWritenDate } from '../../js_helpers/parsers'
-import { checkTodayFunction } from '../../js_helpers/helpers'
+import { checkTodayFunction, eventsFromHashed } from '../../js_helpers/helpers'
 
 export default class MonthlyCard extends React.Component {
     constructor(props){
@@ -30,11 +30,11 @@ export default class MonthlyCard extends React.Component {
         this.onResize = this.onResize.bind(this);
     };
 
-    generateTaskCards(day, events, tasks_per_cell, day_id){
+    generateTaskCards(day, events, hashed_events, tasks_per_cell, day_id){
         // day is a string dd/mm/yyyy
         var task_cards = []
         const day_string = day.toLocaleDateString();
-        const day_events = events[day_string];
+        const day_events = eventsFromHashed(events, hashed_events, day_string);
         if (day_events) {
             day_events.forEach((event) => {
                     task_cards.push(
@@ -51,6 +51,7 @@ export default class MonthlyCard extends React.Component {
                                                  clickEvent={(card, id) =>
                                                                     {this.seeMore(card,
                                                                                   events,
+                                                                                  hashed_events,
                                                                                   day_id)}}
                                                  className="see_more_card"/>);
             }
@@ -72,7 +73,7 @@ export default class MonthlyCard extends React.Component {
 
 
 
-    generateDayCells(aux_view_time, current_time, events, tasks_per_cell){
+    generateDayCells(aux_view_time, current_time, events, hashed_events, tasks_per_cell){
         var day_cells = [];
         // var aux_view_time = new Date();
         const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -109,6 +110,7 @@ export default class MonthlyCard extends React.Component {
             day_id = "monthly_cell"+day_date.getTime()
             day_tasks = this.generateTaskCards(day_date,
                                                events,
+                                               hashed_events,
                                                tasks_per_cell,
                                                day_id);
             day_cells[i] = <MonthlyCardCell day_tasks={day_tasks}
@@ -133,8 +135,8 @@ export default class MonthlyCard extends React.Component {
         return {"main": main_text, "sub": sub_text};
     }
 
-    seeMore(see_more_card, events, day_id){
-        const expanded_tasks = this.generateTaskCards(see_more_card.day, events);
+    seeMore(see_more_card, events, hashed_events, day_id){
+        const expanded_tasks = this.generateTaskCards(see_more_card.day, events, hashed_events);
         const expanded_day = dateToWritenDate(see_more_card.day);
         const expanded_class = "expanded_month_cell visible"
         const expanded = document.getElementById("monthly_cell_expanded");
@@ -151,7 +153,7 @@ export default class MonthlyCard extends React.Component {
 
     }
 
-    closeSeeMore(see_more_card, events, day_id){
+    closeSeeMore(){
         const expanded_tasks = [];
         const expanded_class = "expanded_month_cell hidden"
         this.setState({expanded_tasks, expanded_class});
@@ -205,6 +207,7 @@ export default class MonthlyCard extends React.Component {
                      {this.generateDayCells(this.props.aux_view_time,
                                             this.props.current_time,
                                             this.props.events,
+                                            this.props.hashed_events,
                                             this.state.tasks_per_cell)}
 
                  </div>

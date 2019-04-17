@@ -78,6 +78,14 @@ function multiplyReducer(accumulator, currentValue){
     return accumulator * currentValue
 };
 
+function eventsFromHashed(events, hashed, date){
+    const ids = hashed[date];
+    if (ids){
+        return ids.map(id => events[id]);
+    }
+    return [];
+}
+
 
 export { stringRange,
          decreasingFunctionCompare,
@@ -86,4 +94,5 @@ export { stringRange,
          onlyUnique,
          multiplyReducer,
          isEmpty,
-         checkTodayFunction};
+         checkTodayFunction,
+         eventsFromHashed};

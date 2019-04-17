@@ -140,9 +140,9 @@ class App extends Component {
         for (var key in events) {
             hashed_date = events[key].date_start.toLocaleDateString();
             if (hashed_date in hashed) {
-                hashed[hashed_date].push(events[key])
+                hashed[hashed_date].push(events[key].id)
             } else {
-                hashed[hashed_date] = [events[key]]
+                hashed[hashed_date] = [events[key].id]
             }
         }
         return hashed;
@@ -366,10 +366,11 @@ class App extends Component {
         }
     }
 
-    switchCard(mode, hashed_by_date){
+    switchCard(mode, hashed_by_date, events){
         switch (mode) {
             case "daily":
-            return <DailyCard events={hashed_by_date}
+            return <DailyCard events={events}
+                              hashed_events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
                               clickEvent={this.clickEvent}
@@ -379,7 +380,8 @@ class App extends Component {
                               key={this.state.refresh_aux}
                               clickEventDate={this.clickEventDate}/>;
             case "weekly":
-                return <WeeklyCard events={hashed_by_date}
+                return <WeeklyCard events={events}
+                                   hashed_events={hashed_by_date}
                                    onClickReturn={this.onClickReturn}
                                    aux_view_time={this.state.aux_view_time}
                                    current_time={this.state.current_time}
@@ -387,7 +389,8 @@ class App extends Component {
                                    key={this.state.refresh_aux}
                                    clickEventDate={this.clickEventDate}/>;
             case "monthly":
-                return <MonthlyCard events={hashed_by_date}
+                return <MonthlyCard events={events}
+                                    hashed_events={hashed_by_date}
                                     onClickReturn={this.onClickReturn}
                                     aux_view_time={this.state.aux_view_time}
                                     current_time={this.state.current_time}
@@ -395,7 +398,8 @@ class App extends Component {
                                     key={this.state.refresh_aux}
                                     clickEventDate={this.clickEventDate}/>;
             default:
-                return <DailyCard events={hashed_by_date}
+                return <DailyCard events={events}
+                                  hashed_events={hashed_by_date}
                                   onClickReturn={this.onClickReturn}
                                   aux_view_time={this.state.aux_view_time}
                                   current_time={this.state.current_time}
@@ -412,7 +416,7 @@ class App extends Component {
 
         // Main card:
         var content_container_components = []
-        content_container_components.push(this.switchCard(this.state.mode, hashed_by_date))
+        content_container_components.push(this.switchCard(this.state.mode, hashed_by_date, events))
 
         // Switch button for week and month
         if (mode != "daily") {

@@ -3,7 +3,7 @@ import HeaderDate from './headerDate'
 import WeekCardDayHeaders from './weekCardDayHeaders'
 import WeeklyTaskCard from './weeklyTaskCard'
 import BackToToday from './backToToday'
-import { checkTodayFunction } from '../../js_helpers/helpers'
+import { checkTodayFunction, eventsFromHashed } from '../../js_helpers/helpers'
 
 
 export default class WeeklyCard extends React.Component {
@@ -22,10 +22,10 @@ export default class WeeklyCard extends React.Component {
         return document.getElementById("content").clientHeight - 80;
     }
 
-  generateTaskCards(day, events, aux_view_time, max_task_container_height){
+  generateTaskCards(day, events, hashed_events, aux_view_time, max_task_container_height){
       // day is a Date object
       var task_cards = []
-      const day_events = events[day.toLocaleDateString()];
+      const day_events = eventsFromHashed(events, hashed_events, day.toLocaleDateString());
       var day_number = day.getDay();
       if (day_number === 0) {
           day_number = 7;
@@ -48,7 +48,7 @@ export default class WeeklyCard extends React.Component {
   }
 
 
-  generateDayCells(aux_view_time, current_time, events, max_task_container_height){
+  generateDayCells(aux_view_time, current_time, events, hashed_events, max_task_container_height){
       var day_name_cells = [];
       var week_tasks = [];
       var day_cell_class;
@@ -69,7 +69,7 @@ export default class WeeklyCard extends React.Component {
                                                          {day:"2-digit", month:"2-digit", year:"numeric"})}
                                              card_key = {"week_card_day_header"+i} />
 
-          week_tasks.push(this.generateTaskCards(day_date, events, aux_view_time, max_task_container_height));
+          week_tasks.push(this.generateTaskCards(day_date, events, hashed_events, aux_view_time, max_task_container_height));
 
           day_date.setDate(day_date.getDate() + 1);
       }
@@ -143,6 +143,7 @@ export default class WeeklyCard extends React.Component {
                   {this.generateDayCells(this.props.aux_view_time,
                                          this.props.current_time,
                                          this.props.events,
+                                         this.props.hashed_events,
                                          this.state.max_task_container_height)}
 
               </div>
