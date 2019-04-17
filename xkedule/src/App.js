@@ -366,7 +366,7 @@ class App extends Component {
         }
     }
 
-    switchCard(mode, hashed_by_date, events){
+    switchCard(mode, events, hashed_by_date){
         switch (mode) {
             case "daily":
             return <DailyCard events={events}
@@ -416,7 +416,7 @@ class App extends Component {
 
         // Main card:
         var content_container_components = []
-        content_container_components.push(this.switchCard(this.state.mode, hashed_by_date, events))
+        content_container_components.push(this.switchCard(this.state.mode, events, hashed_by_date))
 
         // Switch button for week and month
         if (mode != "daily") {
@@ -460,7 +460,7 @@ class App extends Component {
     //CALLBACKS (should only call above functions)
 
     expand(){
-        if (this.state.mode == "daily") {
+        if (this.state.mode === "daily") {
             this.changeMode("weekly");
             this.expandContentContainer();
             this.switchWeekMonth();
@@ -472,10 +472,10 @@ class App extends Component {
     }
 
     switchWeekMonth(){
-        if (this.state.mode == "monthly") {
+        if (this.state.mode === "monthly") {
             this.changeMode("weekly");
             this.setSwitchWeekMonth("weekly")
-        } else if (this.state.mode == "weekly"){
+        } else if (this.state.mode === "weekly"){
             this.changeMode("monthly");
             this.setSwitchWeekMonth("monthly")
         }
@@ -530,17 +530,18 @@ class App extends Component {
         var to_update_events = this.state.events;
         to_update_events[id] = to_add
 
-        var to_update_hashed = this.state.hashed_by_date;
+        var { hashed_by_date } = this.state;
         const hashed_date = to_add.date_start.toLocaleDateString();
-        if (hashed_date in to_update_hashed) {
-            to_update_hashed[hashed_date].push(to_add)
+        if (hashed_date in hashed_by_date) {
+            hashed_by_date[hashed_date].push(id)
         } else {
-            to_update_hashed[hashed_date] = [to_add]
+            hashed_by_date[hashed_date] = [id]
         }
+        console.log(hashed_by_date);
 
 
 
-        this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
+        this.setState({events: to_update_events, hashed_by_date});
         this.closeEventForm();
         // add confirmation
         return id;
@@ -583,23 +584,23 @@ class App extends Component {
 
         var to_update_events = Object.assign({}, this.state.events);
         to_update_events[id] = to_add;
-        var to_update_hashed = Object.assign({}, this.state.hashed_by_date);
+        var hashed_by_date = Object.assign({}, this.state.hashed_by_date);
         const previous_hashed_date = previous_date.toLocaleDateString();
         const hashed_date = to_add.date_start.toLocaleDateString();
         var index = 0;
-        to_update_hashed[previous_hashed_date].forEach((_event) => {
-            if (_event.id === id) {
-                to_update_hashed[previous_hashed_date].splice(index, 1);
+        hashed_by_date[previous_hashed_date].forEach((hashed_id) => {
+            if (hashed_id === id) {
+                hashed_by_date[previous_hashed_date].splice(index, 1);
             }
             index += 1;
         });
-        if (hashed_date in to_update_hashed) {
-            to_update_hashed[hashed_date].push(to_add)
+        if (hashed_date in hashed_by_date) {
+            hashed_by_date[hashed_date].push(id)
         } else {
-            to_update_hashed[hashed_date] = [to_add]
+            hashed_by_date[hashed_date] = [id]
         }
 
-        this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
+        this.setState({events: to_update_events, hashed_by_date});
         this.closeEventForm();
         // add confirmation
         return id;
@@ -616,16 +617,16 @@ class App extends Component {
         // add confirmation
 
         //then
-        var to_update_hashed = Object.assign({}, this.state.hashed_by_date);
+        var hashed_by_date = Object.assign({}, this.state.hashed_by_date);
         const hashed_date = to_delete_event.date_start.toLocaleDateString();
         var index = 0;
-        to_update_hashed[hashed_date].forEach((aux_event) => {
-            if (aux_event.id === to_delete_event.id) {
-                to_update_hashed[hashed_date].splice(index, 1);
+        hashed_by_date[hashed_date].forEach((hashed_id) => {
+            if (hashed_id === to_delete_event.id) {
+                hashed_by_date[hashed_date].splice(index, 1);
             }
             index += 1;
         });
-        this.setState({hashed_by_date: to_update_hashed});
+        this.setState({hashed_by_date});
         this.closeEvent();
         return to_delete_event.id;
     }
