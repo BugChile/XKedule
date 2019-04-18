@@ -1,5 +1,7 @@
 .daily_tasks{
-    margin: 30px 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 100%;
     display: grid;
     grid-template-columns: 2fr 1fr 20fr;
     grid-template-rows: 1440px;
@@ -9,6 +11,8 @@
         grid-area: 1 / 1 / 2 / 2;
         .hour-tick{
             margin-top: -7px;
+            padding-left: 10px;
+            padding-right: 5px;
             font-size: 15px;
             color: #545454;
         }

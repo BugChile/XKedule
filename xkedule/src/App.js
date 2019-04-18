@@ -316,36 +316,36 @@ class App extends Component {
 
     expandContentContainer(){
         document.getElementById("main_button_container").classList.add("reversed");
-        document.getElementById("main_button_container").style.left = "1250px";
-        document.getElementById("content_container").style.width = "1300px";
+        document.getElementById("main_button_container").style.left = "calc(80% - 50px)";
+        document.getElementById("content_container").style.width = "80%";
         document.getElementById("content_container").style.left = "0px";
-        document.getElementById("creation_container").style.width = "1300px";
+        document.getElementById("creation_container").style.width = "80%";
     }
 
     shrinkContentContainer(){
         document.getElementById("main_button_container").classList.remove("reversed");
-        document.getElementById("main_button_container").style.left = "550px";
-        document.getElementById("content_container").style.width = "600px";
+        document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
+        document.getElementById("content_container").style.width = "35%";
         document.getElementById("content_container").style.left = "0px";
-        document.getElementById("creation_container").style.width = "600px";
+        document.getElementById("creation_container").style.width = "35%";
 
     }
 
     showSmallCreationCard(){
         document.getElementById("main_button_container").classList.add("full_loop");
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "1000px";
-            document.getElementById("main_button_container").style.left = "950px";
+            document.getElementById("creation_container").style.width = "calc(80% - 380px)";
+            document.getElementById("main_button_container").style.left = "calc(80% - 430px)";
         } else {
-            document.getElementById("content_container").style.left = "-400px";
+            document.getElementById("content_container").style.left = "calc(-450px)";
         }
     }
 
     hideSmallCreationCard(){
         document.getElementById("main_button_container").classList.remove("full_loop");
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "600px";
-            document.getElementById("main_button_container").style.left = "550px";
+            document.getElementById("creation_container").style.width = "35%";
+            document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
         } else {
             document.getElementById("content_container").style.left = "0px";
         }
@@ -355,11 +355,11 @@ class App extends Component {
         document.getElementById("main_button_container").classList.add("full_loop");
         this.setMainButtonIcon("save")
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "1300px";
-            document.getElementById("main_button_container").style.left = "1250px";
-            document.getElementById("content_container").style.left = "-400px";
+            document.getElementById("creation_container").style.width = "80%";
+            document.getElementById("main_button_container").style.left = "calc(80% - 50px)";
+            document.getElementById("content_container").style.left = "calc(-450px)";
         } else {
-            document.getElementById("content_container").style.left = "-1100px";
+            document.getElementById("content_container").style.left = "calc(-450px)";
         }
     }
 
@@ -367,8 +367,8 @@ class App extends Component {
         document.getElementById("main_button_container").classList.remove("full_loop");
         this.setMainButtonIcon("expand")
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "600px";
-            document.getElementById("main_button_container").style.left = "550px";
+            document.getElementById("creation_container").style.width = "35%";
+            document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
             document.getElementById("content_container").style.left = "0px";
         } else {
             document.getElementById("content_container").style.left = "0px";

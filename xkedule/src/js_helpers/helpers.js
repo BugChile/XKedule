@@ -67,9 +67,7 @@ function multiplyReducer(accumulator, currentValue){
     return accumulator * currentValue
 };
 function searchOnGoogle(search){
-    // alert(1);
-    window.location.assign('https://www.google.com');
-    // alert(search);
+    alert(search);
 }
 
 export { stringRange,

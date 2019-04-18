@@ -127,7 +127,7 @@ import { events, user_tags }  from './js_helpers/dev_data';
 ReactDOM.render(<App events={events}
                      tags={user_tags}
                      save_callback={() => {console.log("save placeholder");return "0"}}
-                     update_callback={() => {console.log("update placeholder");return "0"}}
+                     update_callback={(a,b,c,d) => {console.log("update placeholder");return d}}
                      delete_callback={() => {console.log("delete placeholder");return "0"}}
                      uid={"uid"}
                      />, document.getElementById('app_root'));
