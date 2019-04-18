@@ -334,10 +334,10 @@ class App extends Component {
     showSmallCreationCard(){
         document.getElementById("main_button_container").classList.add("full_loop");
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "calc(80% - 380px)";
-            document.getElementById("main_button_container").style.left = "calc(80% - 430px)";
+            document.getElementById("creation_container").style.width = "calc(35% + 415px)";
+            document.getElementById("main_button_container").style.left = "calc(35% + 365px)";
         } else {
-            document.getElementById("content_container").style.left = "calc(-450px)";
+            document.getElementById("content_container").style.left = "calc(-415px)";
         }
     }
 
@@ -357,9 +357,9 @@ class App extends Component {
         if (this.state.mode === "daily") {
             document.getElementById("creation_container").style.width = "80%";
             document.getElementById("main_button_container").style.left = "calc(80% - 50px)";
-            document.getElementById("content_container").style.left = "calc(-450px)";
+            document.getElementById("content_container").style.left = "calc(-415px)";
         } else {
-            document.getElementById("content_container").style.left = "calc(-450px)";
+            document.getElementById("content_container").style.left = "calc(-415px)";
         }
     }
 
