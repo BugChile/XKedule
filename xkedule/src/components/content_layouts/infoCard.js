@@ -47,7 +47,8 @@ export default class InfoCard extends React.Component {
 
 
             </div>
-            <h3>Event: {this.props.event.title}</h3>
+            <h3 className="title_event">Event: {this.props.event.title}</h3>
+            <p className="description_event">{this.props.event.description}</p>
             <h5>{this.props.event.date_start.toDateString()},</h5>
             <h4> {this.props.event.date_start.toLocaleTimeString('en-GB', {hour: "2-digit", minute: "2-digit"})}<span>  -  </span> {this.props.event.date_end.toLocaleTimeString('en-GB', {hour: "2-digit", minute: "2-digit"})}</h4>
             {this.generateLinkComponent(this.props.links)}

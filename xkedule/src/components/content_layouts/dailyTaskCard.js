@@ -17,7 +17,9 @@ export default class DailyTaskCard extends React.Component {
              title={this.props.event.title}
              onClick={()=> this.props.clickEvent(this.props.event, card_id)}>
               <div className="task_title">
-                  {this.props.event.title}
+              <div className="centered_container">
+              {this.props.event.title}
+              </div>
               </div>
               <div className="task_date">
                   {this.props.event.date_start.toLocaleTimeString('en-GB', {hour: "2-digit", minute: "2-digit"})}

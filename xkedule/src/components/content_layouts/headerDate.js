@@ -17,9 +17,10 @@ export default class HeaderDate extends React.Component {
   render() {
       return(
           [<div className="text_bold_title color_text" key="date_indicator1">
+          <div className="space_between_arrows">
           <PrevDateArrow clickEventDate={this.props.clickEventDate} length={this.props.date["main"].split(" ").length} />
-              {this.props.date["main"]} 
-              <NextDateArrow clickEventDate={this.props.clickEventDate} length={this.props.date["main"].split(" ").length} />
+              <span>{this.props.date["main"]}</span> 
+              <NextDateArrow clickEventDate={this.props.clickEventDate} length={this.props.date["main"].split(" ").length} /></div>
           </div>,
           <div className="text_30" key="date_indicator2">
               {this.props.date["sub"]}

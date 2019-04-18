@@ -98,7 +98,7 @@ select {
     //calendar input
     .input_calendar {
         position: relative;
-        z-index: 1;
+        z-index: 11;
         border: none;
         border-radius: 10px;
         font-family: "Lato", sans-serif;
@@ -147,7 +147,7 @@ select {
                     background: none;
                     color: black;
                     abbr {
-                        z-index: 4;
+                        z-index: 41;
                         position: relative;
                     }
 
@@ -164,7 +164,7 @@ select {
                                 position: relative;
                                 top: -23px;
                                 left: -2.5px;
-                                z-index: 3;
+                                z-index: 31;
                             }
                     }
                     &.react-calendar__tile:disabled{
@@ -180,7 +180,7 @@ select {
                             position: relative;
                             top: -23px;
                             left: -2.5px;
-                            z-index: 3;
+                            z-index: 31;
                         }
                 }
 
@@ -251,7 +251,7 @@ select {
     // tag tool
     .tag_tool {
         position: relative;
-        z-index: 1;
+        z-index: 11;
         border-radius: 10px;
         padding: 10px;
         background-color: white;
@@ -315,7 +315,7 @@ select {
     // link tool
     .link_tool{
         position: relative;
-        z-index: 1;
+        z-index: 11;
         border-radius: 10px;
         padding: 10px;
         background-color: white;
@@ -338,7 +338,7 @@ select {
     // repeat tool
     .repeat_tool{
         position: relative;
-        z-index: 1;
+        z-index: 11;
         border-radius: 10px;
         padding: 10px;
         background-color: white;
@@ -386,7 +386,7 @@ select {
 
             .select_options_container{
                 position: relative;
-                z-index: 2;
+                z-index: 21;
                 background-color: #D4D4D4;
                 grid-auto-rows: 30px;
                 align-items: center;
@@ -423,7 +423,7 @@ select {
             background-color: #D4D4D4;
             border-radius: 10px;
             position: relative;
-            z-index: 2;
+            z-index: 21;
             display: grid;
             grid-row-gap: 10px;
             align-items: center;
@@ -459,7 +459,7 @@ select {
 
                         div{
                             position: relative;
-                            z-index: 2;
+                            z-index: 21;
                             justify-self:center;
                         }
 
@@ -470,7 +470,7 @@ select {
                             width: 27px;
                             height: 27px;
                             position: relative;
-                            z-index: 1;
+                            z-index: 11;
                             top: -22px;
                             left: 1px;
                         }
@@ -485,7 +485,7 @@ select {
                                 width: 27px;
                                 height: 27px;
                                 position: relative;
-                                z-index: 1;
+                                z-index: 11;
                                 top: -22px;
                                 left: 1px;
                             }
@@ -530,7 +530,7 @@ select {
                         min-width: 20px;
                         padding: 0 5px;;
                         position: relative;
-                        z-index: 4;
+                        z-index: 41;
                     }
                 }
             }
@@ -551,7 +551,7 @@ select {
 
                 .select_options_container{
                     background-color: #4F4F4F;
-                    z-index: 3;
+                    z-index: 31;
 
                     .select_option:hover{
                             color: #343434;

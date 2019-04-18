@@ -1,10 +1,10 @@
 .monthly_schedule{
     margin: 0px 0px;
     display: grid;
-    grid-template-columns: repeat(7, 183px);
+    grid-template-columns: repeat(7, calc((100%)/7));
     grid-auto-rows: 2fr;
     border-top: 2px solid #FFFFFF;
-    width: 1282px;
+    width: 100%;
     height: 99%;
 
 }
@@ -28,7 +28,7 @@
         display: grid;
         grid-template-columns: auto 28px;
         height: 24px;
-        margin: 1px 6px 0px 6px;
+        margin: 1px 6px 4px 6px;
         .day_cell_number{
             text-align: center;
             grid-column-start: 2;
@@ -72,6 +72,9 @@
 .day_cell_task_container{
     display: grid;
     justify-content: center;
+    max-height: 200px;
+    width: 100%;
+    overflow: auto;
 }
 
 
@@ -108,7 +111,7 @@
 }
 
 .monthly_task_card{
-    width: 170px;
+    width: calc(72vw  / 7 );
     height: 20px;
     border-radius: 5px;
     margin-bottom: 2px;
@@ -125,6 +128,7 @@
         margin-top: 2px;
         margin-left: 3px;
         color: #4f4f4f;
+        max-width: 100%;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -140,3 +144,4 @@
 
     }
 }
+

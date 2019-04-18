@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -15,8 +16,8 @@
     -->
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-firestore.js"></script>
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-firestore.js"></script> 
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> 
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -26,7 +27,6 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
 
     <link rel='stylesheet'
           href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
@@ -36,12 +36,14 @@
     <title>XKedule</title>
   </head>
   <body>
-      <div class="background">
-          <img id="background_image">
-      </div>
+     <div class="background"></div>
       <div id="app_root">
 
-      </div>
-  </body>
+      </div> 
+      <div class="centered_container_search">
+              <div id="search_box">
+              </div>
 
+    </div>
+  </body>
 </html>

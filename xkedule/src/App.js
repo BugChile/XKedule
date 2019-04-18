@@ -16,6 +16,10 @@ import logo from './assets/logo.svg';
 import './App.css';
 
 
+// development
+import { events, user_tags }  from './js_helpers/dev_data';
+import DayMonth from './components/content_layouts/dayMonth';
+
 class App extends Component {
     constructor(props){
         super(props)
@@ -89,6 +93,7 @@ class App extends Component {
         this.changeTagUsage = this.changeTagUsage.bind(this);
         this.linkEvent = this.linkEvent.bind(this);
         this.clickEventDate = this.clickEventDate.bind(this);
+        this.onClickDay = this.onClickDay.bind(this);
         // this.onClickAnywhereEvent = this.onClickAnywhereEvent.bind(this);
 
         //LIFE CYCLE
@@ -209,8 +214,8 @@ class App extends Component {
                 case 4:
                     date.setDate(this.state.aux_view_time.getDate() - 7);
                     break;
-                case 5:
-                    date.setDate(this.state.aux_view_time.getDate() + 7);
+                case 5: 
+                    date.setDate(this.state.aux_view_time.getDate() - 7);
                     break;
                 case 1:
                     date.setMonth(this.state.aux_view_time.getMonth() - 1);
@@ -278,6 +283,10 @@ class App extends Component {
                       eventInfoCardTop:top,
                       linkComponent:null})
     }
+    onClickDay(day){
+        this.setState({aux_view_time:day, mode:"daily"})
+            this.expand();
+    }
     linkEvent(){
         (this.state.linkComponent)? this.setState({linkComponent:null}): this.setState({linkComponent:true});
     }
@@ -307,36 +316,36 @@ class App extends Component {
 
     expandContentContainer(){
         document.getElementById("main_button_container").classList.add("reversed");
-        document.getElementById("main_button_container").style.left = "1250px";
-        document.getElementById("content_container").style.width = "1300px";
+        document.getElementById("main_button_container").style.left = "calc(80% - 50px)";
+        document.getElementById("content_container").style.width = "80%";
         document.getElementById("content_container").style.left = "0px";
-        document.getElementById("creation_container").style.width = "1300px";
+        document.getElementById("creation_container").style.width = "80%";
     }
 
     shrinkContentContainer(){
         document.getElementById("main_button_container").classList.remove("reversed");
-        document.getElementById("main_button_container").style.left = "550px";
-        document.getElementById("content_container").style.width = "600px";
+        document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
+        document.getElementById("content_container").style.width = "35%";
         document.getElementById("content_container").style.left = "0px";
-        document.getElementById("creation_container").style.width = "600px";
+        document.getElementById("creation_container").style.width = "35%";
 
     }
 
     showSmallCreationCard(){
         document.getElementById("main_button_container").classList.add("full_loop");
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "1000px";
-            document.getElementById("main_button_container").style.left = "950px";
+            document.getElementById("creation_container").style.width = "calc(80% - 380px)";
+            document.getElementById("main_button_container").style.left = "calc(80% - 430px)";
         } else {
-            document.getElementById("content_container").style.left = "-400px";
+            document.getElementById("content_container").style.left = "calc(-450px)";
         }
     }
 
     hideSmallCreationCard(){
         document.getElementById("main_button_container").classList.remove("full_loop");
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "600px";
-            document.getElementById("main_button_container").style.left = "550px";
+            document.getElementById("creation_container").style.width = "35%";
+            document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
         } else {
             document.getElementById("content_container").style.left = "0px";
         }
@@ -346,11 +355,11 @@ class App extends Component {
         document.getElementById("main_button_container").classList.add("full_loop");
         this.setMainButtonIcon("save")
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "1300px";
-            document.getElementById("main_button_container").style.left = "1250px";
-            document.getElementById("content_container").style.left = "-400px";
+            document.getElementById("creation_container").style.width = "80%";
+            document.getElementById("main_button_container").style.left = "calc(80% - 50px)";
+            document.getElementById("content_container").style.left = "calc(-450px)";
         } else {
-            document.getElementById("content_container").style.left = "-1100px";
+            document.getElementById("content_container").style.left = "calc(-450px)";
         }
     }
 
@@ -358,8 +367,8 @@ class App extends Component {
         document.getElementById("main_button_container").classList.remove("full_loop");
         this.setMainButtonIcon("expand")
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "600px";
-            document.getElementById("main_button_container").style.left = "550px";
+            document.getElementById("creation_container").style.width = "35%";
+            document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
             document.getElementById("content_container").style.left = "0px";
         } else {
             document.getElementById("content_container").style.left = "0px";
@@ -385,6 +394,7 @@ class App extends Component {
                                    current_time={this.state.current_time}
                                    clickEvent={this.clickEvent}
                                    key={this.state.refresh_aux}
+                                   onClickDay = {this.onClickDay}
                                    clickEventDate={this.clickEventDate}/>;
             case "monthly":
                 return <MonthlyCard events={hashed_by_date}
@@ -393,7 +403,8 @@ class App extends Component {
                                     current_time={this.state.current_time}
                                     clickEvent={this.clickEvent}
                                     key={this.state.refresh_aux}
-                                    clickEventDate={this.clickEventDate}/>;
+                                    clickEventDate={this.clickEventDate}
+                                    onClickDay={this.onClickDay}/>;
             default:
                 return <DailyCard events={hashed_by_date}
                                   onClickReturn={this.onClickReturn}
