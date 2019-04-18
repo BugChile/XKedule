@@ -145,3 +145,14 @@
     }
 }
 
+
+@media only screen and (max-width: 1050px){
+    .day_cell_name, .day_cell_number{
+        font-size: 14px;
+    }
+}
+@media only screen and (max-width: 950px){
+    .day_cell_name, .day_cell_number{
+        font-size: 12px;
+    }
+}
