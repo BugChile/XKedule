@@ -170,7 +170,8 @@ a:visited{
         position: absolute;
         width: 75px;
         height: inherit;
-        margin-top:8px;
+        margin-top:7px;
+        font-weight: bolder;
         color: #FFFFFF;
         transition: color 0.5s;
 
@@ -180,7 +181,8 @@ a:visited{
         width: 75px;
         left: 75px;
         height: inherit;
-        margin-top:8px;
+        font-weight: bolder;
+        margin-top:7px;
         transition: color 0.5s;
     }
     .switch_week_month_background{
@@ -277,8 +279,8 @@ a:visited{
     bottom: 15px;
     z-index: 40;
     padding: 15px;
-    height: 30px;
-    width: 30px;
+    height: 60px;
+    width: 60px;
     border-radius: 50%;
     background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
     cursor: pointer;
