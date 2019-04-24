@@ -67,7 +67,7 @@ export default class MonthlyCard extends React.Component {
         const week_count = get_day_occurrence(new Date(this.props.aux_view_time.getFullYear(),
                                                        next_month,
                                                        0)); //number of weeks on this month
-        const cell_height = (document.getElementById("content").clientHeight / week_count) - 30;
+        const cell_height = (document.getElementById("content").clientHeight / week_count) - 40;
         return Math.floor(cell_height / 20);
     }
 

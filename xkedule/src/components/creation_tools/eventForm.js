@@ -25,7 +25,7 @@ export default class EventForm extends React.Component {
           description: "",
           date: new Date(),
           from: new Date(),
-          to: new Date(),
+          to: new Date(new Date().getTime() + 3600000),
           repeat_rrule: "Never",
           eventTags: {},
           eventLinks: {},
@@ -233,111 +233,116 @@ export default class EventForm extends React.Component {
 
   render() {
       return(
-          <div id = "event_form" className="event_form" key="event_form">
-              <div  className="event_form_whole_row right_aligned_text">
-                    <span id="event_form_discard"
-                          onClick={this.props.close_event_form}>
-                    Undo changes
-                    </span>
+          <div className='height100'>
+              <div className="right_aligned_text">
+              <span id="event_form_discard"
+                    className="right_aligned_text"
+                    onClick={this.props.close_event_form}>
+                        Cancel
+              </span>
               </div>
-              <div className="event_form_input_gap"></div>
-              <span> title: </span>
-              <TextLineInput
-                value={this.state.title}
-                onChange={this.setTitle}
-                className="event_form_big_input grey_tag"
-                enter_key_submit
-              />
-              <div className="event_form_input_gap"></div>
 
-              <span> description: </span>
-              <textarea
-                value={this.state.description}
-                onChange={(event) => {this.setDescription(event.target.value)}}
-                className="event_form_big_input grey_tag"
-              ></textarea>
-              <div className="event_form_input_gap"></div>
-
-              <span> date: </span>
-              <OnOffInputContainer
-                on_component_value={this.state.date}
-                on_component_save={this.setDate}
-                on_component={Calendar}
-                value_to_summary={dateToWritenDate}
-                off_component={SimpleInputOffState}
-                container_style='event_form_big_input grey_tag event_form_on_off'
-                on_component_props={{minDate: this.props.aux_view_time,
-                                     className: "input_calendar"}}
-                submit_on_change
-              />
-              <div className="event_form_input_gap"></div>
-
-              <span> from: </span>
-              <OnOffInputContainer
-                on_component_value={this.state.from}
-                on_component_save={this.setFromHourMinute}
-                on_component={HourMinuteInput}
-                value_to_summary={dateToHourMinute}
-                off_component={SimpleInputOffState}
-                container_style='event_form_small_input grey_tag event_form_on_off'
-              />
-
-              <span> to: </span>
-              <OnOffInputContainer
-                on_component_value={this.state.to}
-                on_component_save={this.setToHourMinute}
-                on_component={HourMinuteInput}
-                value_to_summary={dateToHourMinute}
-                off_component={SimpleInputOffState}
-                container_style='event_form_small_input grey_tag event_form_on_off'
-              />
-              <div className="event_form_input_gap"></div>
-
-              <span> repeat: </span>
-              <OnOffInputContainer
-                  on_component_value={this.state.repeat_rrule}
-                  on_component_save={this.setRepeatRRule}
-                  on_component={RepeatTool}
-                  off_component={SimpleInputOffState}
-                  container_style='event_form_big_input grey_tag event_form_on_off'
-                  on_component_props={{className: "repeat_tool", event_date: this.state.date}}
-                  value_to_summary={(value) => {return capitalizeFirstLetter(getRepeatsSummary(value))}}
-                 />
-              <div className="event_form_input_gap"></div>
-
-
-
-              <span> tags: </span>
-             {this.getEventTagDivs(this.state.eventTags)}
-             <OnOffInputContainer
-                 on_component_value={this.state.eventTags}
-                 on_component_save={this.addEventTag}
-                 on_component={TagTool}
-                 off_component={SimpleInputOffState}
-                 container_style='event_form_big_input grey_tag event_form_on_off'
-                 on_component_props={{className: "tag_tool",
-                                      user_tags: this.props.user_tags,
-                                      onCreateNewTag: this.createAndAddNewTag,
-                                      delete_tag_callback: this.props.delete_tag_callback}}
-                off_text="+ Add tags"
+            <div className='event_form_container'>
+            <div id = "event_form" className="event_form" key="event_form">
+                <div className="event_form_input_gap"></div>
+                <span> title: </span>
+                <TextLineInput
+                    value={this.state.title}
+                    onChange={this.setTitle}
+                    className="event_form_big_input grey_tag"
+                    enter_key_submit
                 />
                 <div className="event_form_input_gap"></div>
 
+                <span> description: </span>
+                <textarea
+                    value={this.state.description}
+                    onChange={(event) => {this.setDescription(event.target.value)}}
+                    className="event_form_big_input grey_tag"
+                ></textarea>
+                <div className="event_form_input_gap"></div>
 
-                <span> links: </span>
-                    {this.getEventLinkDivs(this.state.eventLinks)}
-                    <OnOffInputContainer
-                        on_component_value={this.state.eventLinks}
-                        on_component_save={this.addEventLink}
-                        on_component={LinkTool}
-                        off_component={SimpleInputOffState}
-                        container_style='event_form_big_input grey_tag event_form_on_off'
-                        on_component_props={{className: "link_tool",
-                                             }}
-                       off_text="+ Add links"
-                       />
+                <span> date: </span>
+                <OnOffInputContainer
+                    on_component_value={this.state.date}
+                    on_component_save={this.setDate}
+                    on_component={Calendar}
+                    value_to_summary={dateToWritenDate}
+                    off_component={SimpleInputOffState}
+                    container_style='event_form_big_input grey_tag event_form_on_off'
+                    on_component_props={{minDate: new Date(),
+                                        className: "input_calendar"}}
+                    submit_on_change
+                />
+                <div className="event_form_input_gap"></div>
+
+                <span> from: </span>
+                <OnOffInputContainer
+                    on_component_value={this.state.from}
+                    on_component_save={this.setFromHourMinute}
+                    on_component={HourMinuteInput}
+                    value_to_summary={dateToHourMinute}
+                    off_component={SimpleInputOffState}
+                    container_style='event_form_small_input grey_tag event_form_on_off'
+                />
+
+                <span> to: </span>
+                <OnOffInputContainer
+                    on_component_value={this.state.to}
+                    on_component_save={this.setToHourMinute}
+                    on_component={HourMinuteInput}
+                    value_to_summary={dateToHourMinute}
+                    off_component={SimpleInputOffState}
+                    container_style='event_form_small_input grey_tag event_form_on_off'
+                />
+                <div className="event_form_input_gap"></div>
+
+                <span> repeat: </span>
+                <OnOffInputContainer
+                    on_component_value={this.state.repeat_rrule}
+                    on_component_save={this.setRepeatRRule}
+                    on_component={RepeatTool}
+                    off_component={SimpleInputOffState}
+                    container_style='event_form_big_input grey_tag event_form_on_off'
+                    on_component_props={{className: "repeat_tool", event_date: this.state.date}}
+                    value_to_summary={(value) => {return capitalizeFirstLetter(getRepeatsSummary(value))}}
+                    />
+                <div className="event_form_input_gap"></div>
 
 
+
+                <span> tags: </span>
+                {this.getEventTagDivs(this.state.eventTags)}
+                <OnOffInputContainer
+                    on_component_value={this.state.eventTags}
+                    on_component_save={this.addEventTag}
+                    on_component={TagTool}
+                    off_component={SimpleInputOffState}
+                    container_style='event_form_big_input grey_tag event_form_on_off'
+                    on_component_props={{className: "tag_tool",
+                                        user_tags: this.props.user_tags,
+                                        onCreateNewTag: this.createAndAddNewTag,
+                                        delete_tag_callback: this.props.delete_tag_callback}}
+                    off_text="+ Add tags"
+                    />
+                    <div className="event_form_input_gap"></div>
+
+
+                    <span> links: </span>
+                        {this.getEventLinkDivs(this.state.eventLinks)}
+                        <OnOffInputContainer
+                            on_component_value={this.state.eventLinks}
+                            on_component_save={this.addEventLink}
+                            on_component={LinkTool}
+                            off_component={SimpleInputOffState}
+                            container_style='event_form_big_input grey_tag event_form_on_off'
+                            on_component_props={{className: "link_tool",
+                                                }}
+                        off_text="+ Add links"
+                        />
+
+            </div>
+            </div>
           </div>
     )
   }

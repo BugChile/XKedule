@@ -10,15 +10,7 @@ export default class SearchContainer extends React.Component {
             current_search:"",
         }
 
-        this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
-    }
-    onSubmit(){
-        if (this.state.current_search){
-            return searchOnGoogle(this.state.current_search);
-        }else{
-            alert(1);
-        }
     }
     onChange(event){
         this.setState({current_search:event.target.value});
@@ -30,7 +22,7 @@ export default class SearchContainer extends React.Component {
         return (
          <div className="search_container">
              
-            <SearchBar onSubmit={this.onSubmit} onChange={this.onChange}/>
+            <SearchBar onChange={this.onChange} search={this.state.current_search}/>
 
          </div>   
         )

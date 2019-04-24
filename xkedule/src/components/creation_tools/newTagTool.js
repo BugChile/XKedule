@@ -84,7 +84,7 @@ export default class NewTagTool extends React.PureComponent {
                       </div>
                       <a className="clickable_anchor"
                            onClick={this.props.doneEditing}>
-                          Done
+                          Cancel
                       </a>
                   </div>
 

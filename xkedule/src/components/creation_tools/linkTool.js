@@ -64,7 +64,7 @@ export default class LinkTool extends React.Component {
                       </div>
                       <a className="clickable_anchor"
                            onClick={this.props.doneEditing}>
-                          Done
+                          Cancel
                       </a>
                   </div>
               </div>

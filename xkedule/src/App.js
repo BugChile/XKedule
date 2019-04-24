@@ -285,7 +285,8 @@ class App extends Component {
     }
     onClickDay(day){
         this.setState({aux_view_time:day, mode:"daily"})
-            this.expand();
+        this.closeEventForm();
+        this.expand();
     }
     linkEvent(){
         (this.state.linkComponent)? this.setState({linkComponent:null}): this.setState({linkComponent:true});
@@ -316,7 +317,7 @@ class App extends Component {
 
     expandContentContainer(){
         document.getElementById("main_button_container").classList.add("reversed");
-        document.getElementById("main_button_container").style.left = "calc(80% - 50px)";
+        document.getElementById("main_button_container").classList.add("main_button_container_expanded_width");
         document.getElementById("content_container").style.width = "80%";
         document.getElementById("content_container").style.left = "0px";
         document.getElementById("creation_container").style.width = "80%";
@@ -324,7 +325,7 @@ class App extends Component {
 
     shrinkContentContainer(){
         document.getElementById("main_button_container").classList.remove("reversed");
-        document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
+        document.getElementById("main_button_container").classList.remove("main_button_container_expanded_width");
         document.getElementById("content_container").style.width = "35%";
         document.getElementById("content_container").style.left = "0px";
         document.getElementById("creation_container").style.width = "35%";
@@ -334,8 +335,9 @@ class App extends Component {
     showSmallCreationCard(){
         document.getElementById("main_button_container").classList.add("full_loop");
         if (this.state.mode === "daily") {
-            document.getElementById("creation_container").style.width = "calc(35% + 415px)";
-            document.getElementById("main_button_container").style.left = "calc(35% + 365px)";
+            document.getElementById("creation_container").classList.add("creation_container_new_width");
+            document.getElementById("creation_container").style.width = `calc(35% + 415px)`;
+            document.getElementById("main_button_container").classList.add("main_button_container_new_width");
         } else {
             document.getElementById("content_container").style.left = "calc(-415px)";
         }
@@ -344,8 +346,10 @@ class App extends Component {
     hideSmallCreationCard(){
         document.getElementById("main_button_container").classList.remove("full_loop");
         if (this.state.mode === "daily") {
+            document.getElementById("creation_container").classList.remove("creation_container_new_width");
             document.getElementById("creation_container").style.width = "35%";
-            document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
+            // document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
+            document.getElementById("main_button_container").classList.remove("main_button_container_new_width");
         } else {
             document.getElementById("content_container").style.left = "0px";
         }
@@ -490,6 +494,10 @@ class App extends Component {
     }
 
     createEvent(){
+        if (this.state.creation_mode === "create_event"){
+            return this.closeEventForm();
+        }
+        document.getElementById("create_event_button").classList.add("cancel");
         this.setState({creation_mode: "create_event", editing_event_id: null});
         this.setMainButtonIcon("save");
         this.setMainButtonFunction(this.saveNewEvent);
@@ -505,6 +513,7 @@ class App extends Component {
     }
 
     closeEventForm(){
+        document.getElementById("create_event_button").classList.remove("cancel");
         this.setState({creation_mode: "idle", editing_event_id: null});
         this.setMainButtonIcon("expand")
         this.setMainButtonFunction(this.expand);
