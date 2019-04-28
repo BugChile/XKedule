@@ -298,7 +298,22 @@ a:visited{
     transform: rotate(45deg);
     transition: all 0.5s;
 }
-
+.charging_events{
+    background-color: #e4e4e4;
+    margin: 0;
+    z-index: 6;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 35%;
+    text-align: center;
+    // vertical-align: middle;
+    line-height: 100vh;
+    height: 100vh;
+    font-size: 25px;
+    font-family: "Lato", sans-serif;
+    color: #333;
+}
 
 // general information card daily - weekly - monthly
 .event_info_card{
@@ -499,6 +514,85 @@ body * ::-webkit-scrollbar-thumb:hover {
     background-size: cover;
     background-position: center center;
 }
+
+
+
+
+
+// spinner from https://tobiasahlin.com/spinkit/
+
+.spinner {
+    margin: 100px auto;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: calc(45%);
+    left: calc(50% - 20px);
+    text-align: center;
+    
+    -webkit-animation: sk-rotate 2.0s infinite linear;
+    animation: sk-rotate 2.0s infinite linear;
+  }
+  
+  .dot1, .dot2 {
+    width: 60%;
+    height: 60%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    border-radius: 100%;
+    
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+  }
+  
+  .dot2 {
+    top: auto;
+    bottom: 0;
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+  }
+  
+  @-webkit-keyframes sk-rotate {
+       100% {
+            -webkit-transform: rotate(360deg)
+        }
+    }
+  @keyframes sk-rotate {
+       100% {
+            transform: rotate(360deg); 
+            -webkit-transform: rotate(360deg) 
+        }
+    }
+  
+  @-webkit-keyframes sk-bounce {
+    0%, 100% {
+         -webkit-transform: scale(0.0);
+        }
+    50% { 
+        -webkit-transform: scale(1.0);
+
+    }
+  }
+  
+  @keyframes sk-bounce {
+    0%, 100% { 
+      transform: scale(0.0);
+      -webkit-transform: scale(0.0);
+      background-color: rgba(216, 0, 144, 0.9); 
+    } 50% { 
+      transform: scale(1.0);
+      -webkit-transform: scale(1.0);
+    } 40%{
+
+        background-color: rgba(206, 0, 38, 0.9);
+    }
+  }
+
+  // end spinner
+
+
+
 @media only screen and (max-height: 1700px) {
     .background{
         height: 1700px;
@@ -597,5 +691,8 @@ body * ::-webkit-scrollbar-thumb:hover {
     .content_container{
         width: 453.047px;
     
+    }
+    .charging_events{
+        width: 453.047px;
     }
 }

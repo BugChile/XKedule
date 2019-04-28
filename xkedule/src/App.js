@@ -494,7 +494,7 @@ class App extends Component {
     }
 
     createEvent(){
-        if (this.state.creation_mode === "create_event"){
+        if (this.state.creation_mode === "create_event" || this.state.creation_mode === "edit_event"){
             return this.closeEventForm();
         }
         document.getElementById("create_event_button").classList.add("cancel");
@@ -507,6 +507,7 @@ class App extends Component {
 
     editEvent(event){
         this.setState({creation_mode: "edit_event", editing_event_id: event.id});
+        document.getElementById("create_event_button").classList.add("cancel");
         this.setMainButtonIcon("save");
         this.setMainButtonFunction(this.updateEvent);
         this.showSmallCreationCard();
@@ -712,7 +713,14 @@ class App extends Component {
 
     render() {
         return(
-            this.state.loading ? <div> loading </div>
+            this.state.loading ? 
+            <div className="charging_events"> 
+                Please wait to get your information..
+                <div class="spinner">
+                    <div class="dot1"></div>
+                    <div class="dot2"></div>
+                </div> 
+            </div>
             :
             <div>
                 {this.generateComponents(this.state.mode,
