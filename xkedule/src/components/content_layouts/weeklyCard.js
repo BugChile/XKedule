@@ -22,7 +22,7 @@ export default class WeeklyCard extends React.Component {
         return document.getElementById("content").clientHeight - 80;
     }
 
-  generateTaskCards(day, events, aux_view_time, max_task_container_height){
+  generateTaskCards(day, events, aux_view_time, max_task_container_height, i){
       // day is a Date object
       var task_cards = []
       const day_events = events[day.toLocaleDateString()];
@@ -32,14 +32,14 @@ export default class WeeklyCard extends React.Component {
       }
 
       if (day_events) {
-          day_events.forEach((event) => {
+          day_events.forEach((event, index) => {
               task_cards.push(
-                  <WeeklyTaskCard event={event} clickEvent={this.props.clickEvent}/>
+                  <WeeklyTaskCard key={index} event={event} clickEvent={this.props.clickEvent}/>
               )
           })
       }
 
-      return (<div className="day_task_container_wrapper" style={{"gridColumn": {day_number},
+      return (<div key={`container${i}`} className="day_task_container_wrapper" style={{"gridColumn": {day_number},
                                                                   maxHeight:max_task_container_height}}>
                   <div className="day_task_container" >
                     {task_cards}
@@ -65,13 +65,14 @@ export default class WeeklyCard extends React.Component {
 
           day_name_cells[i] = <WeekCardDayHeaders day_cell_class = {day_cell_class}
                                              day_name = {day_names[i]}
+                                             key={i}
                                              day = {new Date(day_date)}
                                              day_date = {day_date.toLocaleDateString('en-GB',
                                                          {day:"2-digit", month:"2-digit", year:"numeric"})}
                                              card_key = {"week_card_day_header"+i} 
                                              onClickDay={this.props.onClickDay}/>
 
-          week_tasks.push(this.generateTaskCards(day_date, events, aux_view_time, max_task_container_height));
+          week_tasks.push(this.generateTaskCards(day_date, events, aux_view_time, max_task_container_height, i));
 
           day_date.setDate(day_date.getDate() + 1);
       }

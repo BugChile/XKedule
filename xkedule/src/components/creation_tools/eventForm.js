@@ -125,9 +125,10 @@ export default class EventForm extends React.Component {
   getEventTagDivs(event_tags){
       var tag_divs = [];
       const event_tags_list = Object.values(event_tags)
-      event_tags_list.forEach((tag) => {
-          tag_divs.push(<EventFormCard  className={`event_form_big_input event_form_card ${tag.style}_tag`}
+      event_tags_list.forEach((tag, index) => {
+          tag_divs.push(<EventFormCard key={`eventformcard${index}`} className={`event_form_big_input event_form_card ${tag.style}_tag`}
                      element={tag}
+                     index={index}
                      onRemove={this.removeEventTag}/>
                  );
       })
@@ -137,8 +138,8 @@ export default class EventForm extends React.Component {
   getEventLinkDivs(event_links){
       var link_divs = [];
       const event_links_list = Object.values(event_links)
-      event_links_list.forEach((link) => {
-          link_divs.push(<EventFormCard  className={`event_form_big_input event_form_card grey_tag`}
+      event_links_list.forEach((link, index) => {
+          link_divs.push(<EventFormCard  key={`eventformcard2${index}`} className={`event_form_big_input event_form_card grey_tag`}
                      element={link}
                      onRemove={this.removeEventLink}
                      onGoTo={link.href}/>

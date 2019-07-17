@@ -10,7 +10,7 @@ export default class DailyTaskCard extends React.Component {
   render() {
       const card_id = this.props.event.id.concat("_event_daily_card")
       return(
-          <a className="task_card daily_task_card"
+          <span className="task_card daily_task_card"
              key={card_id}
              id={card_id}
              style={this.getGridPlacement(this.props.event, this.props.column_span)}
@@ -26,7 +26,7 @@ export default class DailyTaskCard extends React.Component {
                   <span>  -  </span>
                   {this.props.event.date_end.toLocaleTimeString('en-GB', {hour: "2-digit", minute: "2-digit"})}
               </div>
-          </a>
+          </span>
     )
   }
   }

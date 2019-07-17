@@ -10,7 +10,7 @@ export default class MonthlyTaskCard extends React.Component {
             className += " "+this.props.className;
         }
         return(
-            <a className={className}
+            <span className={className}
                 key={card_id}
                 id={card_id}
                 onClick={()=> this.props.clickEvent(this.props.event,
@@ -19,7 +19,7 @@ export default class MonthlyTaskCard extends React.Component {
                     {this.props.event.title}
 
                 </div>
-            </a>
+            </span>
     )
     }
 }
