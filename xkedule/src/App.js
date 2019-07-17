@@ -443,17 +443,19 @@ class App extends Component {
 
         // Creating and editing content container:
         components.push(
-            <CreationContainer creation_mode = {creation_mode}
-                               events = {events}
-                               user_tags = {user_tags}
-                               editing_event_id = {editing_event_id}
-                               close_event_form = {this.closeEventForm}
-                               current_time={this.state.current_time}
-                               set_new_event_callback={this.setNewEventObject}
-                               save_tag_callback={this.saveNewTag}
-                               delete_tag_callback={this.deleteTag}
-                               aux_view_time={this.state.aux_view_time}
-                               />
+            <CreationContainer 
+                creation_mode = {creation_mode}
+                key={'creation_container'}
+                events = {events}
+                user_tags = {user_tags}
+                editing_event_id = {editing_event_id}
+                close_event_form = {this.closeEventForm}
+                current_time={this.state.current_time}
+                set_new_event_callback={this.setNewEventObject}
+                save_tag_callback={this.saveNewTag}
+                delete_tag_callback={this.deleteTag}
+                aux_view_time={this.state.aux_view_time}
+                />
         )
 
         // Expand/Accept button:
@@ -716,9 +718,9 @@ class App extends Component {
             this.state.loading ? 
             <div className="charging_events"> 
                 Please wait to get your information..
-                <div class="spinner">
-                    <div class="dot1"></div>
-                    <div class="dot2"></div>
+                <div className="spinner">
+                    <div className="dot1"></div>
+                    <div className="dot2"></div>
                 </div> 
             </div>
             :
