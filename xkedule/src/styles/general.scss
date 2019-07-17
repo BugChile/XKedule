@@ -2,14 +2,13 @@ body {
     padding: 0;
     margin: 0;
     font-family: "Lato", sans-serif;
-    color: #333333;
+    color: $color-grey-text;
     overflow: hidden;
 }
 
 input{
     width: 0px;
     border-style: none;
-    background: white;
     padding: 0px;
     border-width: 0px;
     font-family: "Lato", sans-serif;
@@ -23,11 +22,11 @@ input{
 
 a{
     text-decoration: none;
-    color: #333333;
+    color: $color-grey-text;
 }
 
 a:visited{
-    color: #333333;
+    color: $color-grey-text;
 }
 
 .content_container{
@@ -57,24 +56,24 @@ a:visited{
     grid-template-rows: 200px auto;
     height: 100vh;
     width: 100%;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 20px $color-black-opacity;
 }
 
 .task_card:hover{
-    color:#E7042D;
+    color:$color-red;
     cursor: pointer;
 }
 
 .content_header{
     width: inherit;
-    background-color: #FFFFFF;
+    background-color: $color-bg-header;
     line-height: 50px;
     div{
         padding-left: 20px;
         width: 100%;
     }
     strong{
-        color: #E7042D;
+        color: $color-red;
     }
 }
 
@@ -89,10 +88,10 @@ a:visited{
         border-radius: 50px;
         width: 100px;
         height: 100px;
-        background: linear-gradient(180deg, #DF0F98 0%, #E7042D 100%);
-        -webkit-box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
-        -moz-box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
-        box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
+        background: linear-gradient(180deg, $color-rose 0%, $color-red 100%);
+        -webkit-box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
+        -moz-box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
+        box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
         transform: matrix(-1, 0, 0, 1, 0, 0);
     }
     .expand_arrow{
@@ -112,7 +111,7 @@ a:visited{
 }
 
 .content{
-    background-color: #E4E4E4;
+    background-color: $color-bg-content;
     overflow-y: auto;
 }
 
@@ -139,7 +138,7 @@ a:visited{
 }
 
 .color_text{
-    background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+    background: linear-gradient(0deg, $color-rose 0%, $color-red 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -196,7 +195,7 @@ a:visited{
 
     .switch_week_month_button{
         position: absolute;
-        background: linear-gradient(180deg, #E7042D 0%, #DF0F98 100%);
+        background: linear-gradient(180deg, $color-red 0%, $color-rose 100%);
         width: 80px;
         height: inherit;
         left: 0px;
@@ -230,9 +229,9 @@ a:visited{
     }
 }
 .trash{
-    color: rgba(216,51,72,1);
+    color: $trash-color;
     &:hover{
-        color: rgba(216,51,72,0.5);
+        color: $trash-hover-color;
     }
 }
 .exit{
@@ -241,23 +240,23 @@ a:visited{
     top: 0%;
     transform: translate(-25px,-25px);
     padding: 5px 6px 3px 6px;
-    color: rgba(255,255,255,0.9);
-    background-color: rgba(216,51,72,1);
+    color: $exit-color;
+    background-color: $bg-exit-color;
     &:hover{
-        color: rgba(255,255,255,0.8);
-        background-color: rgba(216,51,72,0.5);
+        color: $exit-hover-color;
+        background-color: $bg-exit-hover-color;
     }
 }
 .link{
-    color: rgba(58,91,212,1);
+    color: $link-color;
     &:hover{
-        color: rgba(58,91,212,0.5);
+        color:$link-hover-color;
     }
 }
 .edit{
-    color: rgba(18,177,128,1);
+    color: $edit-color;
     &:hover{
-        color: rgba(18,177,128,0.5);
+        color: $edit-hover-color;
     }
 }
 .description_event{
@@ -282,11 +281,11 @@ a:visited{
     height: 60px;
     width: 60px;
     border-radius: 50%;
-    background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+    background: linear-gradient(0deg, $color-rose 0%, $color-red 100%);
     cursor: pointer;
-    -webkit-box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
-    -moz-box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
-    box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.71);
+    -webkit-box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
+    -moz-box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
+    box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
     svg{
         height: 30px;
         width: 30px;
@@ -299,7 +298,7 @@ a:visited{
     transition: all 0.5s;
 }
 .charging_events{
-    background-color: #e4e4e4;
+    background-color: $color-bg-content;
     margin: 0;
     z-index: 6;
     position: absolute;
@@ -318,12 +317,12 @@ a:visited{
 // general information card daily - weekly - monthly
 .event_info_card{
     position: absolute;
-    background-color: rgba(250,250,250,1);
+    background-color: $color-bg-infocard;
     z-index: 50;
     color: black;
     padding: 10px 30px 10px 30px;
     width: 350px;
-    box-shadow: 7px 10px 30px rgba(0, 0, 0, .2);
+    box-shadow: 7px 10px 30px $shadow-infocard;
     min-height: 160px;
     word-wrap: break-word;
     border-radius: 10px;
@@ -344,7 +343,7 @@ a:visited{
 }
 
 #event_form_discard{
-    color: #9D9D9D;
+    color: $color-cancel;
     font-size: 20px;
     cursor: pointer;
     margin-right: 1px;
@@ -366,10 +365,10 @@ a:visited{
     padding: 10px;
     border-radius: 10px;
     transition: all 0.5s ease;
-    background-color: #E4E4E4;
-    -webkit-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
-    -moz-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
-    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+    background-color: $color-bg-content;
+    -webkit-box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
+    -moz-box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
+    box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
 
 }
 .linkInfo{
@@ -385,13 +384,13 @@ a:visited{
     font-size: 14px;
     margin-top: 2px;
     margin-left: 3px;
-    color: #4f4f4f;
+    color: $color-linfInfo;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    background-color: white;
+    background-color: $color-bg-linfInfo;
     &:hover{
-        color:red;
+        color:$color-hover-text;
     }
     width: 100%;
     max-width: 200px;
@@ -424,8 +423,8 @@ a:visited{
 }
 body  * ::-webkit-scrollbar-track
 {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-	background-color: #F5F5F5;
+	-webkit-box-shadow: inset 0 0 6px $shadow-scroll-bar;
+	background-color: $bg-scroll-bar;
 	border-radius: 10px;
 }
 
@@ -433,64 +432,60 @@ body  * ::-webkit-scrollbar
 {
     width: 8px;
     height: 6px;
-	background-color: #F5F5F5;
+	background-color: $bg-scroll-bar;
 }
 
 body  * ::-webkit-scrollbar-thumb
 {
 	border-radius: 10px;
-	background-color: #FFF;
+	background-color: $bg-scroll-bar-thumb;
 	background-image: -webkit-gradient(linear,
 									   40% 0%,
 									   75% 84%,
-									   from(rgba(235, 4, 46,0.8)),
-									   to(rgba(223, 15, 152,0.8)),
-                                       color-stop(.6,rgba(209, 70, 46,0.8)))
+									   from($color-red-light),
+									   to($color-rose-light),
+                                       color-stop(.6,$color-between-rose-red-light))
                                        
 }
 body * ::-webkit-scrollbar-thumb:hover {
-	background-color: #FFF;
+	background-color: $bg-scroll-bar-thumb-hover;
 	background-image: -webkit-gradient(linear,
 									   40% 0%,
 									   75% 84%,
-									   from(rgba(235, 4, 46,1)),
-									   to(rgba(223, 15, 152,1)),
-                                       color-stop(.6,rgba(209, 70, 46,1)))
+									   from($color-red-dark),
+									   to($color-rose-dark),
+                                       color-stop(.6,$color-between-rose-red-dark))
 }
 
 .search_bar{
-    background-color: rgb(230, 230, 230);
+    background-color: $bg-search-bar;
     width: 100%;
     height: 50px;
     padding: 12px 20px;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 1px solid $border-search-bar;
     border-radius: 10px;
     box-sizing: border-box;
     font-size: 17px;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 20px $color-black-opacity;
     &:focus{
-        background-color: rgb(219, 217, 217);
-        border-color: rgba(0, 95, 107, 0.699);
+        background-color: $focus-bg-search-bar;
+        border-color: $focus-border-search-bar;
         border-width: 2px;
     }
 }
-.search_button{
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
-    background-color: #333333;
-    color: #C4C4C4;
-    border-width: 0px;
-    &:hover{
-        background-color: #4f4f4f;
-    }
-}
-.search_bar_container{
-    // display: flex;
-    // justify-content: space-around;
+// .search_button{
+//     width: 50px;
+//     height: 50px;
+//     border-radius: 10px;
+//     background-color: $color-grey-text;
+//     color: #C4C4C4;
+//     border-width: 0px;
+//     &:hover{
+//         background-color: #4f4f4f;
+//     }
+// }
 
-}
 .centered_container_search{
     margin: 0;
     z-index: 5;
@@ -500,9 +495,6 @@ body * ::-webkit-scrollbar-thumb:hover {
     width: 30%;
     transform: translate(calc(20%), calc(-50% - 100px));
 }
-
-
-
 
 
 .background{
@@ -579,13 +571,13 @@ body * ::-webkit-scrollbar-thumb:hover {
     0%, 100% { 
       transform: scale(0.0);
       -webkit-transform: scale(0.0);
-      background-color: rgba(216, 0, 144, 0.9); 
+      background-color: $color-rose-light; 
     } 50% { 
       transform: scale(1.0);
       -webkit-transform: scale(1.0);
     } 40%{
 
-        background-color: rgba(206, 0, 38, 0.9);
+        background-color: $color-rose-light;
     }
   }
 

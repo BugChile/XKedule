@@ -54,8 +54,8 @@ select {
     padding: 0px 3%;
     &:focus{
         outline: 0 none;
-        background-color: white;
-        color: #343434;
+        background-color: $bg-input-form;
+        color: $color-input-form;
     }
 }
 
@@ -76,22 +76,22 @@ select {
         place-self: center;
 
         &:visited{
-            color: #343434;
+            color: $color-input-form;
         }
     }
 
     // buttons
     .button{
         border-radius: 8px;
-        background-color: #4F4F4F;
-        color: white;
+        background-color: $bg-button-form;
+        color: $bg-pickers;
         width: fit-content;
         padding: 4px 15px;
         place-self: center;
         cursor: pointer;
 
         &:hover{
-            background: linear-gradient(180deg, #E7042D 0%, #DF0F98 100%);
+            background: linear-gradient(180deg, $color-red 0%, $color-rose 100%);
         }
     }
 
@@ -103,7 +103,7 @@ select {
         border-radius: 10px;
         font-family: "Lato", sans-serif;
         padding-bottom: 10px;
-        color: black;
+        color: $color-react-calendar;
         .react-calendar__navigation{
             border-radius: 10px;
             margin-bottom: 10px;
@@ -145,21 +145,21 @@ select {
                     font-weight: 300;
                     height: 35px;
                     background: none;
-                    color: black;
+                    color: $color-react-calendar;
                     abbr {
                         z-index: 41;
                         position: relative;
                     }
 
                     &.react-calendar__tile--active{
-                        color: white;
+                        color: $bg-pickers;
                         font-weight: normal;
                         &::after, &:hover::after{
                                 content: "";
                                 width: 30px;
                                 height: 30px;
                                 border-radius: 15px;
-                                background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+                                background: linear-gradient(0deg, $color-rose 0%, $color-red 100%);
                                 display: block;
                                 position: relative;
                                 top: -23px;
@@ -168,14 +168,14 @@ select {
                             }
                     }
                     &.react-calendar__tile:disabled{
-                        color: #D4D4D4;
+                        color: $bg-input-form;
                     }
                     &.react-calendar__tile:not([disabled]):hover::after{
                             content: "";
                             width: 30px;
                             height: 30px;
                             border-radius: 15px;
-                            background:#D4D4D4;
+                            background:$bg-input-form;
                             display: block;
                             position: relative;
                             top: -23px;
@@ -208,21 +208,21 @@ select {
         }
 
         .wheel_selector_option{
-            color: #D4D4D4;
+            color: $bg-input-form;
         }
 
         .wheel_selector_actual_value{
-            color: #343434;
+            color: $color-input-form;
             cursor: text;
             &:focus{
                 outline: 0 none;
-                background-color: #EDEDED;
+                background-color: $bg-wheel;
                 border-radius: 5px;
             }
         }
 
         span.autocomplete{
-            color: #A9A9A9;
+            color: $bg-time-span;
         }
 
 
@@ -231,14 +231,14 @@ select {
     //time input
     .hour_minute_input {
         border-radius: 10px;
-        background-color: white;
+        background-color: $bg-pickers;
         position: relative;
         width: 80%;
         padding: 0 10%;
         padding-bottom: 10px;
         display: grid;
         cursor: default;
-        color: #343434;
+        color: $color-input-form;
 
         .time_slider{
             height: 120px;
@@ -254,8 +254,8 @@ select {
         z-index: 12;
         border-radius: 10px;
         padding: 10px;
-        background-color: white;
-        color: #343434;
+        background-color: $bg-pickers;
+        color: $color-input-form;
         display: grid;
         row-gap: 10px;
         cursor: default;
@@ -267,7 +267,7 @@ select {
         }
 
         .text_line_input{
-            background-color: #D4D4D4;
+            background-color: $bg-input-form;
             border-radius: 10px;
         }
 
@@ -279,7 +279,7 @@ select {
         span{
             place-self: center;
             i{
-                color: #9A9A9A;
+                color: $color-cancel;
             }
         }
 
@@ -318,15 +318,15 @@ select {
         z-index: 11;
         border-radius: 10px;
         padding: 10px;
-        background-color: white;
-        color: #343434;
+        background-color: $bg-pickers;
+        color: $color-input-form;
         display: grid;
         row-gap: 10px;
         cursor: default;
         margin-bottom: 10px;
 
         .text_line_input{
-            background-color: #D4D4D4;
+            background-color: $bg-input-form;
             border-radius: 10px;
         }
 
@@ -341,8 +341,8 @@ select {
         z-index: 13;
         border-radius: 10px;
         padding: 10px;
-        background-color: white;
-        color: #343434;
+        background-color: $bg-pickers;
+        color: $color-input-form;
         display: grid;
         row-gap: 10px;
         cursor: default;
@@ -357,15 +357,15 @@ select {
         }
 
         .event_form_big_input{
-            background-color: #D4D4D4;
-            color: #343434;
+            background-color: $bg-input-form;
+            color: $color-input-form;
             border-radius: 10px;
             height: 30px;
             cursor: pointer;
         }
 
         .select_input{
-            background-color: #D4D4D4;
+            background-color: $bg-input-form;
             border-radius: 10px;
             height: 30px;
             display: grid;
@@ -387,7 +387,7 @@ select {
             .select_options_container{
                 position: relative;
                 z-index: 21;
-                background-color: #D4D4D4;
+                background-color: $bg-input-form;
                 grid-auto-rows: 30px;
                 align-items: center;
                 display: grid;
@@ -400,8 +400,8 @@ select {
                     align-items: center;
 
                     &:hover{
-                        color: white;
-                        background-color: #343434;
+                        color: $bg-pickers;
+                        background-color: $color-input-form;
                     }
 
                     &:first-of-type{
@@ -420,7 +420,7 @@ select {
 
         .custom_repeat_tool{
             padding: 10px;
-            background-color: #D4D4D4;
+            background-color: $bg-input-form;
             border-radius: 10px;
             position: relative;
             z-index: 21;
@@ -466,7 +466,7 @@ select {
                         &:hover::after{
                             content: "";
                             border-radius: 50%;
-                            background-color: white;
+                            background-color: $bg-pickers;
                             width: 27px;
                             height: 27px;
                             position: relative;
@@ -476,12 +476,12 @@ select {
                         }
 
                         &.selected_circle_option{
-                            color: white;
+                            color: $bg-pickers;
 
                             &::after{
                                 content: "";
                                 border-radius: 50%;
-                                background-color: #4F4F4F;
+                                background-color: $bg-button-form;
                                 width: 27px;
                                 height: 27px;
                                 position: relative;
@@ -519,13 +519,13 @@ select {
                 }
 
                 .wheel_selector_actual_value{
-                    color: #343434;
+                    color: $color-input-form;
                     cursor: text;
                     height: 100%;
                     text-align: center;
                     &:focus{
                         outline: 0 none;
-                        background-color: #EDEDED;
+                        background-color: $bg-wheel;
                         border-radius: 5px;
                         min-width: 20px;
                         padding: 0 5px;;
@@ -536,8 +536,8 @@ select {
             }
 
             .select_input{
-                background-color: #4F4F4F;
-                color: white;
+                background-color: $bg-button-form;
+                color: $bg-pickers;
                 width: 70px;
                 cursor: pointer;
                 align-self: center;
@@ -550,12 +550,12 @@ select {
 
 
                 .select_options_container{
-                    background-color: #4F4F4F;
+                    background-color: $bg-button-form;
                     z-index: 31;
 
                     .select_option:hover{
-                            color: #343434;
-                            background-color: white;
+                            color: $color-input-form;
+                            background-color: $bg-pickers;
                     }
 
             }
