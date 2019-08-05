@@ -118,9 +118,9 @@ export default class TagTool extends React.Component {
                             {this.state.search_value ? "Search results" : "Most used"}
                       </div>
                       <div className="left" >
-                          <a className="clickable_anchor" onClick={this.toggleShowAll}>
+                          <span className="clickable_anchor" onClick={this.toggleShowAll}>
                               {this.state.show_all ? "Show less" : "Show all"}
-                          </a>
+                          </span>
                       </div>
                   </div>
                   <div className="card_container">
@@ -133,10 +133,10 @@ export default class TagTool extends React.Component {
                       <div className="button" onClick={() => {this.setMode("create")}}>
                           Create new tag
                       </div>
-                      <a className="clickable_anchor"
+                      <span className="clickable_anchor"
                            onClick={this.props.doneEditing}>
                           Cancel
-                      </a>
+                      </span>
                   </div>
 
               </div>

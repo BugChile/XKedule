@@ -37,16 +37,16 @@ export default class MonthlyCard extends React.Component {
         const day_string = day.toLocaleDateString();
         const day_events = events[day_string];
         if (day_events) {
-            day_events.forEach((event) => {
+            day_events.forEach((event, index) => {
                     task_cards.push(
-                            <MonthlyTaskCard event={event}
+                            <MonthlyTaskCard key={`MonthlyTaskCard${index}`} event={event}
                             clickEvent={this.props.clickEvent}/>
                         );
                 })
             if (tasks_per_cell && task_cards.length > tasks_per_cell) { // add "see more"
                 const not_shown_count = task_cards.length - tasks_per_cell + 1; // +1 because see more uses 1 space
                 task_cards = task_cards.slice(0, tasks_per_cell - 1);
-                task_cards.push(<MonthlyTaskCard event={{id: "see_more_"+day_string,
+                task_cards.push(<MonthlyTaskCard key={`MonthlyTaskCard2${day_id}`} event={{id: "see_more_"+day_string,
                                                          day: new Date(day),
                                                          title: `See ${not_shown_count} more`}}
                                                  clickEvent={(card, id) =>
@@ -99,18 +99,19 @@ export default class MonthlyCard extends React.Component {
 
             //create day info
             if (i < 7) {
-                day_info.push(<div className="day_cell_name">
+                day_info.push(<div key={`dayweek${i}`} className="day_cell_name">
                                   {days[i]}
                               </div>)
             }
-            day_info.push(<DayMonth onClickDay={this.props.onClickDay} classCss={cell_number_class_list} day={new Date(day_date)}/>);
+            day_info.push(<DayMonth key={`daymonth${day_date.getDay()}${i}`} onClickDay={this.props.onClickDay} classCss={cell_number_class_list} day={new Date(day_date)}/>);
 
             day_id = "monthly_cell"+day_date.getTime()
             day_tasks = this.generateTaskCards(day_date,
                                                events,
                                                tasks_per_cell,
                                                day_id);
-            day_cells[i] = <MonthlyCardCell day_tasks={day_tasks}
+            day_cells[i] = <MonthlyCardCell key={`monthlycardcell${day_date.getDay()}${i}`}
+                                            day_tasks={day_tasks}
                                             cell_key={day_id}
                                             day_info={day_info}
                                             cell_class_list={cell_class_list}/>

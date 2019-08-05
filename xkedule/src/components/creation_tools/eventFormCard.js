@@ -14,7 +14,7 @@ export default class EventFormCard extends React.PureComponent {
 
   };
 
-  getTagOptions(){
+  getTagOptions(index){
       // posible options:
       // onDelete: pass a delete function on props and a trash button will appear
       //           this function should receive the to-be-erased element
@@ -27,16 +27,16 @@ export default class EventFormCard extends React.PureComponent {
       // onGoTo:   pass a https link and a 'go-to' symbol will appear
       var options_divs = []
       if (this.props.onGoTo) {
-          options_divs.push(<i className='fas fa-external-link-square-alt' onClick={() => { window.open(this.props.onGoTo);}}></i>)
+          options_divs.push(<i key={`ongoto${index}`} className='fas fa-external-link-square-alt' onClick={() => { window.open(this.props.onGoTo);}}></i>)
       }
       if (this.props.onAdd) {
-          options_divs.push(<i className='fas fa-plus' onClick={() => {this.props.onAdd(this.props.element)}}></i>)
+          options_divs.push(<i key={`onadd${index}`} className='fas fa-plus' onClick={() => {this.props.onAdd(this.props.element)}}></i>)
       }
       if (this.props.onRemove) {
-          options_divs.push(<i className='fas fa-times' onClick={() => {this.props.onRemove(this.props.element)}}></i>)
+          options_divs.push(<i key={`onremove${index}`} className='fas fa-times' onClick={() => {this.props.onRemove(this.props.element)}}></i>)
       }
       if (this.props.onDelete) {
-          options_divs.push(<i className='fas fa-trash-alt' onClick={() => {this.props.onDelete(this.props.element)}}></i>)
+          options_divs.push(<i key={`ondelete${index}`} className='fas fa-trash-alt' onClick={() => {this.props.onDelete(this.props.element)}}></i>)
       }
       return options_divs
   }
@@ -47,12 +47,13 @@ export default class EventFormCard extends React.PureComponent {
                 className={this.props.className}
                 onFocus={this.onFocusInput}
                 onBlur={this.onBlurInput}
+                key={`eventform${this.props.index}`}
               >
                 <span>
                     {this.props.element.name}
                 </span>
                 <div className="event_form_card_options_container">
-                    {this.getTagOptions()}
+                    {this.getTagOptions(this.props.index)}
                 </div>
 
               </div>

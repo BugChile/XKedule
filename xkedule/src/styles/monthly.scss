@@ -38,7 +38,7 @@
         }
         .day_cell_name{
             text-transform: capitalize;
-            color: #333333;
+            color: $color-grey-text;
             padding: 2px 0px 0px 6px;
         }
 
@@ -48,11 +48,11 @@
 
 .day_cell_monthly.month_day{
     .day_cell_number{
-        color: #333333;
+        color: $color-grey-text;
     }
 
     .day_cell_number.current_day{
-            background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+            background: linear-gradient(0deg, $color-rose 0%, $color-red 100%);
             border-radius: 50%;
             color: white;
         }
@@ -81,10 +81,10 @@
 
 .expanded_month_cell{
     position: absolute;
-    background-color: #E4E4E4;
-    -webkit-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
-    -moz-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
-    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+    background-color: $color-bg-content;
+    -webkit-box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
+    -moz-box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
+    box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
     border-radius: 10px;
     padding-bottom: 10px;
 
@@ -136,7 +136,7 @@
     }
 
     &.see_more_card{
-        background-color: #E4E4E4;
+        background-color: $color-bg-content;
 
 
         &:hover{

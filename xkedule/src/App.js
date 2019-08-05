@@ -184,11 +184,11 @@ class App extends Component {
     }
 
     setSwitchWeekMonth(mode){
-        if (mode == "weekly") {
+        if (mode === "weekly") {
             this.changeHTMLProperty("switch_to_week", "color", "#FFFFFF")
             this.changeHTMLProperty("switch_to_month", "color", "#333333")
             this.changeHTMLProperty("switch_week_month_button", "left", "0px")
-        } else if (mode == "monthly") {
+        } else if (mode === "monthly") {
             this.changeHTMLProperty("switch_to_week", "color", "#333333")
             this.changeHTMLProperty("switch_to_month", "color", "#FFFFFF")
             this.changeHTMLProperty("switch_week_month_button", "left", "70px")
@@ -220,6 +220,8 @@ class App extends Component {
                 case 1:
                     date.setMonth(this.state.aux_view_time.getMonth() - 1);
                     break;
+                default:
+                    break;
                 }
         }else{
                 switch (length){
@@ -232,8 +234,10 @@ class App extends Component {
                     case 5:
                         date.setDate(this.state.aux_view_time.getDate() + 7);
                         break;
-                    case 1:
-                        date.setMonth(this.state.aux_view_time.getMonth() + 1);
+                        case 1:
+                            date.setMonth(this.state.aux_view_time.getMonth() + 1);
+                            break;
+                    default:
                         break;
                 }
         }
@@ -249,7 +253,7 @@ class App extends Component {
        var left = 0;
        var top = 0;
        switch (this.state.mode) {
-           case 'monthly':
+            case 'monthly':
                if (eventCardCoordinates.left <= 700 ) {
                    left = eventCardCoordinates.left + 175
                } else {
@@ -257,7 +261,7 @@ class App extends Component {
                }
                top = Math.min(eventCardCoordinates.top, 460)
                break;
-           case 'weekly':
+            case 'weekly':
                if (eventCardCoordinates.left <= 700 ) {
                    left = eventCardCoordinates.left + 170
                } else {
@@ -265,7 +269,7 @@ class App extends Component {
                }
                top = Math.min(eventCardCoordinates.top, 460)
                break;
-           case 'daily':
+            case 'daily':
                left = eventCardCoordinates.left
                top = Math.min(eventCardCoordinates.top + eventCardCoordinates.height + 5)
                if (document.body.getBoundingClientRect().height - top < 250) {
@@ -273,6 +277,8 @@ class App extends Component {
                }
 
                break;
+            default:
+                break;
 
        }
        left += "px"
@@ -430,7 +436,7 @@ class App extends Component {
         content_container_components.push(this.switchCard(this.state.mode, hashed_by_date))
 
         // Switch button for week and month
-        if (mode != "daily") {
+        if (mode !== "daily") {
             content_container_components.push(<SwitchWeekMonth key="switch_week_month"
                                              switchWeekMonthCB={this.switchWeekMonth}/>)
         }
@@ -443,17 +449,19 @@ class App extends Component {
 
         // Creating and editing content container:
         components.push(
-            <CreationContainer creation_mode = {creation_mode}
-                               events = {events}
-                               user_tags = {user_tags}
-                               editing_event_id = {editing_event_id}
-                               close_event_form = {this.closeEventForm}
-                               current_time={this.state.current_time}
-                               set_new_event_callback={this.setNewEventObject}
-                               save_tag_callback={this.saveNewTag}
-                               delete_tag_callback={this.deleteTag}
-                               aux_view_time={this.state.aux_view_time}
-                               />
+            <CreationContainer 
+                creation_mode = {creation_mode}
+                key={'creation_container'}
+                events = {events}
+                user_tags = {user_tags}
+                editing_event_id = {editing_event_id}
+                close_event_form = {this.closeEventForm}
+                current_time={this.state.current_time}
+                set_new_event_callback={this.setNewEventObject}
+                save_tag_callback={this.saveNewTag}
+                delete_tag_callback={this.deleteTag}
+                aux_view_time={this.state.aux_view_time}
+                />
         )
 
         // Expand/Accept button:
@@ -471,7 +479,7 @@ class App extends Component {
     //CALLBACKS (should only call above functions)
 
     expand(){
-        if (this.state.mode == "daily") {
+        if (this.state.mode === "daily") {
             this.changeMode("weekly");
             this.expandContentContainer();
             this.switchWeekMonth();
@@ -483,10 +491,10 @@ class App extends Component {
     }
 
     switchWeekMonth(){
-        if (this.state.mode == "monthly") {
+        if (this.state.mode === "monthly") {
             this.changeMode("weekly");
             this.setSwitchWeekMonth("weekly")
-        } else if (this.state.mode == "weekly"){
+        } else if (this.state.mode === "weekly"){
             this.changeMode("monthly");
             this.setSwitchWeekMonth("monthly")
         }
@@ -716,9 +724,9 @@ class App extends Component {
             this.state.loading ? 
             <div className="charging_events"> 
                 Please wait to get your information..
-                <div class="spinner">
-                    <div class="dot1"></div>
-                    <div class="dot2"></div>
+                <div className="spinner">
+                    <div className="dot1"></div>
+                    <div className="dot2"></div>
                 </div> 
             </div>
             :

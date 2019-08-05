@@ -1,6 +1,6 @@
 import React from "react"
 import SearchBar from "./search_bar"
-import { searchOnGoogle } from '../../js_helpers/helpers'
+// import { searchOnGoogle } from '../../js_helpers/helpers'
 
 export default class SearchContainer extends React.Component {
     constructor(props){

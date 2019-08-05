@@ -13,7 +13,7 @@
             padding-left: 10px;
             padding-right: 5px;
             font-size: 15px;
-            color: #545454;
+            color: $color-hour-tick;
         }
     }
     .line-subgrid{
@@ -21,7 +21,7 @@
         grid-template-rows: repeat(24, 105px);
         grid-area: 1 / 3 / 2 / 4;
         .line{
-            border-top: 2px dashed #949494;
+            border-top: 2px dashed $color-line;
         }
 
     }
@@ -38,7 +38,7 @@
             text-decoration: (none!important);
             .task_title{
                 &:hover{
-                    color:red;
+                    color:$color-hover-text;
                 }
                 text-align: center;
                 display: table;
@@ -67,4 +67,11 @@
             }
         }
     }
+}
+.overflow_text{
+    width : 100%;
+    overflow:hidden;
+    display:inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
