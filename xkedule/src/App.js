@@ -10,6 +10,7 @@ import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
 import { toDataDate }  from './js_helpers/parsers';
 import { getRepeatsString }  from './js_helpers/rrule_helpers';
+import { RRule } from "rrule";
 import logo from './assets/logo.svg';
 import './App.css';
 
@@ -27,6 +28,7 @@ class App extends Component {
             editing_event_id: null, //id of the event that's being edited, if any, else null
             events: {},
             user_tags: {},
+            eventsWithRepeat: [],
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
             infoDaily: null,
             classesInfoCard:'hidden event_info_card',
@@ -105,7 +107,8 @@ class App extends Component {
     }
 
     setEvents(events){
-        this.setState({events: this.parseLoadedEvents(events)})
+        const { parsedEvents, eventsWithRepeat } = this.parseLoadedEvents(events);
+        this.setState({ events: parsedEvents, eventsWithRepeat })
     }
 
     setUserTags(user_tags){
@@ -130,11 +133,21 @@ class App extends Component {
 
     //CONTENT GENERATORS
     parseLoadedEvents(events){
-        for (var key in events) {
-            events[key].date_start = new Date(events[key].date_start)
-            events[key].date_end = new Date(events[key].date_end)
+        let eventsWithRepeat = [];
+        const parsedEvents = { ...events }
+        let ruleObject;
+        for (var key in parsedEvents) {
+            if (parsedEvents[key].rrule !== undefined) {
+                ruleObject = RRule.fromString(parsedEvents[key].rrule)
+                eventsWithRepeat = [...eventsWithRepeat, { 
+                    id: parsedEvents[key].id,
+                    ruleObject,
+                 }]
+            }
+            parsedEvents[key].date_start = new Date(parsedEvents[key].date_start)
+            parsedEvents[key].date_end = new Date(parsedEvents[key].date_end)
         }
-        return events;
+        return { parsedEvents, eventsWithRepeat };
     }
 
     hashEvents(events){
@@ -447,7 +460,6 @@ class App extends Component {
                 {content_container_components}
             </div>
         )
-
 
         // Creating and editing content container:
         components.push(

@@ -20,9 +20,10 @@ const events = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 17, 2019 02:08:00'),
-	"date_end": new Date('april 17, 2019 03:08:00'),
-	"tag_ids": []
+	"date_start": new Date('august 5, 2019 02:08:00'),
+	"date_end": new Date('august 5, 2019 03:08:00'),
+	"tag_ids": [],
+	rrule: "RRULE:FREQ=DAILY;INTERVAL=1",
 	},
 	"1":{
 	"id": "1",
