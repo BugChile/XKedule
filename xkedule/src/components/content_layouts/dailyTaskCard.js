@@ -18,7 +18,7 @@ export default class DailyTaskCard extends React.Component {
              onClick={()=> this.props.clickEvent(this.props.event, card_id)}>
               <div className="task_title">
               <div className="centered_container">
-              {this.props.event.title}
+              <span className='overflow_text'>{this.props.event.title}</span>
               </div>
               </div>
               <div className="task_date">
