@@ -10,22 +10,22 @@
   }
 
 .creation_container{
-    width: 600px;
+    width: 35%;
     height: 100vh;
-    z-index: 0;
-    background-color: #343434;
+    z-index: 10;
+    background-color: $bg-creation-container;
     display: flex;
     flex-direction: row-reverse;
-    color: white;
+    color: $bg-pickers;
     position: absolute;
     top: 0;
     left: 0;
     transition: all 0.5s ease;
     overflow-x: hidden;
     overflow: overlay;
-    -webkit-box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
-    -moz-box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
-    box-shadow: 10px 0px 30px -4px rgba(0,0,0,0.98);
+    -webkit-box-shadow: 10px 0px 30px -4px $shadow-creation;
+    -moz-box-shadow: 10px 0px 30px -4px $shadow-creation;
+    box-shadow: 10px 0px 30px -4px $shadow-creation;
 }
 
 
@@ -66,15 +66,15 @@
 
     textarea {
         resize: none;
-        width: 94%;
+        width: 100%;
         padding: 5px 3%;
         height: 50px;
         font-weight: 300;
         font-family: "Lato", sans-serif;
 
         &:focus{
-            background-color: white;
-            color: #343434;
+            background-color: $bg-pickers;
+            color: $bg-creation-container;
         }
 
         &::-webkit-scrollbar { // from https://stackoverflow.com/questions/16670931/hide-scroll-bar-but-while-still-being-able-to-scroll
@@ -94,7 +94,7 @@
         width: 100%;
         border-radius: 10px;
         margin-top: 10px;
-        color: white;
+        color: $bg-pickers;
         font-size: 15px;
         font-weight: 300;
         vertical-align: middle;
@@ -138,12 +138,6 @@
         grid-column-end: 5;
     }
 
-    #event_form_discard{
-        color: #9D9D9D;
-        font-size: 20px;
-        cursor: pointer;
-        margin-right: 1px;
-    }
 
     .time_select{
         display: flex;
@@ -162,7 +156,7 @@
     .event_form_card{
         padding: 0 3%;
         height: 30px;
-        width: 94%;
+        width: 100%;
         border-radius: 10px;
         font-size: 15px;
         vertical-align: middle;
@@ -170,7 +164,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        z-index: 0;
+        z-index: 10;
         position: relative;
         span{
             padding: 0;
@@ -227,11 +221,11 @@
         border-radius: 5px;
         &>.day_selected_0{
             background-color: rgba(0, 0, 0, 0.2);
-            color: white;
+            color: $bg-pickers;
         }
         &>.day_selected_1{
             background-color: var(--main-bg-w-o-opa2);
-            color: white;
+            color: $bg-pickers;
         }
         &>div{
             padding: 10px;
@@ -253,7 +247,7 @@
     }
     input[type=submit]{
         background-color: var(--main-bg-w-o-opa2);
-        color: white;
+        color: $bg-pickers;
         font-size: 16px;
         &:hover{
             background-color: var(--main-bg-w-o-opa);
@@ -273,4 +267,31 @@
 abbr[title]{
     text-decoration: (none!important);
 
+}
+.event_form_container{
+    max-height: calc(100vh - 220px) ;
+    min-height: calc(100vh - 220px) ;
+    overflow: auto;
+}
+.main_button_container_new_width{
+    left: calc(35% + 365px);
+}
+.main_button_container_expanded_width{
+    left: calc(80% - 50px);
+
+}
+.height100{
+    height: 100%;
+}
+@media only screen and (max-width: 1300px){
+    .creation_container, #content_container{
+        min-width: (453.047px!important);
+    
+    }
+    .main_button_container_new_width{
+        left: (calc(405.047px * 2)!important);
+    }
+    .creation_container_new_width{
+        width: (calc(430.047px * 2)!important);
+    }
 }

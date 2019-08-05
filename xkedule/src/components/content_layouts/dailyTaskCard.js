@@ -10,21 +10,23 @@ export default class DailyTaskCard extends React.Component {
   render() {
       const card_id = this.props.event.id.concat("_event_daily_card")
       return(
-          <a className="task_card daily_task_card"
+          <span className="task_card daily_task_card"
              key={card_id}
              id={card_id}
              style={this.getGridPlacement(this.props.event, this.props.column_span)}
              title={this.props.event.title}
              onClick={()=> this.props.clickEvent(this.props.event, card_id)}>
               <div className="task_title">
-                  {this.props.event.title}
+              <div className="centered_container">
+              <span className='overflow_text'>{this.props.event.title}</span>
+              </div>
               </div>
               <div className="task_date">
                   {this.props.event.date_start.toLocaleTimeString('en-GB', {hour: "2-digit", minute: "2-digit"})}
                   <span>  -  </span>
                   {this.props.event.date_end.toLocaleTimeString('en-GB', {hour: "2-digit", minute: "2-digit"})}
               </div>
-          </a>
+          </span>
     )
   }
   }

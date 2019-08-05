@@ -3,6 +3,7 @@ import HeaderDate from './headerDate'
 import MonthlyCardCell from './monthlyCardCell'
 import MonthlyTaskCard from './monthlyTaskCard'
 import BackToToday from './backToToday'
+import DayMonth from './dayMonth'
 import { get_day_occurrence } from '../../js_helpers/rrule_helpers'
 import { dateToWritenDate } from '../../js_helpers/parsers'
 import { checkTodayFunction, eventsFromHashed } from '../../js_helpers/helpers'
@@ -36,16 +37,16 @@ export default class MonthlyCard extends React.Component {
         const day_string = day.toLocaleDateString();
         const day_events = eventsFromHashed(events, hashed_events, day_string);
         if (day_events) {
-            day_events.forEach((event) => {
+            day_events.forEach((event, index) => {
                     task_cards.push(
-                            <MonthlyTaskCard event={event}
+                            <MonthlyTaskCard key={`MonthlyTaskCard${index}`} event={event}
                             clickEvent={this.props.clickEvent}/>
                         );
                 })
             if (tasks_per_cell && task_cards.length > tasks_per_cell) { // add "see more"
                 const not_shown_count = task_cards.length - tasks_per_cell + 1; // +1 because see more uses 1 space
                 task_cards = task_cards.slice(0, tasks_per_cell - 1);
-                task_cards.push(<MonthlyTaskCard event={{id: "see_more_"+day_string,
+                task_cards.push(<MonthlyTaskCard key={`MonthlyTaskCard2${day_id}`} event={{id: "see_more_"+day_string,
                                                          day: new Date(day),
                                                          title: `See ${not_shown_count} more`}}
                                                  clickEvent={(card, id) =>
@@ -67,7 +68,7 @@ export default class MonthlyCard extends React.Component {
         const week_count = get_day_occurrence(new Date(this.props.aux_view_time.getFullYear(),
                                                        next_month,
                                                        0)); //number of weeks on this month
-        const cell_height = (document.getElementById("content").clientHeight / week_count) - 30;
+        const cell_height = (document.getElementById("content").clientHeight / week_count) - 40;
         return Math.floor(cell_height / 20);
     }
 
@@ -85,7 +86,7 @@ export default class MonthlyCard extends React.Component {
         var day_info = [];
         var day_tasks;
         var cell_class_list = "day_cell_monthly";
-        var cell_number_class_list = "day_cell_number";
+        var cell_number_class_list = "day_cell_number hover";
 
         while (day_date.getDay() !== 1 || day_date.getMonth() !== (aux_view_time.getMonth() + 1) % 12) {
             //define cell style
@@ -99,13 +100,11 @@ export default class MonthlyCard extends React.Component {
 
             //create day info
             if (i < 7) {
-                day_info.push(<div className="day_cell_name">
+                day_info.push(<div key={`dayweek${i}`} className="day_cell_name">
                                   {days[i]}
                               </div>)
             }
-            day_info.push(<div className={cell_number_class_list}>
-                              {day_date.getDate()}
-                          </div>)
+            day_info.push(<DayMonth key={`daymonth${day_date.getDay()}${i}`} onClickDay={this.props.onClickDay} classCss={cell_number_class_list} day={new Date(day_date)}/>);
 
             day_id = "monthly_cell"+day_date.getTime()
             day_tasks = this.generateTaskCards(day_date,
@@ -113,13 +112,14 @@ export default class MonthlyCard extends React.Component {
                                                hashed_events,
                                                tasks_per_cell,
                                                day_id);
-            day_cells[i] = <MonthlyCardCell day_tasks={day_tasks}
+            day_cells[i] = <MonthlyCardCell key={`monthlycardcell${day_date.getDay()}${i}`}
+                                            day_tasks={day_tasks}
                                             cell_key={day_id}
                                             day_info={day_info}
                                             cell_class_list={cell_class_list}/>
             day_info = []
             cell_class_list = "day_cell_monthly";
-            cell_number_class_list = "day_cell_number";
+            cell_number_class_list = "day_cell_number hover";
             i += 1;
 
             //set day_date to next day

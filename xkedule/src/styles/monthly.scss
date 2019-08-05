@@ -1,10 +1,10 @@
 .monthly_schedule{
     margin: 0px 0px;
     display: grid;
-    grid-template-columns: repeat(7, 183px);
+    grid-template-columns: repeat(7, calc((100%)/7));
     grid-auto-rows: 2fr;
     border-top: 2px solid #FFFFFF;
-    width: 1282px;
+    width: 100%;
     height: 99%;
 
 }
@@ -28,7 +28,7 @@
         display: grid;
         grid-template-columns: auto 28px;
         height: 24px;
-        margin: 1px 6px 0px 6px;
+        margin: 1px 6px 4px 6px;
         .day_cell_number{
             text-align: center;
             grid-column-start: 2;
@@ -38,7 +38,7 @@
         }
         .day_cell_name{
             text-transform: capitalize;
-            color: #333333;
+            color: $color-grey-text;
             padding: 2px 0px 0px 6px;
         }
 
@@ -48,11 +48,11 @@
 
 .day_cell_monthly.month_day{
     .day_cell_number{
-        color: #333333;
+        color: $color-grey-text;
     }
 
     .day_cell_number.current_day{
-            background: linear-gradient(0deg, #DF0F98 0%, #E7042D 100%);
+            background: linear-gradient(0deg, $color-rose 0%, $color-red 100%);
             border-radius: 50%;
             color: white;
         }
@@ -72,15 +72,19 @@
 .day_cell_task_container{
     display: grid;
     justify-content: center;
+    max-height: 200px;
+    width: 100%;
+    row-gap: 0px;
+    overflow: auto;
 }
 
 
 .expanded_month_cell{
     position: absolute;
-    background-color: #E4E4E4;
-    -webkit-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
-    -moz-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
-    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.44);
+    background-color: $color-bg-content;
+    -webkit-box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
+    -moz-box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
+    box-shadow: 0px 0px 19px 1px $color-black-opacity-soft;
     border-radius: 10px;
     padding-bottom: 10px;
 
@@ -108,7 +112,7 @@
 }
 
 .monthly_task_card{
-    width: 170px;
+    width: calc(72vw  / 7 );
     height: 20px;
     border-radius: 5px;
     margin-bottom: 2px;
@@ -125,18 +129,31 @@
         margin-top: 2px;
         margin-left: 3px;
         color: #4f4f4f;
+        max-width: 100%;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
     }
 
     &.see_more_card{
-        background-color: #E4E4E4;
+        background-color: $color-bg-content;
 
 
         &:hover{
             background-color: #CECECE;
         }
 
+    }
+}
+
+
+@media only screen and (max-width: 1050px){
+    .day_cell_name, .day_cell_number{
+        font-size: 14px;
+    }
+}
+@media only screen and (max-width: 950px){
+    .day_cell_name, .day_cell_number{
+        font-size: 12px;
     }
 }
