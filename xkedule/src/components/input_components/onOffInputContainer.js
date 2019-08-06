@@ -88,7 +88,7 @@ export default class OnOffInputContainer extends React.PureComponent {
                                                 onSubmit={this.onSubmit}
                                                 doneEditing={this.doneEditing}
                                                 {...this.props.on_component_props}/>
-            case "off":
+            default:
                 return <this.props.off_component text={this.getOffStateSummary()}
                                                  {...this.props.off_component_props}/>
         }
@@ -163,7 +163,6 @@ export default class OnOffInputContainer extends React.PureComponent {
           <div className={this.getContainerStyle(this.state.mode,
                                                  this.props.container_style)}
                tabIndex="-1"
-               onFocus={this._onFocusWrapper}
                onClick={this._onFocusWrapper}
                onBlur={this._onBlurWrapper}
                onKeyPress={this.onKeyPress}>
