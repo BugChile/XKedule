@@ -77,6 +77,15 @@ function onlyUnique(value, index, self) {  // from https://stackoverflow.com/que
 function multiplyReducer(accumulator, currentValue){
     return accumulator * currentValue
 };
+
+function eventsFromHashed(events, hashed, date){
+    const ids = hashed[date];
+    if (ids){
+        return ids.map(id => events[id]);
+    }
+    return [];
+}
+
 function searchOnGoogle(search){
     alert(search);
 }
@@ -89,4 +98,5 @@ export { stringRange,
          multiplyReducer,
          isEmpty,
          checkTodayFunction,
+         eventsFromHashed,
          searchOnGoogle};
