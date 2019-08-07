@@ -1,6 +1,9 @@
 /*global chrome*/
 
 import React, { Component } from 'react';
+import { RRule } from "rrule";
+import { connect } from 'react-redux';
+
 import DailyCard from './components/content_layouts/dailyCard'
 import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
@@ -10,14 +13,9 @@ import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
 import { toDataDate }  from './js_helpers/parsers';
 import { getRepeatsString }  from './js_helpers/rrule_helpers';
-import { RRule } from "rrule";
-import logo from './assets/logo.svg';
+import { setEventsWithRepeat } from './store/actions'
 import './App.css';
-
-
 // development
-import { events, user_tags }  from './js_helpers/dev_data';
-import DayMonth from './components/content_layouts/dayMonth';
 
 class App extends Component {
     constructor(props){
@@ -28,7 +26,6 @@ class App extends Component {
             editing_event_id: null, //id of the event that's being edited, if any, else null
             events: {},
             user_tags: {},
-            eventsWithRepeat: [],
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
             infoDaily: null,
             classesInfoCard:'hidden event_info_card',
@@ -108,7 +105,9 @@ class App extends Component {
 
     setEvents(events){
         const { parsedEvents, eventsWithRepeat } = this.parseLoadedEvents(events);
-        this.setState({ events: parsedEvents, eventsWithRepeat })
+        const { setEventsWithRepeat } = this.props;
+        setEventsWithRepeat(eventsWithRepeat);
+        this.setState({ events: parsedEvents })
     }
 
     setUserTags(user_tags){
@@ -779,8 +778,12 @@ class App extends Component {
 
 }
 
+const mapStateToProps = (state) => ({
+    eventsWithRepeat: state.eventsWithRepeat,
+});
 
 
 
 
-export default App;
+
+export default connect(mapStateToProps, { setEventsWithRepeat })(App);

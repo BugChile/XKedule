@@ -1,4 +1,4 @@
-const events = {
+const hcEvents = {
 	"0":{
 	"id": "0",
 	"title": "Clases1",
@@ -2680,7 +2680,7 @@ const events = {
 // Colors and styles defined in:
 // https://www.figma.com/file/OhtFZI18vLZ8YmwLHj0nyrPg/EventColors?node-id=0%3A1
 
-const user_tags = {
+const hcUserTags = {
     "1": {
         "id": "1",
         "name": "IIC2233 - Inteligencia Artificial",
@@ -2738,4 +2738,4 @@ const user_tags = {
 
 }
 
-export {events, user_tags}
+export {hcEvents, hcUserTags}
