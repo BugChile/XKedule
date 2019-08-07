@@ -1,9 +1,7 @@
 /*global chrome*/
 
 import React, { Component } from 'react';
-import { RRule } from "rrule";
-import { connect } from 'react-redux';
-
+import ReactDOM from 'react-dom';
 import DailyCard from './components/content_layouts/dailyCard'
 import MonthlyCard from './components/content_layouts/monthlyCard'
 import WeeklyCard from './components/content_layouts/weeklyCard'
@@ -11,11 +9,16 @@ import MainButton from './components/mainButton'
 import SwitchWeekMonth from './components/switchWeekMonth'
 import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
-import { toDataDate }  from './js_helpers/parsers';
+import {save_event, load_event}  from './js_helpers/data_handling';
+import { toLinkDataModel, toTagIds, toDataDate }  from './js_helpers/parsers';
 import { getRepeatsString }  from './js_helpers/rrule_helpers';
-import { setEventsWithRepeat } from './store/actions'
+import logo from './assets/logo.svg';
 import './App.css';
+
+
 // development
+import { events, user_tags }  from './js_helpers/dev_data';
+import DayMonth from './components/content_layouts/dayMonth';
 
 class App extends Component {
     constructor(props){
@@ -104,10 +107,7 @@ class App extends Component {
     }
 
     setEvents(events){
-        const { parsedEvents, eventsWithRepeat } = this.parseLoadedEvents(events);
-        const { setEventsWithRepeat } = this.props;
-        setEventsWithRepeat(eventsWithRepeat);
-        this.setState({ events: parsedEvents })
+        this.setState({events: this.parseLoadedEvents(events)})
     }
 
     setUserTags(user_tags){
@@ -132,21 +132,11 @@ class App extends Component {
 
     //CONTENT GENERATORS
     parseLoadedEvents(events){
-        let eventsWithRepeat = [];
-        const parsedEvents = { ...events }
-        let ruleObject;
-        for (var key in parsedEvents) {
-            if (parsedEvents[key].rrule !== undefined) {
-                ruleObject = RRule.fromString(parsedEvents[key].rrule)
-                eventsWithRepeat = [...eventsWithRepeat, { 
-                    id: parsedEvents[key].id,
-                    ruleObject,
-                 }]
-            }
-            parsedEvents[key].date_start = new Date(parsedEvents[key].date_start)
-            parsedEvents[key].date_end = new Date(parsedEvents[key].date_end)
+        for (var key in events) {
+            events[key].date_start = new Date(events[key].date_start)
+            events[key].date_end = new Date(events[key].date_end)
         }
-        return { parsedEvents, eventsWithRepeat };
+        return events;
     }
 
     hashEvents(events){
@@ -155,9 +145,9 @@ class App extends Component {
         for (var key in events) {
             hashed_date = events[key].date_start.toLocaleDateString();
             if (hashed_date in hashed) {
-                hashed[hashed_date].push(events[key].id)
+                hashed[hashed_date].push(events[key])
             } else {
-                hashed[hashed_date] = [events[key].id]
+                hashed[hashed_date] = [events[key]]
             }
         }
         return hashed;
@@ -395,11 +385,10 @@ class App extends Component {
         }
     }
 
-    switchCard(mode, events, hashed_by_date){
+    switchCard(mode, hashed_by_date){
         switch (mode) {
             case "daily":
-            return <DailyCard events={events}
-                              hashed_events={hashed_by_date}
+            return <DailyCard events={hashed_by_date}
                               scrollEvent={this.listenScrollEvent}
                               scrollDailyEvent={this.scrollDailyEvent}
                               clickEvent={this.clickEvent}
@@ -409,8 +398,7 @@ class App extends Component {
                               key={this.state.refresh_aux}
                               clickEventDate={this.clickEventDate}/>;
             case "weekly":
-                return <WeeklyCard events={events}
-                                   hashed_events={hashed_by_date}
+                return <WeeklyCard events={hashed_by_date}
                                    onClickReturn={this.onClickReturn}
                                    aux_view_time={this.state.aux_view_time}
                                    current_time={this.state.current_time}
@@ -419,8 +407,7 @@ class App extends Component {
                                    onClickDay = {this.onClickDay}
                                    clickEventDate={this.clickEventDate}/>;
             case "monthly":
-                return <MonthlyCard events={events}
-                                    hashed_events={hashed_by_date}
+                return <MonthlyCard events={hashed_by_date}
                                     onClickReturn={this.onClickReturn}
                                     aux_view_time={this.state.aux_view_time}
                                     current_time={this.state.current_time}
@@ -429,8 +416,7 @@ class App extends Component {
                                     clickEventDate={this.clickEventDate}
                                     onClickDay={this.onClickDay}/>;
             default:
-                return <DailyCard events={events}
-                                  hashed_events={hashed_by_date}
+                return <DailyCard events={hashed_by_date}
                                   onClickReturn={this.onClickReturn}
                                   aux_view_time={this.state.aux_view_time}
                                   current_time={this.state.current_time}
@@ -447,7 +433,7 @@ class App extends Component {
 
         // Main card:
         var content_container_components = []
-        content_container_components.push(this.switchCard(this.state.mode, events, hashed_by_date))
+        content_container_components.push(this.switchCard(this.state.mode, hashed_by_date))
 
         // Switch button for week and month
         if (mode !== "daily") {
@@ -459,6 +445,7 @@ class App extends Component {
                 {content_container_components}
             </div>
         )
+
 
         // Creating and editing content container:
         components.push(
@@ -568,18 +555,17 @@ class App extends Component {
         var to_update_events = this.state.events;
         to_update_events[id] = to_add
 
-        var { hashed_by_date } = this.state;
+        var to_update_hashed = this.state.hashed_by_date;
         const hashed_date = to_add.date_start.toLocaleDateString();
-        if (hashed_date in hashed_by_date) {
-            hashed_by_date[hashed_date].push(id)
+        if (hashed_date in to_update_hashed) {
+            to_update_hashed[hashed_date].push(to_add)
         } else {
-            hashed_by_date[hashed_date] = [id]
+            to_update_hashed[hashed_date] = [to_add]
         }
-        console.log(hashed_by_date);
 
 
 
-        this.setState({events: to_update_events, hashed_by_date});
+        this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
         this.closeEventForm();
         // add confirmation
         return id;
@@ -622,23 +608,23 @@ class App extends Component {
 
         var to_update_events = Object.assign({}, this.state.events);
         to_update_events[id] = to_add;
-        var hashed_by_date = Object.assign({}, this.state.hashed_by_date);
+        var to_update_hashed = Object.assign({}, this.state.hashed_by_date);
         const previous_hashed_date = previous_date.toLocaleDateString();
         const hashed_date = to_add.date_start.toLocaleDateString();
         var index = 0;
-        hashed_by_date[previous_hashed_date].forEach((hashed_id) => {
-            if (hashed_id === id) {
-                hashed_by_date[previous_hashed_date].splice(index, 1);
+        to_update_hashed[previous_hashed_date].forEach((_event) => {
+            if (_event.id === id) {
+                to_update_hashed[previous_hashed_date].splice(index, 1);
             }
             index += 1;
         });
-        if (hashed_date in hashed_by_date) {
-            hashed_by_date[hashed_date].push(id)
+        if (hashed_date in to_update_hashed) {
+            to_update_hashed[hashed_date].push(to_add)
         } else {
-            hashed_by_date[hashed_date] = [id]
+            to_update_hashed[hashed_date] = [to_add]
         }
 
-        this.setState({events: to_update_events, hashed_by_date});
+        this.setState({events: to_update_events, hashed_by_date: to_update_hashed});
         this.closeEventForm();
         // add confirmation
         return id;
@@ -655,16 +641,16 @@ class App extends Component {
         // add confirmation
 
         //then
-        var hashed_by_date = Object.assign({}, this.state.hashed_by_date);
+        var to_update_hashed = Object.assign({}, this.state.hashed_by_date);
         const hashed_date = to_delete_event.date_start.toLocaleDateString();
         var index = 0;
-        hashed_by_date[hashed_date].forEach((hashed_id) => {
-            if (hashed_id === to_delete_event.id) {
-                hashed_by_date[hashed_date].splice(index, 1);
+        to_update_hashed[hashed_date].forEach((aux_event) => {
+            if (aux_event.id === to_delete_event.id) {
+                to_update_hashed[hashed_date].splice(index, 1);
             }
             index += 1;
         });
-        this.setState({hashed_by_date});
+        this.setState({hashed_by_date: to_update_hashed});
         this.closeEvent();
         return to_delete_event.id;
     }
@@ -778,12 +764,8 @@ class App extends Component {
 
 }
 
-const mapStateToProps = (state) => ({
-    eventsWithRepeat: state.eventsWithRepeat,
-});
 
 
 
 
-
-export default connect(mapStateToProps, { setEventsWithRepeat })(App);
+export default App;

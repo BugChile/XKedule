@@ -1,4 +1,4 @@
-const hcEvents = {
+const events = {
 	"0":{
 	"id": "0",
 	"title": "Clases1",
@@ -20,10 +20,9 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('august 5, 2019 02:08:00'),
-	"date_end": new Date('august 5, 2019 03:08:00'),
-	"tag_ids": [],
-	rrule: "RRULE:FREQ=DAILY;INTERVAL=1",
+	"date_start": new Date('april 17, 2019 02:08:00'),
+	"date_end": new Date('april 17, 2019 03:08:00'),
+	"tag_ids": []
 	},
 	"1":{
 	"id": "1",
@@ -2680,7 +2679,7 @@ const hcEvents = {
 // Colors and styles defined in:
 // https://www.figma.com/file/OhtFZI18vLZ8YmwLHj0nyrPg/EventColors?node-id=0%3A1
 
-const hcUserTags = {
+const user_tags = {
     "1": {
         "id": "1",
         "name": "IIC2233 - Inteligencia Artificial",
@@ -2738,4 +2737,4 @@ const hcUserTags = {
 
 }
 
-export {hcEvents, hcUserTags}
+export {events, user_tags}

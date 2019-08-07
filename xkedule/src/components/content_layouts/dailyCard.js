@@ -2,12 +2,7 @@ import React from "react"
 import DailyTaskCard from './dailyTaskCard'
 import HeaderDate from './headerDate'
 import BackToToday from './backToToday'
-import { checkDateOverlap, 
-         onlyUnique, 
-         multiplyReducer, 
-         increasingFunctionCompare, 
-         checkTodayFunction, 
-         eventsFromHashed } from "../../js_helpers/helpers"
+import { checkDateOverlap, onlyUnique, multiplyReducer, increasingFunctionCompare, checkTodayFunction} from "../../js_helpers/helpers"
 
 export default class DailyCard extends React.Component {
 
@@ -124,8 +119,8 @@ export default class DailyCard extends React.Component {
         return grouped;
     }
 
-  generateEvents(events, hashed_events, aux_view_time){
-        const day_events =  eventsFromHashed(events, hashed_events, aux_view_time.toLocaleDateString())
+  generateEvents(events, aux_view_time){
+        const day_events = events[aux_view_time.toLocaleDateString()]
         var col_number = 1;
         if (day_events) {
             var tasks = [];
@@ -186,7 +181,6 @@ export default class DailyCard extends React.Component {
                  {this.hourTicks()}
                  {this.lines()}
                  {this.generateEvents(this.props.events,
-                                      this.props.hashed_events,
                                          this.props.aux_view_time)}
              </div>
          </div>

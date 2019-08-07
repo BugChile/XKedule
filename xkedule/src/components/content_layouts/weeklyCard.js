@@ -3,7 +3,7 @@ import HeaderDate from './headerDate'
 import WeekCardDayHeaders from './weekCardDayHeaders'
 import WeeklyTaskCard from './weeklyTaskCard'
 import BackToToday from './backToToday'
-import { checkTodayFunction, eventsFromHashed } from '../../js_helpers/helpers'
+import { checkTodayFunction } from '../../js_helpers/helpers'
 
 
 export default class WeeklyCard extends React.Component {
@@ -22,10 +22,10 @@ export default class WeeklyCard extends React.Component {
         return document.getElementById("content").clientHeight - 80;
     }
 
-  generateTaskCards(day, events, hashed_events, aux_view_time, max_task_container_height, i){
+  generateTaskCards(day, events, aux_view_time, max_task_container_height, i){
       // day is a Date object
       var task_cards = []
-      const day_events = eventsFromHashed(events, hashed_events, day.toLocaleDateString());
+      const day_events = events[day.toLocaleDateString()];
       var day_number = day.getDay();
       if (day_number === 0) {
           day_number = 7;
@@ -48,7 +48,7 @@ export default class WeeklyCard extends React.Component {
   }
 
 
-  generateDayCells(aux_view_time, current_time, events, hashed_events, max_task_container_height){
+  generateDayCells(aux_view_time, current_time, events, max_task_container_height){
       var day_name_cells = [];
       var week_tasks = [];
       var day_cell_class;
@@ -69,10 +69,10 @@ export default class WeeklyCard extends React.Component {
                                              day = {new Date(day_date)}
                                              day_date = {day_date.toLocaleDateString('en-GB',
                                                          {day:"2-digit", month:"2-digit", year:"numeric"})}
-                                             card_key = {"week_card_day_header"+i}
+                                             card_key = {"week_card_day_header"+i} 
                                              onClickDay={this.props.onClickDay}/>
 
-          week_tasks.push(this.generateTaskCards(day_date, events, hashed_events, aux_view_time, max_task_container_height, i));
+          week_tasks.push(this.generateTaskCards(day_date, events, aux_view_time, max_task_container_height, i));
 
           day_date.setDate(day_date.getDate() + 1);
       }
@@ -119,25 +119,25 @@ export default class WeeklyCard extends React.Component {
          <div className="content_card" id="content_card">
          <div className="content_header">
          {(() => {
-
+            
             var isToday = false
             var day_date = new Date(this.props.aux_view_time); //current day
             day_date.setDate(this.props.aux_view_time.getDate() - (this.props.aux_view_time.getDay() + 6) % 7);
             for (var i = 0; i < 7; i++) {
-
+                
                isToday = checkTodayFunction(this.props.current_time, day_date);
-
+            
                if (isToday) {
                        return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
                        this is <strong>your</strong> week
                        </div>
-
+               
                }
                day_date.setDate(day_date.getDate() + 1);
            }
-
+           
                return <BackToToday type={"week"} onClickReturn={this.props.onClickReturn}/>
-
+        
             })()}
              <HeaderDate date={this.getHeaderDate(this.props.aux_view_time)} clickEventDate={this.props.clickEventDate}/>
          </div>
@@ -146,7 +146,6 @@ export default class WeeklyCard extends React.Component {
                   {this.generateDayCells(this.props.aux_view_time,
                                          this.props.current_time,
                                          this.props.events,
-                                         this.props.hashed_events,
                                          this.state.max_task_container_height)}
 
               </div>
