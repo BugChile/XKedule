@@ -215,13 +215,21 @@ export default class EventForm extends React.Component {
   }
 
   removeEventLink(link){
-      delete this.updatedEventLinks[link.name];
+      delete this.updatedEventLinks[link.id];
       this.updatedEventLinks = {...this.updatedEventLinks}; // deep copy to trigger re-render
       // above update is instantaneus instead of setState, so if react stacks
       // setState calls we use the updatedEventLinks as a reference
       this.setState({ eventLinks : this.updatedEventLinks});
       this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
   }
+//   removeEaventTag(tag){
+//       delete this.updatedEventTags[tag.id];
+//       this.updatedEventTags = {...this.updatedEventTags}; // deep copy to trigger re-render
+//       // above update is instantaneus instead of setState, so if react stacks
+//       // setState calls we use the updatedEventTags as a reference
+//       this.setState({ eventTags : this.updatedEventTags});
+//       this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
+//   }
 
 
   componentDidMount(){

@@ -19,12 +19,11 @@ function capitalizeFirstLetter(string) { // from https://stackoverflow.com/quest
 
 function toLinkDataModel(links_from_event_form){
     var links = {};
-    var index = 0;
     var link_object;
     Object.keys(links_from_event_form).forEach((key) => {
         link_object = links_from_event_form[key];
-        link_object.id = index;
-        links[index] = link_object;
+        link_object.id = key;
+        links[key] = link_object;
     });
     return links;
 }

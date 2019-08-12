@@ -283,11 +283,12 @@ select {
             }
         }
 
+        
         .tag_color_picker{
-            width: 280px;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-
+            width: 250px;
+            display: flex;
+            flex-wrap: wrap;
+            
             .color_choice{
                 box-sizing: border-box;
                 width: 40px;

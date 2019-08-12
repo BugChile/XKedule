@@ -356,10 +356,10 @@ a:visited{
     flex-wrap: wrap;
     position: absolute;
     min-width: 25vw;
-    min-height: 100px;;
     max-width: 220px;
     max-height: 200px;
     overflow-y: auto;
+    justify-content: center;
     top:50px;
     left: 260px;
     padding: 10px;
@@ -379,21 +379,20 @@ a:visited{
     margin-bottom: 2px;
     box-shadow: none;
     text-decoration: (none!important);
-    height: inherit;
+    height: auto;
     vertical-align: middle;
     font-size: 14px;
     margin-top: 2px;
-    margin-left: 3px;
     color: $color-linfInfo;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     background-color: $color-bg-linfInfo;
+    width: 100%;
+    max-width: 200px;
     &:hover{
         color:$color-hover-text;
     }
-    width: 100%;
-    max-width: 200px;
 }
 .hover{
     &:hover{

@@ -28,7 +28,7 @@ export default class LinkTool extends React.Component {
         var href;
 
         // add https if not already there
-        if (this.state.new_link_href.indexOf("https://") !== 0) {
+        if (this.state.new_link_href.indexOf("https://") !== 0 || this.state.new_link_href.indexOf("http://") !== 0) {
             href = "https://" + this.state.new_link_href;
         } else {
             href = this.state.new_link_href
