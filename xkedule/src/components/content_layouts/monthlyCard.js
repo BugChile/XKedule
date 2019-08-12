@@ -1,14 +1,15 @@
-import React from "react"
-import HeaderDate from './headerDate'
-import MonthlyCardCell from './monthlyCardCell'
-import MonthlyTaskCard from './monthlyTaskCard'
-import BackToToday from './backToToday'
-import DayMonth from './dayMonth'
-import { get_day_occurrence } from '../../js_helpers/rrule_helpers'
-import { dateToWritenDate } from '../../js_helpers/parsers'
-import { checkTodayFunction, eventsFromHashed } from '../../js_helpers/helpers'
+import React from "react";
+import { connect } from 'react-redux';
+import HeaderDate from './headerDate';
+import MonthlyCardCell from './monthlyCardCell';
+import MonthlyTaskCard from './monthlyTaskCard';
+import BackToToday from './backToToday';
+import DayMonth from './dayMonth';
+import { get_day_occurrence } from '../../js_helpers/rrule_helpers';
+import { dateToWritenDate } from '../../js_helpers/parsers';
+import { checkTodayFunction, eventsFromHashed } from '../../js_helpers/helpers';
 
-export default class MonthlyCard extends React.Component {
+class MonthlyCard extends React.Component {
     constructor(props){
         super(props)
 
@@ -74,7 +75,8 @@ export default class MonthlyCard extends React.Component {
 
 
 
-    generateDayCells(aux_view_time, current_time, events, hashed_events, tasks_per_cell){
+    generateDayCells(aux_view_time, events, hashed_events, tasks_per_cell){
+        const { currentTime } = this.props;
         var day_cells = [];
         // var aux_view_time = new Date();
         const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -92,8 +94,8 @@ export default class MonthlyCard extends React.Component {
             //define cell style
             if (day_date.getMonth() === aux_view_time.getMonth()) {
                 cell_class_list += " month_day" //day of the current month showing
-                    var isToday = checkTodayFunction(current_time, day_date);
-                    if (isToday && day_date.getDate() === current_time.getDate()                       ){
+                    var isToday = checkTodayFunction(currentTime, day_date);
+                    if (isToday && day_date.getDate() === currentTime.getDate()){
                     cell_number_class_list += " current_day" //current day
                 }
             }
@@ -174,6 +176,7 @@ export default class MonthlyCard extends React.Component {
 
 
     render() {
+        const { currentTime } = this.props;
         return(
             <div className="content_card" id="content_card">
             <div className="content_header">
@@ -182,7 +185,7 @@ export default class MonthlyCard extends React.Component {
              
              var day_date = new Date(this.props.aux_view_time.getFullYear(), this.props.aux_view_time.getMonth(), 1); 
              while (day_date.getDay() !== 1 || day_date.getMonth() !== (this.props.aux_view_time.getMonth() + 1) % 12) {
-                var isToday = checkTodayFunction(this.props.current_time, day_date);
+                var isToday = checkTodayFunction(currentTime, day_date);
                 if (isToday){
                     return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
                     this is <strong>your</strong> month
@@ -205,7 +208,6 @@ export default class MonthlyCard extends React.Component {
 
                  <div className="monthly_schedule">
                      {this.generateDayCells(this.props.aux_view_time,
-                                            this.props.current_time,
                                             this.props.events,
                                             this.props.hashed_events,
                                             this.state.tasks_per_cell)}
@@ -220,3 +222,12 @@ export default class MonthlyCard extends React.Component {
         )
     }
   }
+
+const mapStateToProps = (state) => {
+    const { currentTime } = state.appState;
+    return {
+        currentTime,
+    }
+}
+
+export default connect(mapStateToProps, null)(MonthlyCard)

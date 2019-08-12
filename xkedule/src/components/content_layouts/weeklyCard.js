@@ -1,4 +1,5 @@
 import React from "react"
+import { connect } from 'react-redux';
 import HeaderDate from './headerDate'
 import WeekCardDayHeaders from './weekCardDayHeaders'
 import WeeklyTaskCard from './weeklyTaskCard'
@@ -6,7 +7,7 @@ import BackToToday from './backToToday'
 import { checkTodayFunction, eventsFromHashed } from '../../js_helpers/helpers'
 
 
-export default class WeeklyCard extends React.Component {
+class WeeklyCard extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -48,7 +49,8 @@ export default class WeeklyCard extends React.Component {
   }
 
 
-  generateDayCells(aux_view_time, current_time, events, hashed_events, max_task_container_height){
+  generateDayCells(aux_view_time, events, hashed_events, max_task_container_height){
+      const {  currentTime } = this.props;
       var day_name_cells = [];
       var week_tasks = [];
       var day_cell_class;
@@ -58,8 +60,8 @@ export default class WeeklyCard extends React.Component {
       const day_names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
       for (var i = 0; i < 7; i++) {
           day_cell_class = "day_name_cell_weekly";
-          var isToday = checkTodayFunction(current_time, day_date);
-          if (isToday && day_date.getDate() === current_time.getDate()){
+          var isToday = checkTodayFunction( currentTime, day_date);
+          if (isToday && day_date.getDate() ===  currentTime.getDate()){
             day_cell_class += " color_text";
           }
 
@@ -115,6 +117,7 @@ export default class WeeklyCard extends React.Component {
     }
 
   render() {
+      const { currentTime } = this.props;
       return(
          <div className="content_card" id="content_card">
          <div className="content_header">
@@ -125,7 +128,7 @@ export default class WeeklyCard extends React.Component {
             day_date.setDate(this.props.aux_view_time.getDate() - (this.props.aux_view_time.getDay() + 6) % 7);
             for (var i = 0; i < 7; i++) {
 
-               isToday = checkTodayFunction(this.props.current_time, day_date);
+               isToday = checkTodayFunction(currentTime, day_date);
 
                if (isToday) {
                        return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
@@ -144,7 +147,6 @@ export default class WeeklyCard extends React.Component {
          <div className="content" id="content">
               <div className="weekly_schedule">
                   {this.generateDayCells(this.props.aux_view_time,
-                                         this.props.current_time,
                                          this.props.events,
                                          this.props.hashed_events,
                                          this.state.max_task_container_height)}
@@ -155,3 +157,12 @@ export default class WeeklyCard extends React.Component {
     )
   }
   }
+
+const mapStateToProps = (state) => {
+    const { currentTime } = state.appState;
+    return {
+        currentTime,
+    }
+}
+
+export default connect(mapStateToProps, null)(WeeklyCard)

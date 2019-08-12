@@ -1,4 +1,5 @@
 import React from "react"
+import { connect } from "react-redux";
 import DailyTaskCard from './dailyTaskCard'
 import HeaderDate from './headerDate'
 import BackToToday from './backToToday'
@@ -9,7 +10,7 @@ import { checkDateOverlap,
          checkTodayFunction, 
          eventsFromHashed } from "../../js_helpers/helpers"
 
-export default class DailyCard extends React.Component {
+class DailyCard extends React.Component {
 
   hourTicks(){
         return (
@@ -162,13 +163,14 @@ export default class DailyCard extends React.Component {
   }
 
   render() {
+      const { currentTime } = this.props;
       return(
          <div className="content_card" id="content_card">
          <div className="content_header" key="content_header">
 
          {(() => {
 
-             var isToday = checkTodayFunction(this.props.current_time, this.props.aux_view_time);
+             var isToday = checkTodayFunction(currentTime, this.props.aux_view_time);
 
              if (isToday) {
                     return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
@@ -194,3 +196,12 @@ export default class DailyCard extends React.Component {
     )
   }
   }
+
+const mapStateToProps = (state) => {
+    const { currentTime } = state.appState;
+    return {
+        currentTime,
+    }
+}
+
+export default connect(mapStateToProps, null)(DailyCard);

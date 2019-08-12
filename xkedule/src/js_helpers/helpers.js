@@ -35,13 +35,13 @@ function decreasingFunctionCompare(a, b){
 function increasingFunctionCompare(a, b){
     return a - b
 }
-function checkTodayFunction(current_time, aux_view_time){
+function checkTodayFunction(currentTime, aux_view_time){
     var day_aux = aux_view_time.getDate();
     var month_aux = aux_view_time.getMonth();
     var year_aux = aux_view_time.getFullYear();
-    var day = current_time.getDate();
-    var month = current_time.getMonth();
-    var year = current_time.getFullYear();
+    var day = currentTime.getDate();
+    var month = currentTime.getMonth();
+    var year = currentTime.getFullYear();
     if (day_aux === day && month_aux === month && year_aux === year) {
         return true;
     }return false;

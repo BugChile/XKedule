@@ -13,7 +13,11 @@ import InfoCard from './components/content_layouts/infoCard'
 import CreationContainer from './components/creation_tools/creationContainer'
 import { toDataDate }  from './js_helpers/parsers';
 import { getRepeatsString }  from './js_helpers/rrule_helpers';
-import { setEventsWithRepeat } from './store/actions'
+import {
+    setEventsWithRepeat,
+    setInfoDailyEvent,
+    updateCurrentTime,
+} from './store/actions'
 import './App.css';
 // development
 
@@ -27,14 +31,12 @@ class App extends Component {
             events: {},
             user_tags: {},
             dailyComponentScroll: new Date().getHours() * 60 - 120,// cambiar después
-            infoDaily: null,
             classesInfoCard:'hidden event_info_card',
             infoDailyTop: null,
             eventInfoCardLeft: null,
             eventInfoCardTop:null,
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
             aux_view_time: new Date(),
-            current_time: new Date(),
             loading: true,
             linkComponent:null,
             main_button_function: null,
@@ -55,7 +57,6 @@ class App extends Component {
 
         //CONTENT GENERATORS
         this.tick = this.tick.bind(this);
-        this.tick_current_time = this.tick_current_time.bind(this);
         this.hashEvents = this.hashEvents.bind(this);
         this.getEventSaveForm = this.getEventSaveForm.bind(this);
         this.onClickReturn = this.onClickReturn.bind(this);
@@ -168,11 +169,6 @@ class App extends Component {
         date.setSeconds(this.state.aux_view_time.getSeconds() + 1);
         this.setState({aux_view_time: date});
     }
-    tick_current_time(){
-        var date = new Date(this.state.current_time);
-        date.setSeconds(this.state.current_time.getSeconds() + 1);
-        this.setState({current_time: date});
-    }
 
     getEventSaveForm(date_start, date_end){
         return {
@@ -255,49 +251,50 @@ class App extends Component {
 
     }
     clickEvent(event, card_id=null){
-       const content_div = document.getElementById("content")
-       if (content_div) {
-           content_div.style["overflow-y"] = "hidden";
-       }
-       const eventCardCoordinates = document.getElementById(card_id).getBoundingClientRect();
-       var left = 0;
-       var top = 0;
-       switch (this.state.mode) {
-            case 'monthly':
-               if (eventCardCoordinates.left <= 700 ) {
-                   left = eventCardCoordinates.left + 175
-               } else {
-                   left = eventCardCoordinates.left - 415
-               }
-               top = Math.min(eventCardCoordinates.top, 460)
-               break;
-            case 'weekly':
-               if (eventCardCoordinates.left <= 700 ) {
-                   left = eventCardCoordinates.left + 170
-               } else {
-                   left = eventCardCoordinates.left - 415
-               }
-               top = Math.min(eventCardCoordinates.top, 460)
-               break;
-            case 'daily':
-               left = eventCardCoordinates.left
-               top = Math.min(eventCardCoordinates.top + eventCardCoordinates.height + 5)
-               if (document.body.getBoundingClientRect().height - top < 250) {
-                   top = eventCardCoordinates.top - 265;
-               }
-
-               break;
-            default:
+        const { setInfoDailyEvent } = this.props;
+        const content_div = document.getElementById("content")
+        if (content_div) {
+            content_div.style["overflow-y"] = "hidden";
+        }
+        const eventCardCoordinates = document.getElementById(card_id).getBoundingClientRect();
+        var left = 0;
+        var top = 0;
+        switch (this.state.mode) {
+                case 'monthly':
+                if (eventCardCoordinates.left <= 700 ) {
+                    left = eventCardCoordinates.left + 175
+                } else {
+                    left = eventCardCoordinates.left - 415
+                }
+                top = Math.min(eventCardCoordinates.top, 460)
                 break;
+                case 'weekly':
+                if (eventCardCoordinates.left <= 700 ) {
+                    left = eventCardCoordinates.left + 170
+                } else {
+                    left = eventCardCoordinates.left - 415
+                }
+                top = Math.min(eventCardCoordinates.top, 460)
+                break;
+                case 'daily':
+                left = eventCardCoordinates.left
+                top = Math.min(eventCardCoordinates.top + eventCardCoordinates.height + 5)
+                if (document.body.getBoundingClientRect().height - top < 250) {
+                    top = eventCardCoordinates.top - 265;
+                }
 
-       }
-       left += "px"
-       top += "px"
-       this.setState({infoDaily:event,
-                      classesInfoCard:'event_info_card '.concat(this.state.mode),
-                      eventInfoCardLeft:left,
-                      eventInfoCardTop:top,
-                      linkComponent:null})
+                break;
+                default:
+                    break;
+
+        }
+        left += "px"
+        top += "px"
+        setInfoDailyEvent(event);
+        this.setState({classesInfoCard:'event_info_card '.concat(this.state.mode),
+                        eventInfoCardLeft:left,
+                        eventInfoCardTop:top,
+                        linkComponent:null})
     }
     onClickDay(day){
         this.setState({aux_view_time:day, mode:"daily"})
@@ -309,22 +306,25 @@ class App extends Component {
     }
 
     closeEvent(){
-        this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card', InfoCardLinks:null})
+        const { setInfoDailyEvent } = this.props;
+        setInfoDailyEvent(null)
+        this.setState({classesInfoCard:'hidden event_info_card', InfoCardLinks:null})
         const content_div = document.getElementById("content")
         if (content_div) {
             content_div.style["overflow-y"] = "scroll";
         }
     }
     onClickReturn(){
+        const { currentTime } = this.props;
         var aux_bool = true;
         if (this.state.refresh_aux){
             aux_bool = null;
         }
-        this.setState({aux_view_time: this.state.current_time, refresh_aux:aux_bool})
+        this.setState({aux_view_time: currentTime, refresh_aux:aux_bool})
     }
     // onClickAnywhereEvent(event, data){
     //     alert(event.target.type);
-    //     // this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
+    //     // this.setState({classesInfoCard:'hidden event_info_card'})
     // }
 
     scrollDailyEvent(){
@@ -405,7 +405,6 @@ class App extends Component {
                               clickEvent={this.clickEvent}
                               onClickReturn={this.onClickReturn}
                               aux_view_time={this.state.aux_view_time}
-                              current_time={this.state.current_time}
                               key={this.state.refresh_aux}
                               clickEventDate={this.clickEventDate}/>;
             case "weekly":
@@ -413,7 +412,6 @@ class App extends Component {
                                    hashed_events={hashed_by_date}
                                    onClickReturn={this.onClickReturn}
                                    aux_view_time={this.state.aux_view_time}
-                                   current_time={this.state.current_time}
                                    clickEvent={this.clickEvent}
                                    key={this.state.refresh_aux}
                                    onClickDay = {this.onClickDay}
@@ -423,7 +421,6 @@ class App extends Component {
                                     hashed_events={hashed_by_date}
                                     onClickReturn={this.onClickReturn}
                                     aux_view_time={this.state.aux_view_time}
-                                    current_time={this.state.current_time}
                                     clickEvent={this.clickEvent}
                                     key={this.state.refresh_aux}
                                     clickEventDate={this.clickEventDate}
@@ -433,7 +430,6 @@ class App extends Component {
                                   hashed_events={hashed_by_date}
                                   onClickReturn={this.onClickReturn}
                                   aux_view_time={this.state.aux_view_time}
-                                  current_time={this.state.current_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
                                   clickEvent={this.clickEvent}
@@ -469,7 +465,6 @@ class App extends Component {
                 user_tags = {user_tags}
                 editing_event_id = {editing_event_id}
                 close_event_form = {this.closeEventForm}
-                current_time={this.state.current_time}
                 set_new_event_callback={this.setNewEventObject}
                 save_tag_callback={this.saveNewTag}
                 delete_tag_callback={this.deleteTag}
@@ -713,6 +708,7 @@ class App extends Component {
 
     componentDidMount(){
         // this.scrollDailyEvent();
+        const { updateCurrentTime } = this.props;
         this.setUserTags(this.props.tags);
         this.setEvents(this.props.events);
         this.setHashedEvents(this.props.events);
@@ -721,7 +717,7 @@ class App extends Component {
             1000
         );
         this.intervalIDAUX = setInterval(
-            () => this.tick_current_time(this),
+            () => updateCurrentTime(),
             1000
         );
         this.setMainButtonFunction(this.expand)
@@ -760,7 +756,6 @@ class App extends Component {
 
                 {<InfoCard
                 classesInfoCard={this.state.classesInfoCard}
-                event={this.state.infoDaily}
                 topValue={this.state.infoDailyTop}
                 functionClose={this.closeEvent}
                 functionDelete={this.deleteEvent}
@@ -778,12 +773,20 @@ class App extends Component {
 
 }
 
-const mapStateToProps = (state) => ({
-    eventsWithRepeat: state.eventsWithRepeat,
-});
+const mapStateToProps = (state) => {
+    const { infoDailyEvent, currentTime } = state.appState;
+    return {
+        eventsWithRepeat: state.eventsWithRepeat,
+        infoDailyEvent,
+        currentTime,
+    }
+}
 
-
-
-
-
-export default connect(mapStateToProps, { setEventsWithRepeat })(App);
+export default connect(
+    mapStateToProps,
+    {
+        setEventsWithRepeat,
+        setInfoDailyEvent,
+        updateCurrentTime,
+    }
+)(App);
