@@ -5,6 +5,15 @@ export const setInfoDailyEvent = (event) => ({
   event,
 })
 
-export const updateCurrentTime = (event) => ({
+export const updateCurrentTime = () => ({
   type: actionTypes.UPDATE_CURRENT_TIME,
+})
+
+export const setAuxTime = (date) => ({
+  type: actionTypes.SET_AUX_TIME,
+  date
+})
+
+export const updateAuxTime = () => ({
+  type: actionTypes.UPDATE_AUX_TIME,
 })

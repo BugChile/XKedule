@@ -17,6 +17,8 @@ import {
     setEventsWithRepeat,
     setInfoDailyEvent,
     updateCurrentTime,
+    setAuxTime,
+    updateAuxTime,
 } from './store/actions'
 import './App.css';
 // development
@@ -36,7 +38,6 @@ class App extends Component {
             eventInfoCardLeft: null,
             eventInfoCardTop:null,
             hashed_by_date:{}, // hash events by date (number of milliseconds as in Date)
-            aux_view_time: new Date(),
             loading: true,
             linkComponent:null,
             main_button_function: null,
@@ -56,7 +57,6 @@ class App extends Component {
         this.setNewEventObject = this.setNewEventObject.bind(this);
 
         //CONTENT GENERATORS
-        this.tick = this.tick.bind(this);
         this.hashEvents = this.hashEvents.bind(this);
         this.getEventSaveForm = this.getEventSaveForm.bind(this);
         this.onClickReturn = this.onClickReturn.bind(this);
@@ -164,12 +164,6 @@ class App extends Component {
         return hashed;
     }
 
-    tick(){
-        var date = new Date(this.state.aux_view_time);
-        date.setSeconds(this.state.aux_view_time.getSeconds() + 1);
-        this.setState({aux_view_time: date});
-    }
-
     getEventSaveForm(date_start, date_end){
         return {
             title: this.new_event_object.title,
@@ -205,26 +199,27 @@ class App extends Component {
     listenScrollEvent(){
         this.setState({dailyComponentScroll:document.getElementById('content').scrollTop});
     }
-    clickEventDate(length, type){
 
+    clickEventDate(length, type){
+        const { auxTime, setAuxTime } = this.props;
         var aux_bool = true;
         if (this.state.refresh_aux){
             aux_bool = null;
         }
-        var date = this.state.aux_view_time;
+        var date = new Date(auxTime);
         if (type === 'prev'){
             switch (length){
                 case 2:
-                    date.setDate(this.state.aux_view_time.getDate() - 1);
+                    date.setDate(auxTime.getDate() - 1);
                     break;
                 case 4:
-                    date.setDate(this.state.aux_view_time.getDate() - 7);
+                    date.setDate(auxTime.getDate() - 7);
                     break;
                 case 5: 
-                    date.setDate(this.state.aux_view_time.getDate() - 7);
+                    date.setDate(auxTime.getDate() - 7);
                     break;
                 case 1:
-                    date.setMonth(this.state.aux_view_time.getMonth() - 1);
+                    date.setMonth(auxTime.getMonth() - 1);
                     break;
                 default:
                     break;
@@ -232,22 +227,22 @@ class App extends Component {
         }else{
                 switch (length){
                     case 2:
-                        date.setDate(this.state.aux_view_time.getDate() + 1);
+                        date.setDate(auxTime.getDate() + 1);
                         break;
                     case 4:
-                        date.setDate(this.state.aux_view_time.getDate() + 7);
+                        date.setDate(auxTime.getDate() + 7);
                         break;
                     case 5:
-                        date.setDate(this.state.aux_view_time.getDate() + 7);
+                        date.setDate(auxTime.getDate() + 7);
                         break;
-                        case 1:
-                            date.setMonth(this.state.aux_view_time.getMonth() + 1);
-                            break;
+                    case 1:
+                        date.setMonth(auxTime.getMonth() + 1);
+                        break;
                     default:
                         break;
                 }
         }
-        this.setState({aux_view_time: date, refresh_aux:aux_bool});
+        setAuxTime(date);
 
     }
     clickEvent(event, card_id=null){
@@ -297,7 +292,9 @@ class App extends Component {
                         linkComponent:null})
     }
     onClickDay(day){
-        this.setState({aux_view_time:day, mode:"daily"})
+        const { setAuxTime } = this.props;
+        setAuxTime(day);
+        this.setState({mode:"daily"})
         this.closeEventForm();
         this.expand();
     }
@@ -315,12 +312,8 @@ class App extends Component {
         }
     }
     onClickReturn(){
-        const { currentTime } = this.props;
-        var aux_bool = true;
-        if (this.state.refresh_aux){
-            aux_bool = null;
-        }
-        this.setState({aux_view_time: currentTime, refresh_aux:aux_bool})
+        const { currentTime, setAuxTime } = this.props;
+        setAuxTime(new Date(currentTime));
     }
     // onClickAnywhereEvent(event, data){
     //     alert(event.target.type);
@@ -396,6 +389,7 @@ class App extends Component {
     }
 
     switchCard(mode, events, hashed_by_date){
+        const { auxTime } = this.props;
         switch (mode) {
             case "daily":
             return <DailyCard events={events}
@@ -404,36 +398,32 @@ class App extends Component {
                               scrollDailyEvent={this.scrollDailyEvent}
                               clickEvent={this.clickEvent}
                               onClickReturn={this.onClickReturn}
-                              aux_view_time={this.state.aux_view_time}
-                              key={this.state.refresh_aux}
+                              key={`dailyCard${auxTime.toISOString()}`}
                               clickEventDate={this.clickEventDate}/>;
             case "weekly":
                 return <WeeklyCard events={events}
                                    hashed_events={hashed_by_date}
                                    onClickReturn={this.onClickReturn}
-                                   aux_view_time={this.state.aux_view_time}
                                    clickEvent={this.clickEvent}
-                                   key={this.state.refresh_aux}
+                                   key={`weeklyCard${auxTime.toISOString()}`}
                                    onClickDay = {this.onClickDay}
                                    clickEventDate={this.clickEventDate}/>;
             case "monthly":
                 return <MonthlyCard events={events}
                                     hashed_events={hashed_by_date}
                                     onClickReturn={this.onClickReturn}
-                                    aux_view_time={this.state.aux_view_time}
                                     clickEvent={this.clickEvent}
-                                    key={this.state.refresh_aux}
+                                    key={`monthlyCard${auxTime.toISOString()}`}
                                     clickEventDate={this.clickEventDate}
                                     onClickDay={this.onClickDay}/>;
             default:
                 return <DailyCard events={events}
                                   hashed_events={hashed_by_date}
                                   onClickReturn={this.onClickReturn}
-                                  aux_view_time={this.state.aux_view_time}
                                   scrollEvent={this.listenScrollEvent}
                                   scrollDailyEvent={this.scrollDailyEvent}
                                   clickEvent={this.clickEvent}
-                                  key={this.state.refresh_aux}
+                                  key={`dailyCard${auxTime.toISOString()}`}
                                   clickEventDate={this.clickEventDate}/>;
         }
     }
@@ -468,7 +458,6 @@ class App extends Component {
                 set_new_event_callback={this.setNewEventObject}
                 save_tag_callback={this.saveNewTag}
                 delete_tag_callback={this.deleteTag}
-                aux_view_time={this.state.aux_view_time}
                 />
         )
 
@@ -708,12 +697,12 @@ class App extends Component {
 
     componentDidMount(){
         // this.scrollDailyEvent();
-        const { updateCurrentTime } = this.props;
+        const { updateCurrentTime, updateAuxTime } = this.props;
         this.setUserTags(this.props.tags);
         this.setEvents(this.props.events);
         this.setHashedEvents(this.props.events);
         this.intervalID = setInterval(
-            () => this.tick(this),
+            () => updateAuxTime(),
             1000
         );
         this.intervalIDAUX = setInterval(
@@ -774,11 +763,12 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { infoDailyEvent, currentTime } = state.appState;
+    const { infoDailyEvent, currentTime, auxTime } = state.appState;
     return {
         eventsWithRepeat: state.eventsWithRepeat,
         infoDailyEvent,
         currentTime,
+        auxTime,
     }
 }
 
@@ -788,5 +778,7 @@ export default connect(
         setEventsWithRepeat,
         setInfoDailyEvent,
         updateCurrentTime,
+        setAuxTime,
+        updateAuxTime,
     }
 )(App);

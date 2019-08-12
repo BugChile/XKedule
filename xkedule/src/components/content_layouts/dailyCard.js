@@ -74,10 +74,11 @@ class DailyCard extends React.Component {
         )
     }
 
-  getHeaderDate(aux_view_time){
+  getHeaderDate(){
+        const { auxTime } = this.props;
         var date_dict = {};
-        date_dict["main"] = aux_view_time.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
-        date_dict["sub"] = aux_view_time.toLocaleString('en-GB', {month:"long", year: "numeric"});
+        date_dict["main"] = auxTime.toLocaleString('en-GB', {weekday:"long", day: "numeric"});
+        date_dict["sub"] = auxTime.toLocaleString('en-GB', {month:"long", year: "numeric"});
         return date_dict;
     }
 
@@ -125,8 +126,9 @@ class DailyCard extends React.Component {
         return grouped;
     }
 
-  generateEvents(events, hashed_events, aux_view_time){
-        const day_events =  eventsFromHashed(events, hashed_events, aux_view_time.toLocaleDateString())
+  generateEvents(events, hashed_events){
+        const { auxTime } = this.props;
+        const day_events =  eventsFromHashed(events, hashed_events, auxTime.toLocaleDateString())
         var col_number = 1;
         if (day_events) {
             var tasks = [];
@@ -163,14 +165,14 @@ class DailyCard extends React.Component {
   }
 
   render() {
-      const { currentTime } = this.props;
+      const { currentTime, auxTime } = this.props;
       return(
          <div className="content_card" id="content_card">
          <div className="content_header" key="content_header">
 
          {(() => {
 
-             var isToday = checkTodayFunction(currentTime, this.props.aux_view_time);
+             var isToday = checkTodayFunction(currentTime, auxTime);
 
              if (isToday) {
                     return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
@@ -181,15 +183,14 @@ class DailyCard extends React.Component {
                 return <BackToToday type={"day"} onClickReturn={this.props.onClickReturn}/>
          }})()}
 
-             <HeaderDate date={this.getHeaderDate(this.props.aux_view_time)} clickEventDate={this.props.clickEventDate}/>
+             <HeaderDate date={this.getHeaderDate()} clickEventDate={this.props.clickEventDate}/>
          </div>
          <div className="content" key="content" id='content' onScroll={this.props.scrollEvent}>
              <div className="daily_tasks" key="daily_tasks">
                  {this.hourTicks()}
                  {this.lines()}
                  {this.generateEvents(this.props.events,
-                                      this.props.hashed_events,
-                                         this.props.aux_view_time)}
+                                      this.props.hashed_events)}
              </div>
          </div>
          </div>
@@ -198,9 +199,10 @@ class DailyCard extends React.Component {
   }
 
 const mapStateToProps = (state) => {
-    const { currentTime } = state.appState;
+    const { currentTime, auxTime } = state.appState;
     return {
         currentTime,
+        auxTime
     }
 }
 

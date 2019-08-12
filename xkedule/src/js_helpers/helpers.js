@@ -35,10 +35,10 @@ function decreasingFunctionCompare(a, b){
 function increasingFunctionCompare(a, b){
     return a - b
 }
-function checkTodayFunction(currentTime, aux_view_time){
-    var day_aux = aux_view_time.getDate();
-    var month_aux = aux_view_time.getMonth();
-    var year_aux = aux_view_time.getFullYear();
+function checkTodayFunction(currentTime, auxTime){
+    var day_aux = auxTime.getDate();
+    var month_aux = auxTime.getMonth();
+    var year_aux = auxTime.getFullYear();
     var day = currentTime.getDate();
     var month = currentTime.getMonth();
     var year = currentTime.getFullYear();

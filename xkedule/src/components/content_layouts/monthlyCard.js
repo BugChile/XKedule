@@ -65,8 +65,9 @@ class MonthlyCard extends React.Component {
     }
 
     calculateMaxTasks(){
-        const next_month = this.props.aux_view_time.getMonth() === 11 ? 0 : this.props.aux_view_time.getMonth() + 1;
-        const week_count = get_day_occurrence(new Date(this.props.aux_view_time.getFullYear(),
+        const { auxTime } = this.props;
+        const next_month = auxTime.getMonth() === 11 ? 0 :  auxTime.getMonth() + 1;
+        const week_count = get_day_occurrence(new Date(auxTime.getFullYear(),
                                                        next_month,
                                                        0)); //number of weeks on this month
         const cell_height = (document.getElementById("content").clientHeight / week_count) - 40;
@@ -75,12 +76,11 @@ class MonthlyCard extends React.Component {
 
 
 
-    generateDayCells(aux_view_time, events, hashed_events, tasks_per_cell){
-        const { currentTime } = this.props;
+    generateDayCells(events, hashed_events, tasks_per_cell){
+        const { currentTime, auxTime } = this.props;
         var day_cells = [];
-        // var aux_view_time = new Date();
         const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-        var day_date = new Date(aux_view_time.getFullYear(), aux_view_time.getMonth(), 1); //first day of month
+        var day_date = new Date(auxTime.getFullYear(), auxTime.getMonth(), 1); //first day of month
         day_date.setDate(day_date.getDate() - (day_date.getDay() + 6) % 7) //first month's week monday date
 
         var i = 0;
@@ -90,9 +90,9 @@ class MonthlyCard extends React.Component {
         var cell_class_list = "day_cell_monthly";
         var cell_number_class_list = "day_cell_number hover";
 
-        while (day_date.getDay() !== 1 || day_date.getMonth() !== (aux_view_time.getMonth() + 1) % 12) {
+        while (day_date.getDay() !== 1 || day_date.getMonth() !== (auxTime.getMonth() + 1) % 12) {
             //define cell style
-            if (day_date.getMonth() === aux_view_time.getMonth()) {
+            if (day_date.getMonth() === auxTime.getMonth()) {
                 cell_class_list += " month_day" //day of the current month showing
                     var isToday = checkTodayFunction(currentTime, day_date);
                     if (isToday && day_date.getDate() === currentTime.getDate()){
@@ -131,9 +131,10 @@ class MonthlyCard extends React.Component {
         return day_cells;
     }
 
-    getHeaderDate(aux_view_time){
-        var main_text = aux_view_time.toLocaleString('en-GB', {month:"long"})
-        var sub_text = aux_view_time.toLocaleString('en-GB', {year:"numeric"})
+    getHeaderDate(){
+        const { auxTime } = this.props;
+        var main_text = auxTime.toLocaleString('en-GB', {month:"long"})
+        var sub_text = auxTime.toLocaleString('en-GB', {year:"numeric"})
         return {"main": main_text, "sub": sub_text};
     }
 
@@ -176,15 +177,15 @@ class MonthlyCard extends React.Component {
 
 
     render() {
-        const { currentTime } = this.props;
+        const { currentTime, auxTime } = this.props;
         return(
             <div className="content_card" id="content_card">
             <div className="content_header">
                 
          {(() => {
              
-             var day_date = new Date(this.props.aux_view_time.getFullYear(), this.props.aux_view_time.getMonth(), 1); 
-             while (day_date.getDay() !== 1 || day_date.getMonth() !== (this.props.aux_view_time.getMonth() + 1) % 12) {
+             var day_date = new Date(auxTime.getFullYear(), auxTime.getMonth(), 1); 
+             while (day_date.getDay() !== 1 || day_date.getMonth() !== (auxTime.getMonth() + 1) % 12) {
                 var isToday = checkTodayFunction(currentTime, day_date);
                 if (isToday){
                     return <div id="this_is_you_line" className="text_15" key="this_is_you_line">
@@ -197,7 +198,7 @@ class MonthlyCard extends React.Component {
              
              
              })()}
-                <HeaderDate date={this.getHeaderDate(this.props.aux_view_time)} clickEventDate={this.props.clickEventDate}/>
+                <HeaderDate date={this.getHeaderDate()} clickEventDate={this.props.clickEventDate}/>
             </div>
             <div className="content" id="content">
                 {<MonthlyCardCell day_tasks={this.state.expanded_tasks}
@@ -207,8 +208,7 @@ class MonthlyCard extends React.Component {
                                   closeEvent={this.closeSeeMore}/>}
 
                  <div className="monthly_schedule">
-                     {this.generateDayCells(this.props.aux_view_time,
-                                            this.props.events,
+                     {this.generateDayCells(this.props.events,
                                             this.props.hashed_events,
                                             this.state.tasks_per_cell)}
 
@@ -224,9 +224,10 @@ class MonthlyCard extends React.Component {
   }
 
 const mapStateToProps = (state) => {
-    const { currentTime } = state.appState;
+    const { currentTime, auxTime } = state.appState;
     return {
         currentTime,
+        auxTime
     }
 }
 

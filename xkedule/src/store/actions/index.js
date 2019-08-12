@@ -5,4 +5,6 @@ export {
 export {
   setInfoDailyEvent,
   updateCurrentTime,
+  setAuxTime,
+  updateAuxTime,
 } from './_appState';
