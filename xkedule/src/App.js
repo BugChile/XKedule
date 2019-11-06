@@ -137,6 +137,7 @@ class App extends Component {
         let ruleObject;
         for (var key in parsedEvents) {
             if (parsedEvents[key].rrule !== undefined) {
+                // TODO fix HACK
                 if (parsedEvents[key].rrule === 'Never'){
                     parsedEvents[key].rrule = "RRULE:FREQ=DAILY;INTERVAL=1";
                 }
