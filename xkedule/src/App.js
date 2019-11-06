@@ -137,6 +137,9 @@ class App extends Component {
         let ruleObject;
         for (var key in parsedEvents) {
             if (parsedEvents[key].rrule !== undefined) {
+                if (parsedEvents[key].rrule === 'Never'){
+                    parsedEvents[key].rrule = "RRULE:FREQ=DAILY;INTERVAL=1";
+                }
                 ruleObject = RRule.fromString(parsedEvents[key].rrule)
                 eventsWithRepeat = [...eventsWithRepeat, { 
                     id: parsedEvents[key].id,

@@ -86,10 +86,6 @@ function eventsFromHashed(events, hashed, date){
     return [];
 }
 
-function searchOnGoogle(search){
-    alert(search);
-}
-
 export { stringRange,
          decreasingFunctionCompare,
          increasingFunctionCompare,
@@ -99,4 +95,4 @@ export { stringRange,
          isEmpty,
          checkTodayFunction,
          eventsFromHashed,
-         searchOnGoogle};
+        };
