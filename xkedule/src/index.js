@@ -12,7 +12,7 @@ import store from './store'
 
 //// for development:
 
-// import { hcEvents, hcUserTags } from './js_helpers/dev_data';
+import { hcEvents, hcUserTags } from './js_helpers/dev_data';
 
 var db;
 
@@ -57,76 +57,76 @@ let userUid;
 let saveCallback;
 let updateCallback;
 let deleteCallback;
-if (process.env.NODE_ENV === 'production') {
-    firebase.initializeApp(config);
-    db = firebase.firestore();
-    var provider = new firebase.auth.GoogleAuthProvider();
+// if (process.env.NODE_ENV === 'production') {
+//     firebase.initializeApp(config);
+//     db = firebase.firestore();
+//     var provider = new firebase.auth.GoogleAuthProvider();
 
-    saveCallback = save_user_doc;
-    updateCallback = update_user_doc;
-    deleteCallback = delete_user_doc;
-
-
-    chrome.storage.sync.get(['uid'], async function (result) {
-        // change this, only for quick testing
-        if (result.uid) {
-            Promise.all([db.collection("users").doc(result.uid).collection("events").get(),
-            db.collection("users").doc(result.uid).collection("tags").get()])
-                .then(function (responses) {
-                    const fetched_events = responses[0];
-                    const fetched_tags = responses[1];
-                    var events = {}
-                    var tags = {}
-                    fetched_events.forEach(function (_event) {
-                        events[_event.id] = _event.data();
-                    });
-                    fetched_tags.forEach(function (_tag) {
-                        tags[_tag.id] = _tag.data();
-                    });
-                    loadEvents = events;
-                    loadTags = tags;
-                    userUid = result.uid;
-                    renderApp();
-                });
+//     saveCallback = save_user_doc;
+//     updateCallback = update_user_doc;
+//     deleteCallback = delete_user_doc;
 
 
-        } else {
-            firebase.auth().signInWithPopup(provider).then(async function (result) {
-                var token = result.credential.accessToken;
-                var user = result.user;
-                chrome.storage.sync.set({ "uid": user.uid });
-                db.collection("users").doc(user.uid).set({
-                    name: user.displayName
-                });
+//     chrome.storage.sync.get(['uid'], async function (result) {
+//         // change this, only for quick testing
+//         if (result.uid) {
+//             Promise.all([db.collection("users").doc(result.uid).collection("events").get(),
+//             db.collection("users").doc(result.uid).collection("tags").get()])
+//                 .then(function (responses) {
+//                     const fetched_events = responses[0];
+//                     const fetched_tags = responses[1];
+//                     var events = {}
+//                     var tags = {}
+//                     fetched_events.forEach(function (_event) {
+//                         events[_event.id] = _event.data();
+//                     });
+//                     fetched_tags.forEach(function (_tag) {
+//                         tags[_tag.id] = _tag.data();
+//                     });
+//                     loadEvents = events;
+//                     loadTags = tags;
+//                     userUid = result.uid;
+//                     renderApp();
+//                 });
 
-                Promise.all([db.collection("users").doc(user.uid).collection("events").get(),
-                db.collection("users").doc(user.uid).collection("tags").get()])
-                    .then(function (responses) {
-                        const fetched_events = responses[0];
-                        const fetched_tags = responses[1];
-                        var events = {}
-                        var tags = {}
-                        fetched_events.forEach(function (_event) {
-                            events[_event.id] = _event.data();
-                        });
-                        fetched_tags.forEach(function (_tag) {
-                            tags[_tag.id] = _tag.data();
-                        });
-                        loadEvents = events;
-                        loadTags = tags;
-                        userUid = result.uid;
-                        renderApp();
-                    });
-            }).catch(function (error) {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                // var email = error.email;
-                // var credential = error.credential;
-                console.warn(errorCode, errorMessage);
-            });
-        }
-    });
-}
+
+//         } else {
+//             firebase.auth().signInWithPopup(provider).then(async function (result) {
+//                 var token = result.credential.accessToken;
+//                 var user = result.user;
+//                 chrome.storage.sync.set({ "uid": user.uid });
+//                 db.collection("users").doc(user.uid).set({
+//                     name: user.displayName
+//                 });
+
+//                 Promise.all([db.collection("users").doc(user.uid).collection("events").get(),
+//                 db.collection("users").doc(user.uid).collection("tags").get()])
+//                     .then(function (responses) {
+//                         const fetched_events = responses[0];
+//                         const fetched_tags = responses[1];
+//                         var events = {}
+//                         var tags = {}
+//                         fetched_events.forEach(function (_event) {
+//                             events[_event.id] = _event.data();
+//                         });
+//                         fetched_tags.forEach(function (_tag) {
+//                             tags[_tag.id] = _tag.data();
+//                         });
+//                         loadEvents = events;
+//                         loadTags = tags;
+//                         userUid = result.uid;
+//                         renderApp();
+//                     });
+//             }).catch(function (error) {
+//                 var errorCode = error.code;
+//                 var errorMessage = error.message;
+//                 // var email = error.email;
+//                 // var credential = error.credential;
+//                 console.warn(errorCode, errorMessage);
+//             });
+//         }
+//     });
+// }
 
 // end dev
 
@@ -150,14 +150,14 @@ function renderApp() {
 
 ////// for development:
 
-// var index = 0;
-// loadEvents = hcEvents;
-// loadTags = hcUserTags;
-// userUid = 'uid';
-// saveCallback = (a, b, c) => { console.log("save placeholder"); index += 1; return `${index}`; };
-// updateCallback = (a, b, c, d) => { console.log("update placeholder"); return d };
-// deleteCallback = () => { console.log("delete placeholder"); return "0" };
-// renderApp();
+var index = 0;
+loadEvents = hcEvents;
+loadTags = hcUserTags;
+userUid = 'uid';
+saveCallback = (a, b, c) => { console.log("save placeholder"); index += 1; return `${index}`; };
+updateCallback = (a, b, c, d) => { console.log("update placeholder"); return d };
+deleteCallback = () => { console.log("delete placeholder"); return "0" };
+renderApp();
 
 ////// end dev
 
