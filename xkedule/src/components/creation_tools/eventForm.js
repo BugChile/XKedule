@@ -1,358 +1,404 @@
-import React from "react"
-import EventFormCard from "./eventFormCard"
-import TagTool from "./tagTool"
-import LinkTool from "./linkTool"
-import RepeatTool from "./repeatTool"
+import React from "react";
+import EventFormCard from "./eventFormCard";
+import TagTool from "./tagTool";
+import LinkTool from "./linkTool";
+import RepeatTool from "./repeatTool";
 import OnOffInputContainer from "../input_components/onOffInputContainer";
-import MultipleStageInput from "../input_components/multipleStageInput";
 import SimpleInputOffState from "../input_components/simpleInputOffState";
-import SelectInput from "../input_components/selectInput";
 import TextLineInput from "../input_components/textLineInput";
 import HourMinuteInput from "../input_components/hourMinuteInput";
-import { dateToWritenDate,
-         dateToHourMinute,
-         capitalizeFirstLetter,
-         toLinkDataModel,
-         toTagIds } from "../../js_helpers/parsers";
+import {
+  dateToWritenDate,
+  dateToHourMinute,
+  capitalizeFirstLetter,
+  toLinkDataModel,
+  toTagIds
+} from "../../js_helpers/parsers";
 import { getRepeatsSummary } from "../../js_helpers/rrule_helpers";
-import Calendar from 'react-calendar';
+import Calendar from "react-calendar";
 
 export default class EventForm extends React.Component {
-  constructor(props){
-      super(props)
-      this.state = {
-          title: "",
-          description: "",
-          date: new Date(),
-          from: new Date(),
-          to: new Date(new Date().getTime() + 3600000),
-          repeat_rrule: "Never",
-          eventTags: {},
-          eventLinks: {},
-      };
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      description: "",
+      date: new Date(),
+      from: new Date(),
+      to: new Date(new Date().getTime() + 3600000),
+      repeat_rrule: "Never",
+      eventTags: {},
+      eventLinks: {}
+    };
 
-      props.set_new_event_callback("title", "");
-      props.set_new_event_callback("description", "");
-      props.set_new_event_callback("date", this.state.date);
-      props.set_new_event_callback("date_start", this.state.from);
-      props.set_new_event_callback("date_end", this.state.to);
-      props.set_new_event_callback("rrule", this.state.repeat_rrule);
-      props.set_new_event_callback("tag_ids", toTagIds(this.state.eventTags));
-      props.set_new_event_callback("links", toLinkDataModel(this.state.eventLinks));
+    props.set_new_event_callback("title", "");
+    props.set_new_event_callback("description", "");
+    props.set_new_event_callback("date", this.state.date);
+    props.set_new_event_callback("date_start", this.state.from);
+    props.set_new_event_callback("date_end", this.state.to);
+    props.set_new_event_callback("rrule", this.state.repeat_rrule);
+    props.set_new_event_callback("tag_ids", toTagIds(this.state.eventTags));
+    props.set_new_event_callback(
+      "links",
+      toLinkDataModel(this.state.eventLinks)
+    );
 
-      // the following are used because of stacked setState calls on prevState
-      // based operations
-      this.updatedEventTags = {} //required for stacked setState calls, all
-      // eventTags updates should be done on updatedEventTags before a call of
-      // this.setState({eventTags: this.updatedEventTags})
-      this.updatedEventLinks = {} //required for stacked setState calls, all
-      // eventLinks updates should be done on updatedEventTags before a call of
-      // this.setState({eventLinks: this.updatedEventLinks})
+    // the following are used because of stacked setState calls on prevState
+    // based operations
+    this.updatedEventTags = {}; //required for stacked setState calls, all
+    // eventTags updates should be done on updatedEventTags before a call of
+    // this.setState({eventTags: this.updatedEventTags})
+    this.updatedEventLinks = {}; //required for stacked setState calls, all
+    // eventLinks updates should be done on updatedEventTags before a call of
+    // this.setState({eventLinks: this.updatedEventLinks})
 
-      this.setTitle = this.setTitle.bind(this);
-      this.setDescription = this.setDescription.bind(this);
-      this.setDate = this.setDate.bind(this);
-      this.setFrom = this.setFrom.bind(this);
-      this.setFromHourMinute = this.setFromHourMinute.bind(this);
-      this.setTo = this.setTo.bind(this);
-      this.setToHourMinute = this.setToHourMinute.bind(this);
-      this.setRepeatRRule = this.setRepeatRRule.bind(this);
-      this.getEventTagDivs = this.getEventTagDivs.bind(this);
-      this.getEventLinkDivs = this.getEventLinkDivs.bind(this);
-      this.loadEvent = this.loadEvent.bind(this);
-      this.loadEventTags = this.loadEventTags.bind(this);
-      this.addEventTag = this.addEventTag.bind(this);
-      this.createAndAddNewTag = this.createAndAddNewTag.bind(this);
-      this.removeEventTag = this.removeEventTag.bind(this);
-      this.loadEventLinks = this.loadEventLinks.bind(this);
-      this.addEventLink = this.addEventLink.bind(this);
-      this.removeEventLink = this.removeEventLink.bind(this);
-
-  };
-
-  setTitle(title){
-      this.setState({title});
-      this.props.set_new_event_callback("title", title);
+    this.setTitle = this.setTitle.bind(this);
+    this.setDescription = this.setDescription.bind(this);
+    this.setDate = this.setDate.bind(this);
+    this.setFrom = this.setFrom.bind(this);
+    this.setFromHourMinute = this.setFromHourMinute.bind(this);
+    this.setTo = this.setTo.bind(this);
+    this.setToHourMinute = this.setToHourMinute.bind(this);
+    this.setRepeatRRule = this.setRepeatRRule.bind(this);
+    this.getEventTagDivs = this.getEventTagDivs.bind(this);
+    this.getEventLinkDivs = this.getEventLinkDivs.bind(this);
+    this.loadEvent = this.loadEvent.bind(this);
+    this.loadEventTags = this.loadEventTags.bind(this);
+    this.addEventTag = this.addEventTag.bind(this);
+    this.createAndAddNewTag = this.createAndAddNewTag.bind(this);
+    this.removeEventTag = this.removeEventTag.bind(this);
+    this.loadEventLinks = this.loadEventLinks.bind(this);
+    this.addEventLink = this.addEventLink.bind(this);
+    this.removeEventLink = this.removeEventLink.bind(this);
   }
 
-  setDescription(description){
-      this.setState({description});
-      this.props.set_new_event_callback("description", description);
+  setTitle(title) {
+    this.setState({ title });
+    this.props.set_new_event_callback("title", title);
   }
 
-  setDate(date){
-      this.setState({date});
-      this.props.set_new_event_callback("date", date);
+  setDescription(description) {
+    this.setState({ description });
+    this.props.set_new_event_callback("description", description);
   }
 
-  setFrom(from){
-     this.setState({from}, () => {
-         if (this.state.to < this.state.from) {
-             this.setTo(from);
-         }
-         this.props.set_new_event_callback("date_start", from);
-     });
+  setDate(date) {
+    this.setState({ date });
+    this.props.set_new_event_callback("date", date);
   }
 
-  setFromHourMinute(from_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
-      var date_from = new Date(this.state.from.getTime());
-      date_from.setHours(from_hour_minute.hour);
-      date_from.setMinutes(from_hour_minute.minute);
-      this.setFrom(date_from);
-  }
-
-  setTo(to){
-      this.setState({to}, () => {
-          if (this.state.to < this.state.from) {
-              this.setFrom(to);
-          }
-          this.props.set_new_event_callback("date_end", to);
-      });
-  }
-
-  setRepeatRRule(repeat_rrule){
-      this.setState({repeat_rrule});
-      this.props.set_new_event_callback("rrule", repeat_rrule);
-  }
-
-  setToHourMinute(to_hour_minute){ // format: {hour: H, minute: m}, H and m are integers
-      var date_to = new Date(this.state.to.getTime());
-      date_to.setHours(to_hour_minute.hour);
-      date_to.setMinutes(to_hour_minute.minute);
-      this.setTo(date_to);
-  }
-
-  getEventTagDivs(event_tags){
-      var tag_divs = [];
-      const event_tags_list = Object.values(event_tags)
-      event_tags_list.forEach((tag, index) => {
-          tag_divs.push(<EventFormCard key={`eventformcard${index}`} className={`event_form_big_input event_form_card ${tag.style}_tag`}
-                     element={tag}
-                     index={index}
-                     onRemove={this.removeEventTag}/>
-                 );
-      })
-      return tag_divs;
-  }
-
-  getEventLinkDivs(event_links){
-      var link_divs = [];
-      const event_links_list = Object.values(event_links)
-      event_links_list.forEach((link, index) => {
-          link_divs.push(<EventFormCard  key={`eventformcard2${index}`} className={`event_form_big_input event_form_card grey_tag`}
-                     element={link}
-                     onRemove={this.removeEventLink}
-                     onGoTo={link.href}/>
-                 );
-      })
-      return link_divs;
-  }
-
-  loadEvent(_event){
-      this.setTitle(_event["title"]);
-      this.setDescription(_event["description"]);
-      const from_date = new Date([_event["date_start"]]);
-      const from_hour = {hour: from_date.getHours(), minute: from_date.getMinutes()};
-
-      const to_date = new Date([_event["date_end"]]);
-      const to_hour = {hour: to_date.getHours(), minute: to_date.getMinutes()};
-      this.setDate(from_date);
-      this.setFrom(from_date);
-      this.setTo(to_date);
-  }
-
-  loadEventTags(editing_event, user_tags){
-      this.updatedEventTags = {}
-      editing_event["tag_ids"].forEach((tag_id) => {
-          this.updatedEventTags[tag_id] = user_tags[tag_id];
-      });
-      this.setState({ eventTags : this.updatedEventTags});
-      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
-  }
-
-  addEventTag(tag){
-      const new_key_value_pair = {};
-      new_key_value_pair[tag.id] = tag;
-      this.updatedEventTags = {...new_key_value_pair, ...this.updatedEventTags};
-      // above update is instantaneus instead of setState, so if react stacks
-      // setState calls we use the updatedEventTags as a reference
-      this.setState({ eventTags : this.updatedEventTags});
-      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
-  }
-
-  createAndAddNewTag(new_tag){ //tag format {name: string, style: string, actual_uses: 0}
-      const new_id = this.props.save_tag_callback(new_tag);
-      const tag = {
-          id: new_id
-      };
-      Object.assign(tag, new_tag);
-      this.addEventTag(tag);
-  }
-
-  removeEventTag(tag){
-      delete this.updatedEventTags[tag.id];
-      this.updatedEventTags = {...this.updatedEventTags}; // deep copy to trigger re-render
-      // above update is instantaneus instead of setState, so if react stacks
-      // setState calls we use the updatedEventTags as a reference
-      this.setState({ eventTags : this.updatedEventTags});
-      this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
-  }
-
-  loadEventLinks(editing_event){
-      this.updatedEventLinks = {...editing_event["links"]}
-      this.setState({ eventLinks : this.updatedEventLinks});
-      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
-  }
-
-  addEventLink(link){
-      const new_key_value_pair = {};
-      new_key_value_pair[link.name] = link;
-      this.updatedEventLinks = {...new_key_value_pair, ...this.updatedEventLinks};
-      // above update is instantaneus instead of setState, so if react stacks
-      // setState calls we use the updatedEventLinks as a reference
-      this.setState({ eventLinks : this.updatedEventLinks});
-      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
-  }
-
-  removeEventLink(link){
-      delete this.updatedEventLinks[link.id];
-      this.updatedEventLinks = {...this.updatedEventLinks}; // deep copy to trigger re-render
-      // above update is instantaneus instead of setState, so if react stacks
-      // setState calls we use the updatedEventLinks as a reference
-      this.setState({ eventLinks : this.updatedEventLinks});
-      this.props.set_new_event_callback("links", toLinkDataModel(this.updatedEventLinks));
-  }
-//   removeEaventTag(tag){
-//       delete this.updatedEventTags[tag.id];
-//       this.updatedEventTags = {...this.updatedEventTags}; // deep copy to trigger re-render
-//       // above update is instantaneus instead of setState, so if react stacks
-//       // setState calls we use the updatedEventTags as a reference
-//       this.setState({ eventTags : this.updatedEventTags});
-//       this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
-//   }
-
-
-  componentDidMount(){
-      if (this.props.event) {
-          this.loadEvent(this.props.event);
-          this.loadEventTags(this.props.event, this.props.user_tags);
-          this.loadEventLinks(this.props.event);
+  setFrom(from) {
+    this.setState({ from }, () => {
+      if (this.state.to < this.state.from) {
+        this.setTo(from);
       }
+      this.props.set_new_event_callback("date_start", from);
+    });
+  }
+
+  setFromHourMinute(from_hour_minute) {
+    // format: {hour: H, minute: m}, H and m are integers
+    var date_from = new Date(this.state.from.getTime());
+    date_from.setHours(from_hour_minute.hour);
+    date_from.setMinutes(from_hour_minute.minute);
+    this.setFrom(date_from);
+  }
+
+  setTo(to) {
+    this.setState({ to }, () => {
+      if (this.state.to < this.state.from) {
+        this.setFrom(to);
+      }
+      this.props.set_new_event_callback("date_end", to);
+    });
+  }
+
+  setRepeatRRule(repeat_rrule) {
+    this.setState({ repeat_rrule });
+    this.props.set_new_event_callback("rrule", repeat_rrule);
+  }
+
+  setToHourMinute(to_hour_minute) {
+    // format: {hour: H, minute: m}, H and m are integers
+    var date_to = new Date(this.state.to.getTime());
+    date_to.setHours(to_hour_minute.hour);
+    date_to.setMinutes(to_hour_minute.minute);
+    this.setTo(date_to);
+  }
+
+  getEventTagDivs(event_tags) {
+    var tag_divs = [];
+    const event_tags_list = Object.values(event_tags);
+    event_tags_list.forEach((tag, index) => {
+      tag_divs.push(
+        <EventFormCard
+          key={`eventformcard${index}`}
+          className={`event_form_big_input event_form_card ${tag.style}_tag`}
+          element={tag}
+          index={index}
+          onRemove={this.removeEventTag}
+        />
+      );
+    });
+    return tag_divs;
+  }
+
+  getEventLinkDivs(event_links) {
+    var link_divs = [];
+    const event_links_list = Object.values(event_links);
+    event_links_list.forEach((link, index) => {
+      link_divs.push(
+        <EventFormCard
+          key={`eventformcard2${index}`}
+          className={`event_form_big_input event_form_card grey_tag`}
+          element={link}
+          onRemove={this.removeEventLink}
+          onGoTo={link.href}
+        />
+      );
+    });
+    return link_divs;
+  }
+
+  loadEvent(_event) {
+    this.setTitle(_event["title"]);
+    this.setDescription(_event["description"]);
+    const from_date = new Date([_event["date_start"]]);
+    // UNUSED VAR
+    // const from_hour = {
+    //   hour: from_date.getHours(),
+    //   minute: from_date.getMinutes()
+    // };
+
+    const to_date = new Date([_event["date_end"]]);
+    // UNUSED VAR
+    // const to_hour = { hour: to_date.getHours(), minute: to_date.getMinutes() };
+    this.setDate(from_date);
+    this.setFrom(from_date);
+    this.setTo(to_date);
+  }
+
+  loadEventTags(editing_event, user_tags) {
+    this.updatedEventTags = {};
+    editing_event["tag_ids"].forEach(tag_id => {
+      this.updatedEventTags[tag_id] = user_tags[tag_id];
+    });
+    this.setState({ eventTags: this.updatedEventTags });
+    this.props.set_new_event_callback(
+      "tag_ids",
+      toTagIds(this.updatedEventTags)
+    );
+  }
+
+  addEventTag(tag) {
+    const new_key_value_pair = {};
+    new_key_value_pair[tag.id] = tag;
+    this.updatedEventTags = { ...new_key_value_pair, ...this.updatedEventTags };
+    // above update is instantaneus instead of setState, so if react stacks
+    // setState calls we use the updatedEventTags as a reference
+    this.setState({ eventTags: this.updatedEventTags });
+    this.props.set_new_event_callback(
+      "tag_ids",
+      toTagIds(this.updatedEventTags)
+    );
+  }
+
+  createAndAddNewTag(new_tag) {
+    //tag format {name: string, style: string, actual_uses: 0}
+    const new_id = this.props.save_tag_callback(new_tag);
+    const tag = {
+      id: new_id
+    };
+    Object.assign(tag, new_tag);
+    this.addEventTag(tag);
+  }
+
+  removeEventTag(tag) {
+    delete this.updatedEventTags[tag.id];
+    this.updatedEventTags = { ...this.updatedEventTags }; // deep copy to trigger re-render
+    // above update is instantaneus instead of setState, so if react stacks
+    // setState calls we use the updatedEventTags as a reference
+    this.setState({ eventTags: this.updatedEventTags });
+    this.props.set_new_event_callback(
+      "tag_ids",
+      toTagIds(this.updatedEventTags)
+    );
+  }
+
+  loadEventLinks(editing_event) {
+    this.updatedEventLinks = { ...editing_event["links"] };
+    this.setState({ eventLinks: this.updatedEventLinks });
+    this.props.set_new_event_callback(
+      "links",
+      toLinkDataModel(this.updatedEventLinks)
+    );
+  }
+
+  addEventLink(link) {
+    const new_key_value_pair = {};
+    new_key_value_pair[link.name] = link;
+    this.updatedEventLinks = {
+      ...new_key_value_pair,
+      ...this.updatedEventLinks
+    };
+    // above update is instantaneus instead of setState, so if react stacks
+    // setState calls we use the updatedEventLinks as a reference
+    this.setState({ eventLinks: this.updatedEventLinks });
+    this.props.set_new_event_callback(
+      "links",
+      toLinkDataModel(this.updatedEventLinks)
+    );
+  }
+
+  removeEventLink(link) {
+    delete this.updatedEventLinks[link.id];
+    this.updatedEventLinks = { ...this.updatedEventLinks }; // deep copy to trigger re-render
+    // above update is instantaneus instead of setState, so if react stacks
+    // setState calls we use the updatedEventLinks as a reference
+    this.setState({ eventLinks: this.updatedEventLinks });
+    this.props.set_new_event_callback(
+      "links",
+      toLinkDataModel(this.updatedEventLinks)
+    );
+  }
+  //   removeEaventTag(tag){
+  //       delete this.updatedEventTags[tag.id];
+  //       this.updatedEventTags = {...this.updatedEventTags}; // deep copy to trigger re-render
+  //       // above update is instantaneus instead of setState, so if react stacks
+  //       // setState calls we use the updatedEventTags as a reference
+  //       this.setState({ eventTags : this.updatedEventTags});
+  //       this.props.set_new_event_callback("tag_ids", toTagIds(this.updatedEventTags));
+  //   }
+
+  componentDidMount() {
+    if (this.props.event) {
+      this.loadEvent(this.props.event);
+      this.loadEventTags(this.props.event, this.props.user_tags);
+      this.loadEventLinks(this.props.event);
+    }
   }
 
   render() {
-      return(
-          <div className='height100'>
-              <div className="right_aligned_text">
-              <span id="event_form_discard"
-                    className="right_aligned_text"
-                    onClick={this.props.close_event_form}>
-                        Cancel
-              </span>
-              </div>
+    return (
+      <div className="height100">
+        <div className="right_aligned_text">
+          <span
+            id="event_form_discard"
+            className="right_aligned_text"
+            onClick={this.props.close_event_form}
+          >
+            Cancel
+          </span>
+        </div>
 
-            <div className='event_form_container'>
-            <div id = "event_form" className="event_form" key="event_form">
-                <div className="event_form_input_gap"></div>
-                <span> title: </span>
-                <TextLineInput
-                    value={this.state.title}
-                    onChange={this.setTitle}
-                    className="event_form_big_input grey_tag"
-                    enter_key_submit
-                />
-                <div className="event_form_input_gap"></div>
+        <div className="event_form_container">
+          <div id="event_form" className="event_form" key="event_form">
+            <div className="event_form_input_gap"></div>
+            <span> title: </span>
+            <TextLineInput
+              value={this.state.title}
+              onChange={this.setTitle}
+              className="event_form_big_input grey_tag"
+              enter_key_submit
+            />
+            <div className="event_form_input_gap"></div>
 
-                <span> description: </span>
-                <textarea
-                    value={this.state.description}
-                    onChange={(event) => {this.setDescription(event.target.value)}}
-                    className="event_form_big_input grey_tag"
-                ></textarea>
-                <div className="event_form_input_gap"></div>
+            <span> description: </span>
+            <textarea
+              value={this.state.description}
+              onChange={event => {
+                this.setDescription(event.target.value);
+              }}
+              className="event_form_big_input grey_tag"
+            ></textarea>
+            <div className="event_form_input_gap"></div>
 
-                <span> date: </span>
-                <OnOffInputContainer
-                    on_component_value={this.state.date}
-                    on_component_save={this.setDate}
-                    on_component={Calendar}
-                    value_to_summary={dateToWritenDate}
-                    off_component={SimpleInputOffState}
-                    container_style='event_form_big_input grey_tag event_form_on_off'
-                    on_component_props={{minDate: new Date(),
-                                        className: "input_calendar"}}
-                    submit_on_change
-                />
-                <div className="event_form_input_gap"></div>
+            <span> date: </span>
+            <OnOffInputContainer
+              on_component_value={this.state.date}
+              on_component_save={this.setDate}
+              on_component={Calendar}
+              value_to_summary={dateToWritenDate}
+              off_component={SimpleInputOffState}
+              container_style="event_form_big_input grey_tag event_form_on_off"
+              on_component_props={{
+                minDate: new Date(),
+                className: "input_calendar"
+              }}
+              submit_on_change
+            />
+            <div className="event_form_input_gap"></div>
 
-                <span> from: </span>
-                <OnOffInputContainer
-                    on_component_value={this.state.from}
-                    on_component_save={this.setFromHourMinute}
-                    on_component={HourMinuteInput}
-                    value_to_summary={dateToHourMinute}
-                    off_component={SimpleInputOffState}
-                    container_style='event_form_small_input grey_tag event_form_on_off'
-                />
+            <span> from: </span>
+            <OnOffInputContainer
+              on_component_value={this.state.from}
+              on_component_save={this.setFromHourMinute}
+              on_component={HourMinuteInput}
+              value_to_summary={dateToHourMinute}
+              off_component={SimpleInputOffState}
+              container_style="event_form_small_input grey_tag event_form_on_off"
+            />
 
-                <span> to: </span>
-                <OnOffInputContainer
-                    on_component_value={this.state.to}
-                    on_component_save={this.setToHourMinute}
-                    on_component={HourMinuteInput}
-                    value_to_summary={dateToHourMinute}
-                    off_component={SimpleInputOffState}
-                    container_style='event_form_small_input grey_tag event_form_on_off'
-                />
-                <div className="event_form_input_gap"></div>
+            <span> to: </span>
+            <OnOffInputContainer
+              on_component_value={this.state.to}
+              on_component_save={this.setToHourMinute}
+              on_component={HourMinuteInput}
+              value_to_summary={dateToHourMinute}
+              off_component={SimpleInputOffState}
+              container_style="event_form_small_input grey_tag event_form_on_off"
+            />
+            <div className="event_form_input_gap"></div>
 
-                <span> repeat: </span>
-                <OnOffInputContainer
-                    on_component_value={this.state.repeat_rrule}
-                    on_component_save={this.setRepeatRRule}
-                    on_component={RepeatTool}
-                    off_component={SimpleInputOffState}
-                    container_style='event_form_big_input grey_tag event_form_on_off'
-                    on_component_props={{className: "repeat_tool", event_date: this.state.date}}
-                    value_to_summary={(value) => {return capitalizeFirstLetter(getRepeatsSummary(value))}}
-                    />
-                <div className="event_form_input_gap"></div>
+            <span> repeat: </span>
+            <OnOffInputContainer
+              on_component_value={this.state.repeat_rrule}
+              on_component_save={this.setRepeatRRule}
+              on_component={RepeatTool}
+              off_component={SimpleInputOffState}
+              container_style="event_form_big_input grey_tag event_form_on_off"
+              on_component_props={{
+                className: "repeat_tool",
+                event_date: this.state.date
+              }}
+              value_to_summary={value => {
+                return capitalizeFirstLetter(getRepeatsSummary(value));
+              }}
+            />
+            <div className="event_form_input_gap"></div>
 
+            <span> tags: </span>
+            {this.getEventTagDivs(this.state.eventTags)}
+            <OnOffInputContainer
+              on_component_value={this.state.eventTags}
+              on_component_save={this.addEventTag}
+              on_component={TagTool}
+              off_component={SimpleInputOffState}
+              container_style="event_form_big_input grey_tag event_form_on_off"
+              on_component_props={{
+                className: "tag_tool",
+                user_tags: this.props.user_tags,
+                onCreateNewTag: this.createAndAddNewTag,
+                delete_tag_callback: this.props.delete_tag_callback
+              }}
+              off_text="+ Add tags"
+            />
+            <div className="event_form_input_gap"></div>
 
-
-                <span> tags: </span>
-                {this.getEventTagDivs(this.state.eventTags)}
-                <OnOffInputContainer
-                    on_component_value={this.state.eventTags}
-                    on_component_save={this.addEventTag}
-                    on_component={TagTool}
-                    off_component={SimpleInputOffState}
-                    container_style='event_form_big_input grey_tag event_form_on_off'
-                    on_component_props={{className: "tag_tool",
-                                        user_tags: this.props.user_tags,
-                                        onCreateNewTag: this.createAndAddNewTag,
-                                        delete_tag_callback: this.props.delete_tag_callback}}
-                    off_text="+ Add tags"
-                    />
-                    <div className="event_form_input_gap"></div>
-
-
-                    <span> links: </span>
-                        {this.getEventLinkDivs(this.state.eventLinks)}
-                        <OnOffInputContainer
-                            on_component_value={this.state.eventLinks}
-                            on_component_save={this.addEventLink}
-                            on_component={LinkTool}
-                            off_component={SimpleInputOffState}
-                            container_style='event_form_big_input grey_tag event_form_on_off'
-                            on_component_props={{className: "link_tool",
-                                                }}
-                        off_text="+ Add links"
-                        />
-
-            </div>
-            </div>
+            <span> links: </span>
+            {this.getEventLinkDivs(this.state.eventLinks)}
+            <OnOffInputContainer
+              on_component_value={this.state.eventLinks}
+              on_component_save={this.addEventLink}
+              on_component={LinkTool}
+              off_component={SimpleInputOffState}
+              container_style="event_form_big_input grey_tag event_form_on_off"
+              on_component_props={{ className: "link_tool" }}
+              off_text="+ Add links"
+            />
           </div>
-    )
+        </div>
+      </div>
+    );
   }
-  }
+}

@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 // Simple input for text, can load and save information. Receives:
 //     - props.value:         (optional) value holder
@@ -11,72 +11,72 @@ import React from "react"
 //
 
 export default class TextLineInput extends React.PureComponent {
-    constructor(props){
-        super(props)
-        if (typeof props.value !== "string") {
-            this.mode = "independent" // component saves the value
-            this.state = {
-                value: "",
-            }
-        } else {
-            this.mode = "messenger" // component doesn't save the value
-        }
-
-        this.auto_complete = "off"
-        if (props.auto_complete) {
-            this.auto_complete = props.auto_complete;
-        }
-
-        this.id = "text_line_input"
-
-
-        this.handleChange = this.handleChange.bind(this);
-        this.setValue = this.setValue.bind(this);
-        this.onKeyDown = this.onKeyDown.bind(this);
-    };
-
-    setValue(value){
-        this.setState({value})
+  constructor(props) {
+    super(props);
+    if (typeof props.value !== "string") {
+      this.mode = "independent"; // component saves the value
+      this.state = {
+        value: ""
+      };
+    } else {
+      this.mode = "messenger"; // component doesn't save the value
     }
 
-    handleChange(event){
-        if (this.mode === "messenger") {
-            this.props.onChange(event.target.value);
-        } else {
-            this.setValue(event.target.value)
-        }
+    this.auto_complete = "off";
+    if (props.auto_complete) {
+      this.auto_complete = props.auto_complete;
     }
 
-    onKeyDown(event){
-        if (event.keyCode == 13) {
-            document.getElementById(this.id).blur()
-        }
-    }
+    this.id = "text_line_input";
 
-   render() {
-       if (this.mode === "messenger") {
-           return(
-               <input id={this.id}
-                      placeholder={this.props.placeholder}
-                      className={"text_line_input "+this.props.className}
-                      value={this.props.value}
-                      onChange={this.handleChange}
-                      autoComplete={this.auto_complete}
-                      onKeyDown={this.onKeyDown}>
-               </input>
-           )
-       } else {
-           return(
-               <input id={this.id}
-                      placeholder={this.props.placeholder}
-                      className={"text_line_input "+this.props.className}
-                      value={this.state.value}
-                      onChange={this.handleChange}
-                      autoComplete={this.auto_complete}
-                      onKeyDown={this.onKeyDown}>
-               </input>
-           )
-       }
+    this.handleChange = this.handleChange.bind(this);
+    this.setValue = this.setValue.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+  }
 
+  setValue(value) {
+    this.setState({ value });
+  }
+
+  handleChange(event) {
+    if (this.mode === "messenger") {
+      this.props.onChange(event.target.value);
+    } else {
+      this.setValue(event.target.value);
     }
+  }
+
+  onKeyDown(event) {
+    if (event.keyCode === 13) {
+      document.getElementById(this.id).blur();
+    }
+  }
+
+  render() {
+    if (this.mode === "messenger") {
+      return (
+        <input
+          id={this.id}
+          placeholder={this.props.placeholder}
+          className={"text_line_input " + this.props.className}
+          value={this.props.value}
+          onChange={this.handleChange}
+          autoComplete={this.auto_complete}
+          onKeyDown={this.onKeyDown}
+        ></input>
+      );
+    } else {
+      return (
+        <input
+          id={this.id}
+          placeholder={this.props.placeholder}
+          className={"text_line_input " + this.props.className}
+          value={this.state.value}
+          onChange={this.handleChange}
+          autoComplete={this.auto_complete}
+          onKeyDown={this.onKeyDown}
+        ></input>
+      );
+    }
+  }
 }
