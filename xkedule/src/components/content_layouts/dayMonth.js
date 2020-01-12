@@ -1,12 +1,9 @@
-import React from "react"
+import React from "react";
 
-export default class DayMonth extends React.Component {
-  render() {
-      return(
-      <div className={this.props.classCss} onClick={()=> this.props.onClickDay(this.props.day)}>
-        {this.props.day.getDate()}
+export default function dayMonth(props) {
+  return (
+    <div className={props.classCss} onClick={() => props.onClickDay(props.day)}>
+      {props.day.getDate()}
     </div>
-        
-    )
-  }
-  }
+  );
+}

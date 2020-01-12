@@ -8,7 +8,7 @@ import SimpleInputOffState from "../input_components/simpleInputOffState";
 import TextLineInput from "../input_components/textLineInput";
 import HourMinuteInput from "../input_components/hourMinuteInput";
 import {
-  dateToWritenDate,
+  dateToWrittenDate,
   dateToHourMinute,
   capitalizeFirstLetter,
   toLinkDataModel,
@@ -318,7 +318,7 @@ export default class EventForm extends React.Component {
               on_component_value={this.state.date}
               on_component_save={this.setDate}
               on_component={Calendar}
-              value_to_summary={dateToWritenDate}
+              value_to_summary={dateToWrittenDate}
               off_component={SimpleInputOffState}
               container_style="event_form_big_input grey_tag event_form_on_off"
               on_component_props={{

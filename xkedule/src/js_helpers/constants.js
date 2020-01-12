@@ -24,3 +24,13 @@ export const hours0to23 = [
   "22",
   "23"
 ];
+
+export const daysLowerCase = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday"
+];

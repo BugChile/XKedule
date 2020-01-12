@@ -3,7 +3,7 @@ import DailyTaskCard from "./dailyTaskCard";
 import HeaderDate from "./headerDate";
 import BackToToday from "./backToToday";
 import {
-  checkDateOverlap,
+  groupOverlaps,
   onlyUnique,
   multiplyReducer,
   increasingFunctionCompare,
@@ -50,55 +50,6 @@ export default class DailyCard extends React.Component {
     return date_dict;
   }
 
-  groupOverlaps(events) {
-    var grouped = [];
-    var already_found = false;
-    events.forEach(_event => {
-      // look for already grouped events colliding
-      grouped.forEach(group => {
-        if (
-          !already_found &&
-          checkDateOverlap(
-            _event.date_start,
-            _event.date_end,
-            group.overlap_start,
-            group.overlap_end
-          )
-        ) {
-          already_found = true;
-          if (_event.date_start < group.events[group.compare_index].date_end) {
-            group.length += 1;
-          } else {
-            group.compare_index += 1;
-          }
-
-          if (_event.date_start < group.overlap_start) {
-            group.overlap_start = _event.date_start;
-          }
-
-          if (_event.date_end > group.overlap_end) {
-            group.overlap_end = _event.date_end;
-          }
-
-          group.events.push(_event);
-        }
-      });
-
-      // no colliding, new group
-      if (!already_found) {
-        grouped.push({
-          overlap_start: _event.date_start,
-          overlap_end: _event.date_end,
-          compare_index: 0,
-          length: 1,
-          events: [_event]
-        });
-      }
-      already_found = false;
-    });
-    return grouped;
-  }
-
   generateEvents(events, hashed_events, aux_view_time) {
     const day_events = eventsFromHashed(
       events,
@@ -114,7 +65,7 @@ export default class DailyCard extends React.Component {
           b.date_start.getTime()
         )
       );
-      const grouped_events = this.groupOverlaps(sorted_events);
+      const grouped_events = groupOverlaps(sorted_events);
       col_number = grouped_events
         .map(x => x.events.length)
         .filter(onlyUnique)
