@@ -759,11 +759,13 @@ class App extends Component {
     this.props.delete_callback("events", this.props.uid, to_delete_event.id);
     // change tag usage
 
-    // aca esta el bug
-    this.new_event_object.tag_ids.forEach(tag_id => {
-      this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
-    });
-    // add confirmation
+    // aca esta el bug --> fixed, si tiene tags funciona
+    if (this.new_event_object.tag_ids) {
+      this.new_event_object.tag_ids.forEach(tag_id => {
+        this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
+      });
+    }
+    // TODO add confirmation
 
     //then
     var hashed_by_date = Object.assign({}, this.state.hashed_by_date);
