@@ -19,7 +19,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: "daily",
+      mode: this.props.mode,
       creation_mode: "idle",
       editing_event_id: null, //id of the event that's being edited, if any, else null
       events: {},
@@ -34,6 +34,8 @@ class App extends Component {
       aux_view_time: new Date(),
       current_time: new Date(),
       loading: true,
+      loading_events: true,
+      loading_tags: true,
       linkComponent: null,
       main_button_function: null,
       main_button_icon: "expand",
@@ -98,17 +100,27 @@ class App extends Component {
 
   changeMode(mode) {
     this.setState({ mode });
+    localStorage.setItem("mode", mode);
   }
 
   setEvents(events) {
     const { parsedEvents, eventsWithRepeat } = this.parseLoadedEvents(events);
     const { setEventsWithRepeat } = this.props;
     setEventsWithRepeat(eventsWithRepeat);
-    this.setState({ events: parsedEvents });
+    this.setState({ events: parsedEvents, loading_events: false }, () => {
+      switch (this.state.mode) {
+        case "daily":
+          this.shrinkContentContainer();
+          break;
+        default:
+          this.expandContentContainer();
+      }
+      this.setSwitchWeekMonth(this.state.mode);
+    });
   }
 
   setUserTags(user_tags) {
-    this.setState({ user_tags });
+    this.setState({ user_tags, loading_tags: false });
   }
 
   setHashedEvents(events) {
@@ -261,28 +273,14 @@ class App extends Component {
     if (content_div) {
       content_div.style["overflow-y"] = "hidden";
     }
+    const content_dimensions = content_div.getBoundingClientRect();
     const eventCardCoordinates = document
       .getElementById(card_id)
       .getBoundingClientRect();
     var left = 0;
     var top = 0;
+
     switch (this.state.mode) {
-      case "monthly":
-        if (eventCardCoordinates.left <= 700) {
-          left = eventCardCoordinates.left + 175;
-        } else {
-          left = eventCardCoordinates.left - 415;
-        }
-        top = Math.min(eventCardCoordinates.top, 460);
-        break;
-      case "weekly":
-        if (eventCardCoordinates.left <= 700) {
-          left = eventCardCoordinates.left + 170;
-        } else {
-          left = eventCardCoordinates.left - 415;
-        }
-        top = Math.min(eventCardCoordinates.top, 460);
-        break;
       case "daily":
         left = eventCardCoordinates.left;
         top = Math.min(
@@ -291,10 +289,24 @@ class App extends Component {
         if (document.body.getBoundingClientRect().height - top < 250) {
           top = eventCardCoordinates.top - 265;
         }
-
         break;
       default:
-        break;
+        if (eventCardCoordinates.left <= content_dimensions.width / 2) {
+          left = eventCardCoordinates.right;
+        } else {
+          left = eventCardCoordinates.left - 360;
+        }
+        if (
+          eventCardCoordinates.top <=
+          content_dimensions.height / 2 + content_dimensions.top
+        ) {
+          top = eventCardCoordinates.top;
+        } else {
+          top = Math.min(
+            eventCardCoordinates.top,
+            content_dimensions.bottom - 260
+          );
+        }
     }
     left += "px";
     top += "px";
@@ -341,7 +353,7 @@ class App extends Component {
   // onClickAnywhereEvent(event, data){
   //     alert(event.target.type);
   //     // this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
-  // }
+  // }expandContentContainer
 
   scrollDailyEvent() {
     document.getElementById(
@@ -658,7 +670,6 @@ class App extends Component {
     } else {
       hashed_by_date[hashed_date] = [id];
     }
-    console.log(hashed_by_date);
 
     this.setState({ events: to_update_events, hashed_by_date });
     this.closeEventForm();
@@ -832,7 +843,9 @@ class App extends Component {
   }
 
   render() {
-    return this.state.loading ? (
+    return this.state.loading === true ||
+      this.state.loading_events === true ||
+      this.state.loading_tags === true ? (
       <div className="charging_events">
         Please wait to get your information..
         <div className="spinner">

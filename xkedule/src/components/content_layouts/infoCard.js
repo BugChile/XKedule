@@ -28,21 +28,30 @@ export default class InfoCard extends React.Component {
               )}
               style={{ left: this.props.left, top: this.props.top }}
             >
-              <div className="button-container">
-                <ButtonFunction
-                  function={() => {
-                    this.props.functionDelete(this.props.event);
-                    this.props.functionClose();
-                  }}
-                  cssClass="trash"
-                  cssIcon="glyphicon glyphicon-trash"
-                />
+              <ButtonFunction
+                function={this.props.functionClose}
+                cssClass="exit"
+                cssIcon="glyphicon glyphicon-remove"
+              />
 
-                <ButtonFunction
-                  function={this.props.functionClose}
-                  cssClass="exit"
-                  cssIcon="glyphicon glyphicon-remove"
-                />
+              <h3 className="title_event">Event: {this.props.event.title}</h3>
+              <p className="description_event">
+                {this.props.event.description}
+              </p>
+              <h5>{this.props.event.date_start.toDateString()},</h5>
+              <h4>
+                {" "}
+                {this.props.event.date_start.toLocaleTimeString("en-GB", {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                })}
+                <span> - </span>{" "}
+                {this.props.event.date_end.toLocaleTimeString("en-GB", {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                })}
+              </h4>
+              <div className="button-container">
                 {(() => {
                   switch (isEmpty(this.props.event.links)) {
                     case true:
@@ -65,24 +74,15 @@ export default class InfoCard extends React.Component {
                   cssClass="edit"
                   cssIcon="glyphicon glyphicon-edit"
                 />
+                <ButtonFunction
+                  function={() => {
+                    this.props.functionDelete(this.props.event);
+                    this.props.functionClose();
+                  }}
+                  cssClass="trash"
+                  cssIcon="glyphicon glyphicon-trash"
+                />
               </div>
-              <h3 className="title_event">Event: {this.props.event.title}</h3>
-              <p className="description_event">
-                {this.props.event.description}
-              </p>
-              <h5>{this.props.event.date_start.toDateString()},</h5>
-              <h4>
-                {" "}
-                {this.props.event.date_start.toLocaleTimeString("en-GB", {
-                  hour: "2-digit",
-                  minute: "2-digit"
-                })}
-                <span> - </span>{" "}
-                {this.props.event.date_end.toLocaleTimeString("en-GB", {
-                  hour: "2-digit",
-                  minute: "2-digit"
-                })}
-              </h4>
               {this.generateLinkComponent(this.props.links)}
             </div>
           );

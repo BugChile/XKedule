@@ -207,8 +207,8 @@ a:visited {
   flex-wrap: wrap;
   width: 100%;
   justify-content: flex-end;
-
-  padding: 0px 10px 0px 0px;
+  position: absolute;
+  transform: translate(-45px, -35px);
 }
 .button_min {
   display: block;
@@ -262,7 +262,7 @@ a:visited {
 .title_event {
   word-break: break-all;
   // min-height: 105px;
-  max-height: 105px;
+  max-height: 55px;
   padding: 1px;
   overflow-y: auto;
 }
@@ -306,6 +306,24 @@ a:visited {
   font-size: 25px;
   font-family: "Lato", sans-serif;
   color: #333;
+}
+.charging_events_offline {
+  background-color: $bg-loading-card;
+  margin: 0;
+  z-index: 6;
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  width: 40%;
+  padding: 20px;
+  text-align: center;
+  border-radius: 20px;
+  height: 30vh;
+  font-size: 25px;
+  font-family: "Lato", sans-serif;
+  color: $color-loading-card;
+  border: 1px solid $color-loading-card;
+  box-shadow: 10px 10px 20px $color-black-opacity;
 }
 
 // general information card daily - weekly - monthly
@@ -375,14 +393,14 @@ a:visited {
   vertical-align: middle;
   font-size: 14px;
   margin-top: 2px;
-  color: $color-linfInfo-dark-mode;
+  color: $color-linfInfo-dark-mode !important;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   background-color: $color-bg-linfInfo-dark-mode;
   width: 100%;
   &:hover {
-    color: $color-hover-text;
+    color: $color-hover-text !important;
   }
 }
 .hover {
@@ -490,11 +508,10 @@ body * ::-webkit-scrollbar-thumb:hover {
 // spinner from https://tobiasahlin.com/spinkit/
 
 .spinner {
-  margin: 100px auto;
+  margin-top: 30px;
   width: 40px;
   height: 40px;
   position: absolute;
-  top: calc(45%);
   left: calc(50% - 20px);
   text-align: center;
 

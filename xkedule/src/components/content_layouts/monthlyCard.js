@@ -14,7 +14,7 @@ export default class MonthlyCard extends React.Component {
     super(props);
 
     this.state = {
-      tasks_per_cell: this.calculateMaxTasks(),
+      tasks_per_cell: "",
       expanded_tasks: [],
       expanded_class: "expanded_month_cell hidden",
       expanded_top: 0,
@@ -219,6 +219,7 @@ export default class MonthlyCard extends React.Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.onResize);
+    this.setState({ tasks_per_cell: this.calculateMaxTasks() });
   }
 
   render() {

@@ -12,6 +12,8 @@ import store from "./store";
 
 import { hcEvents, hcUserTags } from "./js_helpers/dev_data";
 
+const mode = localStorage.getItem("mode") || "daily";
+
 var db;
 let loadEvents;
 let loadTags;
@@ -66,6 +68,7 @@ function renderApp() {
         update_callback={updateCallback}
         delete_callback={deleteCallback}
         uid={userUid}
+        mode={mode}
       />
     </Provider>,
     document.getElementById("app_root")
