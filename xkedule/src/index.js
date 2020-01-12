@@ -10,17 +10,15 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./store";
 
-//// for development:
-
 import { hcEvents, hcUserTags } from "./js_helpers/dev_data";
 
 var db;
-
-var config = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_API_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID
-};
+let loadEvents;
+let loadTags;
+let userUid;
+let saveCallback;
+let updateCallback;
+let deleteCallback;
 
 function save_user_doc(doc_reference, json, uid) {
   var new_event_ref = db
@@ -58,14 +56,30 @@ function delete_user_doc(doc_reference, uid, event_id) {
     });
 }
 
-let loadEvents;
-let loadTags;
-let userUid;
-let saveCallback;
-let updateCallback;
-let deleteCallback;
+function renderApp() {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App
+        events={loadEvents}
+        tags={loadTags}
+        save_callback={saveCallback}
+        update_callback={updateCallback}
+        delete_callback={deleteCallback}
+        uid={userUid}
+      />
+    </Provider>,
+    document.getElementById("app_root")
+  );
+
+  ReactDOM.render(<SearchContainer />, document.getElementById("search_box"));
+}
 
 if (process.env.NODE_ENV === "production") {
+  var config = {
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_API_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID
+  };
   firebase.initializeApp(config);
   db = firebase.firestore();
   var provider = new firebase.auth.GoogleAuthProvider();
@@ -155,31 +169,7 @@ if (process.env.NODE_ENV === "production") {
         });
     }
   });
-}
-
-// end dev
-
-function renderApp() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <App
-        events={loadEvents}
-        tags={loadTags}
-        save_callback={saveCallback}
-        update_callback={updateCallback}
-        delete_callback={deleteCallback}
-        uid={userUid}
-      />
-    </Provider>,
-    document.getElementById("app_root")
-  );
-
-  ReactDOM.render(<SearchContainer />, document.getElementById("search_box"));
-}
-
-////// for development:
-
-if (process.env.NODE_ENV === "development") {
+} else if (process.env.NODE_ENV === "development") {
   var index = 0;
   loadEvents = hcEvents;
   loadTags = hcUserTags;
@@ -198,9 +188,10 @@ if (process.env.NODE_ENV === "development") {
     return "0";
   };
   renderApp();
+} else {
+  const error = { code: 300, message: "Invalid env." };
+  throw error;
 }
-////// end dev
-
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
