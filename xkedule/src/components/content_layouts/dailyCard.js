@@ -37,7 +37,7 @@ export default class DailyCard extends React.Component {
     );
   }
 
-  getHeaderDate(aux_view_time) {
+  getHeaderDates(aux_view_time) {
     var date_dict = {};
     date_dict["main"] = aux_view_time.toLocaleString("en-GB", {
       weekday: "long",
@@ -181,7 +181,7 @@ export default class DailyCard extends React.Component {
           })()}
 
           <HeaderDate
-            date={this.getHeaderDate(this.props.aux_view_time)}
+            date={this.getHeaderDates(this.props.aux_view_time)}
             clickEventDate={this.props.clickEventDate}
           />
         </div>
