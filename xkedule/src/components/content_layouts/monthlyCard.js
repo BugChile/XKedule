@@ -1,3 +1,4 @@
+/*global chrome*/
 import React from "react";
 import HeaderDate from "./headerDate";
 import MonthlyCardCell from "./monthlyCardCell";
@@ -286,6 +287,13 @@ export default class MonthlyCard extends React.Component {
               this.state.tasks_per_cell
             )}
           </div>
+          {/* <div
+            onClick={() => {
+              chrome.storage.sync.set({ uid: null });
+            }}
+          >
+            cerrar sesion
+          </div> */}
         </div>
       </div>
     );

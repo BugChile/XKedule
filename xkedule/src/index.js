@@ -58,6 +58,36 @@ function delete_user_doc(doc_reference, uid, event_id) {
     });
 }
 
+function startApp(uid) {
+  Promise.all([
+    db
+      .collection("users")
+      .doc(uid)
+      .collection("events")
+      .get(),
+    db
+      .collection("users")
+      .doc(uid)
+      .collection("tags")
+      .get()
+  ]).then(function(responses) {
+    const fetched_events = responses[0];
+    const fetched_tags = responses[1];
+    var events = {};
+    var tags = {};
+    fetched_events.forEach(function(_event) {
+      events[_event.id] = _event.data();
+    });
+    fetched_tags.forEach(function(_tag) {
+      tags[_tag.id] = _tag.data();
+    });
+    loadEvents = events;
+    loadTags = tags;
+    userUid = uid;
+    renderApp();
+  });
+}
+
 function renderApp() {
   ReactDOM.render(
     <Provider store={store}>
@@ -94,33 +124,7 @@ if (process.env.NODE_ENV === "production") {
   chrome.storage.sync.get(["uid"], async function(result) {
     // change this, only for quick testing
     if (result.uid) {
-      Promise.all([
-        db
-          .collection("users")
-          .doc(result.uid)
-          .collection("events")
-          .get(),
-        db
-          .collection("users")
-          .doc(result.uid)
-          .collection("tags")
-          .get()
-      ]).then(function(responses) {
-        const fetched_events = responses[0];
-        const fetched_tags = responses[1];
-        var events = {};
-        var tags = {};
-        fetched_events.forEach(function(_event) {
-          events[_event.id] = _event.data();
-        });
-        fetched_tags.forEach(function(_tag) {
-          tags[_tag.id] = _tag.data();
-        });
-        loadEvents = events;
-        loadTags = tags;
-        userUid = result.uid;
-        renderApp();
-      });
+      startApp(result.uid);
     } else {
       firebase
         .auth()
@@ -134,40 +138,11 @@ if (process.env.NODE_ENV === "production") {
             .set({
               name: user.displayName
             });
-
-          Promise.all([
-            db
-              .collection("users")
-              .doc(user.uid)
-              .collection("events")
-              .get(),
-            db
-              .collection("users")
-              .doc(user.uid)
-              .collection("tags")
-              .get()
-          ]).then(function(responses) {
-            const fetched_events = responses[0];
-            const fetched_tags = responses[1];
-            var events = {};
-            var tags = {};
-            fetched_events.forEach(function(_event) {
-              events[_event.id] = _event.data();
-            });
-            fetched_tags.forEach(function(_tag) {
-              tags[_tag.id] = _tag.data();
-            });
-            loadEvents = events;
-            loadTags = tags;
-            userUid = result.uid;
-            renderApp();
-          });
+          startApp(user.uid);
         })
         .catch(function(error) {
           var errorCode = error.code;
           var errorMessage = error.message;
-          // var email = error.email;
-          // var credential = error.credential;
           console.warn(errorCode, errorMessage);
         });
     }
