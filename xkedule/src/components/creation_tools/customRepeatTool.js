@@ -6,6 +6,7 @@ import { RRule } from "rrule";
 
 // UNUSED VAR rule_day_dict
 import { day_ordinal } from "../../js_helpers/rrule_helpers.js";
+import { daysIntDict, daysShortName } from "../../js_helpers/constants";
 // tool for creating custom repeat cycles
 
 export default class CustomRepeatTool extends React.PureComponent {
@@ -53,14 +54,14 @@ export default class CustomRepeatTool extends React.PureComponent {
 
   setMode(mode) {
     if (mode === "month") {
-      // appart from setting mode and rrule_freq, restart option to on_day_number
+      // apart from setting mode and rrule_freq, restart option to on_day_number
       this.setState({
         mode,
         rrule_freq: this.rrule_freq_dict[mode],
         month_mode: "on_day_number"
       });
     } else if (mode === "week") {
-      // appart from setting mode and rrule_freq, restart week days selection
+      // apart from setting mode and rrule_freq, restart week days selection
       this.setState({
         mode,
         rrule_freq: this.rrule_freq_dict[mode],
@@ -80,18 +81,9 @@ export default class CustomRepeatTool extends React.PureComponent {
   }
 
   onSubmit() {
-    const circle_option_map = {
-      Mo: 1,
-      Tu: 2,
-      We: 3,
-      Th: 4,
-      Fr: 5,
-      Sa: 6,
-      Su: 0
-    };
     //map to js date numbers for days, sunday = 0, saturday = 6
     const circle_selected_mapped = this.state.week_mode_selected.map(
-      x => circle_option_map[x]
+      x => daysIntDict[x]
     );
 
     const submit_value = {
@@ -109,12 +101,11 @@ export default class CustomRepeatTool extends React.PureComponent {
 
   getSelectedWeekMode() {
     // shift sunday = 0, saturday = 6 to monday = 0, sunday = 6 for local calendar mode
-    const day_list = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
     const day = this.props.event_date.getDay(); //
     if (day === 0) {
       return "Su";
     }
-    return day_list[day - 1];
+    return daysShortName[day - 1];
   }
 
   getAdditionalInfo(mode) {
@@ -122,7 +113,7 @@ export default class CustomRepeatTool extends React.PureComponent {
       case "week":
         return (
           <CircleOptionsInput
-            options={["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]}
+            options={daysShortName}
             preselected={this.state.week_mode_selected}
             onSubmit={this.setWeekModeSelected}
           />

@@ -10,17 +10,17 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./store";
 
-//// for development:
-
 import { hcEvents, hcUserTags } from "./js_helpers/dev_data";
 
-var db;
+const mode = localStorage.getItem("mode") || "daily";
 
-var config = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_API_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID
-};
+var db;
+let loadEvents;
+let loadTags;
+let userUid;
+let saveCallback;
+let updateCallback;
+let deleteCallback;
 
 function save_user_doc(doc_reference, json, uid) {
   var new_event_ref = db
@@ -58,14 +58,61 @@ function delete_user_doc(doc_reference, uid, event_id) {
     });
 }
 
-let loadEvents;
-let loadTags;
-let userUid;
-let saveCallback;
-let updateCallback;
-let deleteCallback;
+function startApp(uid) {
+  Promise.all([
+    db
+      .collection("users")
+      .doc(uid)
+      .collection("events")
+      .get(),
+    db
+      .collection("users")
+      .doc(uid)
+      .collection("tags")
+      .get()
+  ]).then(function(responses) {
+    const fetched_events = responses[0];
+    const fetched_tags = responses[1];
+    var events = {};
+    var tags = {};
+    fetched_events.forEach(function(_event) {
+      events[_event.id] = _event.data();
+    });
+    fetched_tags.forEach(function(_tag) {
+      tags[_tag.id] = _tag.data();
+    });
+    loadEvents = events;
+    loadTags = tags;
+    userUid = uid;
+    renderApp();
+  });
+}
+
+function renderApp() {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App
+        events={loadEvents}
+        tags={loadTags}
+        save_callback={saveCallback}
+        update_callback={updateCallback}
+        delete_callback={deleteCallback}
+        uid={userUid}
+        mode={mode}
+      />
+    </Provider>,
+    document.getElementById("app_root")
+  );
+
+  ReactDOM.render(<SearchContainer />, document.getElementById("search_box"));
+}
 
 if (process.env.NODE_ENV === "production") {
+  var config = {
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_API_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID
+  };
   firebase.initializeApp(config);
   db = firebase.firestore();
   var provider = new firebase.auth.GoogleAuthProvider();
@@ -77,33 +124,7 @@ if (process.env.NODE_ENV === "production") {
   chrome.storage.sync.get(["uid"], async function(result) {
     // change this, only for quick testing
     if (result.uid) {
-      Promise.all([
-        db
-          .collection("users")
-          .doc(result.uid)
-          .collection("events")
-          .get(),
-        db
-          .collection("users")
-          .doc(result.uid)
-          .collection("tags")
-          .get()
-      ]).then(function(responses) {
-        const fetched_events = responses[0];
-        const fetched_tags = responses[1];
-        var events = {};
-        var tags = {};
-        fetched_events.forEach(function(_event) {
-          events[_event.id] = _event.data();
-        });
-        fetched_tags.forEach(function(_tag) {
-          tags[_tag.id] = _tag.data();
-        });
-        loadEvents = events;
-        loadTags = tags;
-        userUid = result.uid;
-        renderApp();
-      });
+      startApp(result.uid);
     } else {
       firebase
         .auth()
@@ -117,69 +138,16 @@ if (process.env.NODE_ENV === "production") {
             .set({
               name: user.displayName
             });
-
-          Promise.all([
-            db
-              .collection("users")
-              .doc(user.uid)
-              .collection("events")
-              .get(),
-            db
-              .collection("users")
-              .doc(user.uid)
-              .collection("tags")
-              .get()
-          ]).then(function(responses) {
-            const fetched_events = responses[0];
-            const fetched_tags = responses[1];
-            var events = {};
-            var tags = {};
-            fetched_events.forEach(function(_event) {
-              events[_event.id] = _event.data();
-            });
-            fetched_tags.forEach(function(_tag) {
-              tags[_tag.id] = _tag.data();
-            });
-            loadEvents = events;
-            loadTags = tags;
-            userUid = result.uid;
-            renderApp();
-          });
+          startApp(user.uid);
         })
         .catch(function(error) {
           var errorCode = error.code;
           var errorMessage = error.message;
-          // var email = error.email;
-          // var credential = error.credential;
           console.warn(errorCode, errorMessage);
         });
     }
   });
-}
-
-// end dev
-
-function renderApp() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <App
-        events={loadEvents}
-        tags={loadTags}
-        save_callback={saveCallback}
-        update_callback={updateCallback}
-        delete_callback={deleteCallback}
-        uid={userUid}
-      />
-    </Provider>,
-    document.getElementById("app_root")
-  );
-
-  ReactDOM.render(<SearchContainer />, document.getElementById("search_box"));
-}
-
-////// for development:
-
-if (process.env.NODE_ENV === "development") {
+} else if (process.env.NODE_ENV === "development") {
   var index = 0;
   loadEvents = hcEvents;
   loadTags = hcUserTags;
@@ -198,9 +166,10 @@ if (process.env.NODE_ENV === "development") {
     return "0";
   };
   renderApp();
+} else {
+  const error = { code: 300, message: "Invalid env." };
+  throw error;
 }
-////// end dev
-
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA

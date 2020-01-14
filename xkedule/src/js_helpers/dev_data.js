@@ -20,8 +20,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('august 5, 2019 02:08:00'),
-	"date_end": new Date('august 5, 2019 03:08:00'),
+	"date_start": new Date('January 11,2002002:08:00'),
+	"date_end": new Date('January 11,2002003:08:00'),
 	"tag_ids": [],
 	rrule: "RRULE:FREQ=DAILY;INTERVAL=1",
 	},
@@ -46,8 +46,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 14, 2019 19:08:00'),
-	"date_end": new Date('april 14, 2019 20:08:00'),
+	"date_start": new Date('january 31, 2020 19:08:00'),
+	"date_end": new Date('january 31, 2020 20:08:00'),
 	"tag_ids": []
 	},
 	"2":{
@@ -71,8 +71,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 07:38:00'),
-	"date_end": new Date('August 16, 2019 08:38:00'),
+	"date_start": new Date('January 11, 2020 07:38:00'),
+	"date_end": new Date('January 11, 2020 08:38:00'),
 	"tag_ids": []
 	},
 	"3":{
@@ -96,8 +96,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 24, 2019 15:29:00'),
-	"date_end": new Date('april 24, 2019 16:29:00'),
+	"date_start": new Date('january 31, 2020 15:29:00'),
+	"date_end": new Date('january 31, 2020 16:29:00'),
 	"tag_ids": []
 	},
 	"4":{
@@ -121,8 +121,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 26, 2019 21:14:00'),
-	"date_end": new Date('april 26, 2019 22:14:00'),
+	"date_start": new Date('january 31, 2020 21:14:00'),
+	"date_end": new Date('january 31, 2020 22:14:00'),
 	"tag_ids": []
 	},
 	"5":{
@@ -146,8 +146,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 22, 2019 20:22:00'),
-	"date_end": new Date('april 22, 2019 21:22:00'),
+	"date_start": new Date('january 31, 2020 20:22:00'),
+	"date_end": new Date('january 31, 2020 21:22:00'),
 	"tag_ids": []
 	},
 	"6":{
@@ -171,8 +171,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 1, 2019 11:11:00'),
-	"date_end": new Date('april 1, 2019 12:11:00'),
+	"date_start": new Date('january 31, 2020 11:11:00'),
+	"date_end": new Date('january 31, 2020 12:11:00'),
 	"tag_ids": []
 	},
 	"7":{
@@ -196,8 +196,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 9, 2019 18:48:00'),
-	"date_end": new Date('april 9, 2019 19:48:00'),
+	"date_start": new Date('january 31, 2020 18:48:00'),
+	"date_end": new Date('january 31, 2020 19:48:00'),
 	"tag_ids": []
 	},
 	"8":{
@@ -246,8 +246,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 24, 2019 12:44:00'),
-	"date_end": new Date('april 24, 2019 13:44:00'),
+	"date_start": new Date('january 13, 2020 12:44:00'),
+	"date_end": new Date('january 13, 2020 13:44:00'),
 	"tag_ids": []
 	},
 	"10":{
@@ -271,8 +271,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 20:39:00'),
-	"date_end": new Date('August 16, 2019 21:39:00'),
+	"date_start": new Date('January 11, 2020 20:39:00'),
+	"date_end": new Date('January 11, 2020 21:39:00'),
 	"tag_ids": []
 	},
 	"11":{
@@ -296,8 +296,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 15:06:00'),
-	"date_end": new Date('August 16, 2019 16:06:00'),
+	"date_start": new Date('January 11, 2020 15:06:00'),
+	"date_end": new Date('January 11, 2020 16:06:00'),
 	"tag_ids": []
 	},
 	"12":{
@@ -321,8 +321,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 22:07:00'),
-	"date_end": new Date('August 16, 2019 23:07:00'),
+	"date_start": new Date('January 11, 2020 22:07:00'),
+	"date_end": new Date('January 11, 2020 23:07:00'),
 	"tag_ids": []
 	},
 	"13":{
@@ -346,8 +346,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 2, 2019 18:52:00'),
-	"date_end": new Date('april 2, 2019 19:52:00'),
+	"date_start": new Date('january 13, 2020 18:52:00'),
+	"date_end": new Date('january 13, 2020 19:52:00'),
 	"tag_ids": []
 	},
 	"14":{
@@ -371,8 +371,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 22:53:00'),
-	"date_end": new Date('August 16, 2019 23:53:00'),
+	"date_start": new Date('January 11, 2020 22:53:00'),
+	"date_end": new Date('January 11, 2020 23:53:00'),
 	"tag_ids": []
 	},
 	"15":{
@@ -396,8 +396,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 15, 2019 10:25:00'),
-	"date_end": new Date('april 15, 2019 11:25:00'),
+	"date_start": new Date('january 13, 2020 10:25:00'),
+	"date_end": new Date('january 13, 2020 11:25:00'),
 	"tag_ids": []
 	},
 	"16":{
@@ -421,8 +421,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 16:57:00'),
-	"date_end": new Date('August 16, 2019 17:27:00'),
+	"date_start": new Date('January 11, 2020 16:57:00'),
+	"date_end": new Date('January 11, 2020 17:27:00'),
 	"tag_ids": []
 	},
 	"17":{
@@ -446,8 +446,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 24, 2019 12:28:00'),
-	"date_end": new Date('april 24, 2019 13:28:00'),
+	"date_start": new Date('january 13, 2020 12:28:00'),
+	"date_end": new Date('january 13, 2020 13:28:00'),
 	"tag_ids": []
 	},
 	"18":{
@@ -471,8 +471,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 13, 2019 00:06:00'),
-	"date_end": new Date('april 13, 2019 01:06:00'),
+	"date_start": new Date('january 13, 2020 00:06:00'),
+	"date_end": new Date('january 13, 2020 01:06:00'),
 	"tag_ids": []
 	},
 	"19":{
@@ -496,8 +496,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 10, 2019 05:21:00'),
-	"date_end": new Date('april 10, 2019 06:21:00'),
+	"date_start": new Date('january 13, 2020 05:21:00'),
+	"date_end": new Date('january 13, 2020 06:21:00'),
 	"tag_ids": []
 	},
 	"20":{
@@ -521,8 +521,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 19, 2019 18:18:00'),
-	"date_end": new Date('april 19, 2019 19:18:00'),
+	"date_start": new Date('january 13, 2020 18:18:00'),
+	"date_end": new Date('january 13, 2020 19:18:00'),
 	"tag_ids": []
 	},
 	"21":{
@@ -546,8 +546,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 12, 2019 09:23:00'),
-	"date_end": new Date('april 12, 2019 10:23:00'),
+	"date_start": new Date('january 13, 2020 09:23:00'),
+	"date_end": new Date('january 13, 2020 10:23:00'),
 	"tag_ids": []
 	},
 	"22":{
@@ -571,8 +571,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 10, 2019 06:08:00'),
-	"date_end": new Date('april 10, 2019 07:08:00'),
+	"date_start": new Date('january 13, 2020 06:08:00'),
+	"date_end": new Date('january 13, 2020 07:08:00'),
 	"tag_ids": []
 	},
 	"23":{
@@ -596,8 +596,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 4, 2019 09:00:00'),
-	"date_end": new Date('april 4, 2019 10:00:00'),
+	"date_start": new Date('january 26, 2020 09:00:00'),
+	"date_end": new Date('january 26, 2020 10:00:00'),
 	"tag_ids": []
 	},
 	"24":{
@@ -621,8 +621,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 21, 2019 00:36:00'),
-	"date_end": new Date('april 21, 2019 01:36:00'),
+	"date_start": new Date('january 22, 2020 00:36:00'),
+	"date_end": new Date('january 22, 2020 01:36:00'),
 	"tag_ids": []
 	},
 	"25":{
@@ -671,8 +671,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 4, 2019 01:42:00'),
-	"date_end": new Date('april 4, 2019 02:42:00'),
+	"date_start": new Date('january 26, 2020 01:42:00'),
+	"date_end": new Date('january 26, 2020 02:42:00'),
 	"tag_ids": []
 	},
 	"27":{
@@ -721,8 +721,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 5, 2019 12:02:00'),
-	"date_end": new Date('August 5, 2019 13:02:00'),
+	"date_start": new Date('January 11,2002012:02:00'),
+	"date_end": new Date('January 11,2002013:02:00'),
 	"tag_ids": []
 	},
 	"29":{
@@ -871,8 +871,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 14:59:00'),
-	"date_end": new Date('August 16, 2019 15:59:00'),
+	"date_start": new Date('January 11, 2020 14:59:00'),
+	"date_end": new Date('January 11, 2020 15:59:00'),
 	"tag_ids": []
 	},
 	"35":{
@@ -896,8 +896,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 16:03:00'),
-	"date_end": new Date('August 16, 2019 17:03:00'),
+	"date_start": new Date('January 11, 2020 16:03:00'),
+	"date_end": new Date('January 11, 2020 17:03:00'),
 	"tag_ids": []
 	},
 	"36":{
@@ -946,8 +946,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 5, 2019 14:50:00'),
-	"date_end": new Date('August 5, 2019 15:50:00'),
+	"date_start": new Date('January 11,2002014:50:00'),
+	"date_end": new Date('January 11,2002015:50:00'),
 	"tag_ids": []
 	},
 	"38":{
@@ -1071,8 +1071,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 09:12:00'),
-	"date_end": new Date('August 16, 2019 10:12:00'),
+	"date_start": new Date('January 11, 2020 09:12:00'),
+	"date_end": new Date('January 11, 2020 10:12:00'),
 	"tag_ids": []
 	},
 	"43":{
@@ -1146,8 +1146,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 5, 2019 05:45:00'),
-	"date_end": new Date('August 5, 2019 06:45:00'),
+	"date_start": new Date('January 11,2002005:45:00'),
+	"date_end": new Date('January 11,2002006:45:00'),
 	"tag_ids": []
 	},
 	"46":{
@@ -1271,8 +1271,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 01:43:00'),
-	"date_end": new Date('August 16, 2019 02:43:00'),
+	"date_start": new Date('January 11, 2020 01:43:00'),
+	"date_end": new Date('January 11, 2020 02:43:00'),
 	"tag_ids": []
 	},
 	"51":{
@@ -1346,8 +1346,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 21, 2019 01:48:00'),
-	"date_end": new Date('april 21, 2019 02:48:00'),
+	"date_start": new Date('january 22, 2020 01:48:00'),
+	"date_end": new Date('january 22, 2020 02:48:00'),
 	"tag_ids": []
 	},
 	"54":{
@@ -1621,8 +1621,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 11:49:00'),
-	"date_end": new Date('August 16, 2019 12:49:00'),
+	"date_start": new Date('January 11, 2020 11:49:00'),
+	"date_end": new Date('January 11, 2020 12:49:00'),
 	"tag_ids": []
 	},
 	"65":{
@@ -1646,8 +1646,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 5, 2019 05:22:00'),
-	"date_end": new Date('August 5, 2019 06:22:00'),
+	"date_start": new Date('January 11,2002005:22:00'),
+	"date_end": new Date('January 11,2002006:22:00'),
 	"tag_ids": []
 	},
 	"66":{
@@ -1677,8 +1677,8 @@ const hcEvents = {
 	},
 	"67":{
 	"id": "67",
-	"title": "Compromiso7",
-	"description": "Ability case spring trial especially run hold.",
+	"title": "Compromiso7 Compromiso7Compromiso7 Compromiso7Compromiso7 Compromiso7Compromiso7 Compromiso7Compromiso7 Compromiso7",
+	"description": "Ability case spring trial especially run hold.Ability case spring trial especially run hold.Ability case spring trial especially run hold.Ability case spring trial especially run hold.Ability case spring trial especially run hold.Ability case spring trial especially run hold.Ability case spring trial especially run hold.Ability case spring trial especially run hold.",
 	"links": {
 	"CSS height0":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height1":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
@@ -1696,8 +1696,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 17:40:00'),
-	"date_end": new Date('August 16, 2019 18:40:00'),
+	"date_start": new Date('January 11, 2020 17:40:00'),
+	"date_end": new Date('January 11, 2020 18:40:00'),
 	"tag_ids": []
 	},
 	"68":{
@@ -1721,8 +1721,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 21, 2019 19:28:00'),
-	"date_end": new Date('april 21, 2019 20:28:00'),
+	"date_start": new Date('january 22, 2020 19:28:00'),
+	"date_end": new Date('january 22, 2020 20:28:00'),
 	"tag_ids": []
 	},
 	"69":{
@@ -1746,8 +1746,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 01:19:00'),
-	"date_end": new Date('August 16, 2019 02:19:00'),
+	"date_start": new Date('August 16, 2020 01:19:00'),
+	"date_end": new Date('August 16, 2020 02:19:00'),
 	"tag_ids": []
 	},
 	"70":{
@@ -1771,8 +1771,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 28, 2019 11:58:00'),
-	"date_end": new Date('april 28, 2019 12:58:00'),
+	"date_start": new Date('april 28, 2020 11:58:00'),
+	"date_end": new Date('april 28, 2020 12:58:00'),
 	"tag_ids": []
 	},
 	"71":{
@@ -1796,8 +1796,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 5, 2019 01:46:00'),
-	"date_end": new Date('August 5, 2019 02:46:00'),
+	"date_start": new Date('August 5, 2020 01:46:00'),
+	"date_end": new Date('August 5, 2020 02:46:00'),
 	"tag_ids": []
 	},
 	"72":{
@@ -1821,8 +1821,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 11:50:00'),
-	"date_end": new Date('August 16, 2019 12:50:00'),
+	"date_start": new Date('August 16, 2020 11:50:00'),
+	"date_end": new Date('August 16, 2020 12:50:00'),
 	"tag_ids": []
 	},
 	"73":{
@@ -1846,8 +1846,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 13, 2019 15:42:00'),
-	"date_end": new Date('april 13, 2019 16:42:00'),
+	"date_start": new Date('april 13, 2020 15:42:00'),
+	"date_end": new Date('april 13, 2020 16:42:00'),
 	"tag_ids": []
 	},
 	"74":{
@@ -1871,8 +1871,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 13, 2019 02:31:00'),
-	"date_end": new Date('april 13, 2019 03:31:00'),
+	"date_start": new Date('april 13, 2020 02:31:00'),
+	"date_end": new Date('april 13, 2020 03:31:00'),
 	"tag_ids": []
 	},
 	"75":{
@@ -1896,8 +1896,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 16, 2019 08:04:00'),
-	"date_end": new Date('april 16, 2019 09:04:00'),
+	"date_start": new Date('april 16, 2020 08:04:00'),
+	"date_end": new Date('april 16, 2020 09:04:00'),
 	"tag_ids": []
 	},
 	"76":{
@@ -1921,8 +1921,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 16, 2019 11:34:00'),
-	"date_end": new Date('april 16, 2019 12:34:00'),
+	"date_start": new Date('april 16, 2020 11:34:00'),
+	"date_end": new Date('april 16, 2020 12:34:00'),
 	"tag_ids": []
 	},
 	"77":{
@@ -1946,8 +1946,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 07:17:00'),
-	"date_end": new Date('August 16, 2019 08:17:00'),
+	"date_start": new Date('August 16, 2020 07:17:00'),
+	"date_end": new Date('August 16, 2020 08:17:00'),
 	"tag_ids": []
 	},
 	"78":{
@@ -1971,8 +1971,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 10, 2019 11:01:00'),
-	"date_end": new Date('april 10, 2019 12:01:00'),
+	"date_start": new Date('april 10, 2020 11:01:00'),
+	"date_end": new Date('april 10, 2020 12:01:00'),
 	"tag_ids": []
 	},
 	"79":{
@@ -1996,8 +1996,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 11, 2019 12:36:00'),
-	"date_end": new Date('april 11, 2019 13:36:00'),
+	"date_start": new Date('april 11, 2020 12:36:00'),
+	"date_end": new Date('april 11, 2020 13:36:00'),
 	"tag_ids": []
 	},
 	"80":{
@@ -2021,8 +2021,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 8, 2019 12:36:00'),
-	"date_end": new Date('april 8, 2019 13:36:00'),
+	"date_start": new Date('april 8, 2020 12:36:00'),
+	"date_end": new Date('april 8, 2020 13:36:00'),
 	"tag_ids": []
 	},
 	"81":{
@@ -2046,8 +2046,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('August 16, 2019 07:00:00'),
-	"date_end": new Date('August 16, 2019 08:00:00'),
+	"date_start": new Date('August 16, 2020 07:00:00'),
+	"date_end": new Date('August 16, 2020 08:00:00'),
 	"tag_ids": []
 	},
 	"82":{
@@ -2071,8 +2071,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 18, 2019 16:55:00'),
-	"date_end": new Date('april 18, 2019 17:55:00'),
+	"date_start": new Date('april 18, 2020 16:55:00'),
+	"date_end": new Date('april 18, 2020 17:55:00'),
 	"tag_ids": []
 	},
 	"83":{
@@ -2096,8 +2096,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 22, 2019 22:30:00'),
-	"date_end": new Date('april 22, 2019 23:30:00'),
+	"date_start": new Date('april 22, 2020 22:30:00'),
+	"date_end": new Date('april 22, 2020 23:30:00'),
 	"tag_ids": []
 	},
 	"84":{
@@ -2121,8 +2121,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 4, 2019 14:42:00'),
-	"date_end": new Date('april 4, 2019 15:42:00'),
+	"date_start": new Date('january 26, 2020 14:42:00'),
+	"date_end": new Date('january 26, 2020 15:42:00'),
 	"tag_ids": []
 	},
 	"85":{
@@ -2146,8 +2146,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 8, 2019 08:51:00'),
-	"date_end": new Date('april 8, 2019 09:51:00'),
+	"date_start": new Date('april 8, 2020 08:51:00'),
+	"date_end": new Date('april 8, 2020 09:51:00'),
 	"tag_ids": []
 	},
 	"86":{
@@ -2171,8 +2171,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 21, 2019 15:23:00'),
-	"date_end": new Date('april 21, 2019 16:23:00'),
+	"date_start": new Date('january 22, 2020 15:23:00'),
+	"date_end": new Date('january 22, 2020 16:23:00'),
 	"tag_ids": []
 	},
 	"87":{
@@ -2196,8 +2196,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 18, 2019 14:20:00'),
-	"date_end": new Date('april 18, 2019 15:20:00'),
+	"date_start": new Date('april 18, 2020 14:20:00'),
+	"date_end": new Date('april 18, 2020 15:20:00'),
 	"tag_ids": []
 	},
 	"88":{
@@ -2221,8 +2221,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 11, 2019 02:16:00'),
-	"date_end": new Date('april 11, 2019 03:16:00'),
+	"date_start": new Date('april 11, 2020 02:16:00'),
+	"date_end": new Date('april 11, 2020 03:16:00'),
 	"tag_ids": []
 	},
 	"89":{
@@ -2346,8 +2346,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 20, 2019 19:17:00'),
-	"date_end": new Date('april 20, 2019 20:17:00'),
+	"date_start": new Date('january 31, 2020 19:17:00'),
+	"date_end": new Date('january 31, 2020 20:17:00'),
 	"tag_ids": []
 	},
 	"94":{
@@ -2371,8 +2371,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 7, 2019 12:40:00'),
-	"date_end": new Date('april 7, 2019 13:40:00'),
+	"date_start": new Date('january 31, 2020 12:40:00'),
+	"date_end": new Date('january 31, 2020 13:40:00'),
 	"tag_ids": []
 	},
 	"95":{
@@ -2396,8 +2396,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 15, 2019 10:36:00'),
-	"date_end": new Date('april 15, 2019 11:36:00'),
+	"date_start": new Date('january 31, 2020 10:36:00'),
+	"date_end": new Date('january 31, 2020 11:36:00'),
 	"tag_ids": []
 	},
 	"96":{
@@ -2446,8 +2446,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 24, 2019 00:56:00'),
-	"date_end": new Date('april 24, 2019 01:56:00'),
+	"date_start": new Date('january 31, 2020 00:56:00'),
+	"date_end": new Date('january 31, 2020 01:56:00'),
 	"tag_ids": []
 	},
 	"98":{
@@ -2471,8 +2471,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 13, 2019 06:07:00'),
-	"date_end": new Date('april 13, 2019 07:07:00'),
+	"date_start": new Date('january 31, 2020 06:07:00'),
+	"date_end": new Date('january 31, 2020 07:07:00'),
 	"tag_ids": []
 	},
 	"99":{
@@ -2496,8 +2496,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 14, 2019 11:53:00'),
-	"date_end": new Date('april 14, 2019 12:53:00'),
+	"date_start": new Date('january 31, 2020 11:53:00'),
+	"date_end": new Date('january 31, 2020 12:53:00'),
 	"tag_ids": []
 	},
 	"100":{
@@ -2521,8 +2521,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 31, 2019 11:53:00'),
-	"date_end": new Date('april 31, 2019 12:53:00'),
+	"date_start": new Date('january 31, 2020 11:53:00'),
+	"date_end": new Date('january 31, 2020 12:53:00'),
 	"tag_ids": []
 	},
 	"101":{
@@ -2546,8 +2546,8 @@ const hcEvents = {
 	"CSS height13":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	"CSS height14":  {"name": "CSS height", "href": "https://developer.mozilla.org/en-US/docs/Web/CSS/height#Values"},
 	},
-	"date_start": new Date('april 25, 2019 11:53:00'),
-	"date_end": new Date('april 25, 2019 12:53:00'),
+	"date_start": new Date('january 31, 2020 11:53:00'),
+	"date_end": new Date('january 31, 2020 12:53:00'),
 	"tag_ids": []
 	},
 	"102":{

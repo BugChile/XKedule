@@ -13,13 +13,14 @@ import { toDataDate } from "./js_helpers/parsers";
 import { getRepeatsString } from "./js_helpers/rrule_helpers";
 import { setEventsWithRepeat } from "./store/actions";
 import "./App.css";
+import Plus from "./components/svgs/Plus";
 // development
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: "daily",
+      mode: this.props.mode,
       creation_mode: "idle",
       editing_event_id: null, //id of the event that's being edited, if any, else null
       events: {},
@@ -34,6 +35,8 @@ class App extends Component {
       aux_view_time: new Date(),
       current_time: new Date(),
       loading: true,
+      loading_events: true,
+      loading_tags: true,
       linkComponent: null,
       main_button_function: null,
       main_button_icon: "expand",
@@ -98,17 +101,27 @@ class App extends Component {
 
   changeMode(mode) {
     this.setState({ mode });
+    localStorage.setItem("mode", mode);
   }
 
   setEvents(events) {
     const { parsedEvents, eventsWithRepeat } = this.parseLoadedEvents(events);
     const { setEventsWithRepeat } = this.props;
     setEventsWithRepeat(eventsWithRepeat);
-    this.setState({ events: parsedEvents });
+    this.setState({ events: parsedEvents, loading_events: false }, () => {
+      switch (this.state.mode) {
+        case "daily":
+          this.shrinkContentContainer();
+          break;
+        default:
+          this.expandContentContainer();
+      }
+      this.setSwitchWeekMonth(this.state.mode);
+    });
   }
 
   setUserTags(user_tags) {
-    this.setState({ user_tags });
+    this.setState({ user_tags, loading_tags: false });
   }
 
   setHashedEvents(events) {
@@ -261,28 +274,14 @@ class App extends Component {
     if (content_div) {
       content_div.style["overflow-y"] = "hidden";
     }
+    const content_dimensions = content_div.getBoundingClientRect();
     const eventCardCoordinates = document
       .getElementById(card_id)
       .getBoundingClientRect();
     var left = 0;
     var top = 0;
+
     switch (this.state.mode) {
-      case "monthly":
-        if (eventCardCoordinates.left <= 700) {
-          left = eventCardCoordinates.left + 175;
-        } else {
-          left = eventCardCoordinates.left - 415;
-        }
-        top = Math.min(eventCardCoordinates.top, 460);
-        break;
-      case "weekly":
-        if (eventCardCoordinates.left <= 700) {
-          left = eventCardCoordinates.left + 170;
-        } else {
-          left = eventCardCoordinates.left - 415;
-        }
-        top = Math.min(eventCardCoordinates.top, 460);
-        break;
       case "daily":
         left = eventCardCoordinates.left;
         top = Math.min(
@@ -291,10 +290,24 @@ class App extends Component {
         if (document.body.getBoundingClientRect().height - top < 250) {
           top = eventCardCoordinates.top - 265;
         }
-
         break;
       default:
-        break;
+        if (eventCardCoordinates.left <= content_dimensions.width / 2) {
+          left = eventCardCoordinates.right;
+        } else {
+          left = eventCardCoordinates.left - 360;
+        }
+        if (
+          eventCardCoordinates.top <=
+          content_dimensions.height / 2 + content_dimensions.top
+        ) {
+          top = eventCardCoordinates.top;
+        } else {
+          top = Math.min(
+            eventCardCoordinates.top,
+            content_dimensions.bottom - 260
+          );
+        }
     }
     left += "px";
     top += "px";
@@ -341,7 +354,7 @@ class App extends Component {
   // onClickAnywhereEvent(event, data){
   //     alert(event.target.type);
   //     // this.setState({infoDaily:null, classesInfoCard:'hidden event_info_card'})
-  // }
+  // }expandContentContainer
 
   scrollDailyEvent() {
     document.getElementById(
@@ -497,14 +510,15 @@ class App extends Component {
     }
   }
 
-  generateComponents(
-    mode,
-    creation_mode,
-    editing_event_id,
-    events,
-    hashed_by_date,
-    user_tags
-  ) {
+  generateComponents() {
+    const {
+      mode,
+      creation_mode,
+      editing_event_id,
+      events,
+      hashed_by_date,
+      user_tags
+    } = this.state;
     var components = [];
 
     // Main card:
@@ -658,7 +672,6 @@ class App extends Component {
     } else {
       hashed_by_date[hashed_date] = [id];
     }
-    console.log(hashed_by_date);
 
     this.setState({ events: to_update_events, hashed_by_date });
     this.closeEventForm();
@@ -748,11 +761,13 @@ class App extends Component {
     this.props.delete_callback("events", this.props.uid, to_delete_event.id);
     // change tag usage
 
-    // aca esta el bug
-    this.new_event_object.tag_ids.forEach(tag_id => {
-      this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
-    });
-    // add confirmation
+    // aca esta el bug --> fixed, si tiene tags funciona
+    if (this.new_event_object.tag_ids) {
+      this.new_event_object.tag_ids.forEach(tag_id => {
+        this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
+      });
+    }
+    // TODO add confirmation
 
     //then
     var hashed_by_date = Object.assign({}, this.state.hashed_by_date);
@@ -832,7 +847,9 @@ class App extends Component {
   }
 
   render() {
-    return this.state.loading ? (
+    return this.state.loading === true ||
+      this.state.loading_events === true ||
+      this.state.loading_tags === true ? (
       <div className="charging_events">
         Please wait to get your information..
         <div className="spinner">
@@ -842,27 +859,9 @@ class App extends Component {
       </div>
     ) : (
       <div>
-        {this.generateComponents(
-          this.state.mode,
-          this.state.creation_mode,
-          this.state.editing_event_id,
-          this.state.events,
-          this.state.hashed_by_date,
-          this.state.user_tags
-        )}
+        {this.generateComponents()}
         <div id="create_event_button" onClick={this.createEvent}>
-          <svg
-            width="45"
-            height="45"
-            viewBox="0 0 45 45"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M19 19V1C19 0.447715 19.4477 0 20 0H25C25.5523 0 26 0.447715 26 1V19H44C44.5523 19 45 19.4477 45 20V25C45 25.5523 44.5523 26 44 26H26V44C26 44.5523 25.5523 45 25 45H20C19.4477 45 19 44.5523 19 44V26H1C0.447715 26 0 25.5523 0 25V20C0 19.4477 0.447715 19 1 19H19Z"
-              fill="white"
-            />
-          </svg>
+          <Plus />
         </div>
 
         {

@@ -1,15 +1,10 @@
-import React from "react"
+import React from "react";
 
-export default class NextDateArrow extends React.Component {
-    render() {
-
-        return  ( 
-            <span  onClick={()=> this.props.clickEventDate(this.props.length, "next")} className={"arrow-right"}></span>
-            )
-          
-        
-            
-
-  }
-
+export default function NextDateArrow(props) {
+  return (
+    <span
+      onClick={() => props.clickEventDate(props.length, "next")}
+      className={"arrow-right"}
+    ></span>
+  );
 }

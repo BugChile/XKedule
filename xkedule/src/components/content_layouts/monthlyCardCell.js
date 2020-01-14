@@ -1,23 +1,17 @@
-import React from "react"
+import React from "react";
 
-export default class MonthlyCardCell extends React.Component {
-
-  render() {
-      const close_div = <i className='fas fa-times' onClick={this.props.closeEvent}></i>
-
-      return(
-          <div
-          className={this.props.cell_class_list}
-          key={this.props.cell_key}
-          id={this.props.cell_key}>
-                  {this.props.closeEvent ? close_div : null}
-                   <div className="day_cell_info">
-                       {this.props.day_info}
-                   </div>
-               <div className="day_cell_task_container">
-                   {this.props.day_tasks}
-               </div>
-           </div>
-    )
-  }
-  }
+export default function MonthlyCardCell(props) {
+  return (
+    <div
+      className={props.cell_class_list}
+      key={props.cell_key}
+      id={props.cell_key}
+    >
+      {props.closeEvent ? (
+        <i className="fas fa-times" onClick={props.closeEvent}></i>
+      ) : null}
+      <div className="day_cell_info">{props.day_info}</div>
+      <div className="day_cell_task_container">{props.day_tasks}</div>
+    </div>
+  );
+}

@@ -2,64 +2,61 @@ $color-black-opacity: rgba(0, 0, 0, 0.5);
 $color-black-opacity-strong: rgba(0, 0, 0, 0.71);
 $color-black-opacity-soft: rgba(0, 0, 0, 0.44);
 
-
 $color-rose-light: rgba(223, 15, 152, 0.8);
-$color-between-rose-red-light: rgba(209, 70, 46,0.8);
-$color-red-light: rgba(235, 4, 46,0.8);
+$color-between-rose-red-light: rgba(209, 70, 46, 0.8);
+$color-red-light: rgba(235, 4, 46, 0.8);
 
-$color-rose: #DF0F98;
-$color-between-rose-red: rgba(209, 70, 46,0.8);
-$color-red: #E7042D;
+$color-rose: #df0f98;
+$color-between-rose-red: rgba(209, 70, 46, 0.8);
+$color-red: #e7042d;
 
-$color-rose-dark: rgba(223, 15, 152,1);
-$color-between-rose-red-dark: rgba(209, 70, 46,1);
-$color-red-dark: rgba(235, 4, 46,1);
+$color-rose-dark: rgba(223, 15, 152, 1);
+$color-between-rose-red-dark: rgba(209, 70, 46, 1);
+$color-red-dark: rgba(235, 4, 46, 1);
 
 $color-bg-header: white;
-$color-bg-content: #E4E4E4;
+$color-bg-content: #e4e4e4;
 
 $color-linfInfo: #0c0c0c;
 $color-bg-linfInfo: white;
+$color-linfInfo-dark-mode: white;
+$color-bg-linfInfo-dark-mode: rgb(17, 22, 29);
 
 $color-bg-infocard: white;
-$shadow-infocard: rgba(0, 0, 0, .2);
+$shadow-infocard: rgba(0, 0, 0, 0.2);
 
 $color-grey-text: #333333;
 $color-hover-text: red;
 
-
 // event form
 
-$color-cancel: #9D9D9D;
-$bg-input-form:#D4D4D4;
-$color-input-form:#343434;
+$color-cancel: #9d9d9d;
+$bg-input-form: #d4d4d4;
+$color-input-form: #343434;
 $color-react-calendar: black;
-$bg-button-form: #4F4F4F;
-$bg-time-span: #A9A9A9;
+$bg-button-form: #4f4f4f;
+$bg-time-span: #a9a9a9;
 $bg-pickers: white;
-$bg-wheel: #EDEDED;
+$bg-wheel: #ededed;
 
 $bg-creation-container: #343434;
-$shadow-creation: rgba(0, 0, 0, .98);
-
+$shadow-creation: rgba(0, 0, 0, 0.98);
 
 // icons
 
-$trash-color: rgba(216,51,72,1);
-$trash-hover-color: rgba(216,51,72,0.5);
+$trash-color: rgba(216, 51, 72, 1);
+$trash-hover-color: rgba(216, 51, 72, 0.5);
 
-$link-color: rgba(58,91,212,1);
-$link-hover-color: rgba(58,91,212,0.5);
+$link-color: rgba(58, 91, 212, 1);
+$link-hover-color: rgba(58, 91, 212, 0.5);
 
-$edit-color: rgba(18,177,128,1);
-$edit-hover-color: rgba(18,177,128,0.5);
+$edit-color: rgba(18, 177, 128, 1);
+$edit-hover-color: rgba(18, 177, 128, 0.5);
 
-
-$exit-color: rgba(255,255,255,0.9);
-$exit-hover-color: rgba(255,255,255,0.8);
-$bg-exit-color: rgba(216,51,72,1);
-$bg-exit-hover-color: rgba(216,51,72,0.5);
-
+$exit-color: rgba(255, 255, 255, 0.9);
+$exit-hover-color: rgba(255, 255, 255, 0.8);
+$bg-exit-color: rgba(216, 51, 72, 1);
+$bg-exit-hover-color: rgba(216, 51, 72, 0.5);
 
 //  searchbar
 
@@ -69,13 +66,14 @@ $focus-bg-search-bar: rgb(219, 217, 217);
 $focus-border-search-bar: rgba(0, 95, 107, 0.699);
 
 // scroll-bar
-$shadow-scroll-bar: rgba(0,0,0,0.1);
-$bg-scroll-bar: #F5F5F5;
-$bg-scroll-bar-thumb: #FFF;
-$bg-scroll-bar-thumb-hover: #FFF;
-
+$shadow-scroll-bar: rgba(0, 0, 0, 0.1);
+$bg-scroll-bar: #f5f5f5;
+$bg-scroll-bar-thumb: #fff;
+$bg-scroll-bar-thumb-hover: #fff;
 
 //daily
-$color-hour-tick:#545454;
+$color-hour-tick: #545454;
 $color-line: #949494;
 
+$bg-loading-card: rgba(11, 15, 19, 0.9);
+$color-loading-card: rgb(225, 239, 255);

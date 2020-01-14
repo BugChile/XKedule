@@ -83,11 +83,61 @@ function eventsFromHashed(events, hashed, date) {
   return [];
 }
 
+function groupOverlaps(events) {
+  var grouped = [];
+  var already_found = false;
+  events.forEach(_event => {
+    // look for already grouped events colliding
+    grouped.forEach(group => {
+      if (
+        !already_found &&
+        checkDateOverlap(
+          _event.date_start,
+          _event.date_end,
+          group.overlap_start,
+          group.overlap_end
+        )
+      ) {
+        already_found = true;
+        if (_event.date_start < group.events[group.compare_index].date_end) {
+          group.length += 1;
+        } else {
+          group.compare_index += 1;
+        }
+
+        if (_event.date_start < group.overlap_start) {
+          group.overlap_start = _event.date_start;
+        }
+
+        if (_event.date_end > group.overlap_end) {
+          group.overlap_end = _event.date_end;
+        }
+
+        group.events.push(_event);
+      }
+    });
+
+    // no colliding, new group
+    if (!already_found) {
+      grouped.push({
+        overlap_start: _event.date_start,
+        overlap_end: _event.date_end,
+        compare_index: 0,
+        length: 1,
+        events: [_event]
+      });
+    }
+    already_found = false;
+  });
+  return grouped;
+}
+
 export {
   stringRange,
   decreasingFunctionCompare,
   increasingFunctionCompare,
   checkDateOverlap,
+  groupOverlaps,
   onlyUnique,
   multiplyReducer,
   isEmpty,
