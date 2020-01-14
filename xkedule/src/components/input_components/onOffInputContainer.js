@@ -1,5 +1,5 @@
-import React from "react"
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 // This component IS NOT an input, but holds one. It's used to show ("on" state)
 // and hide ("off" state) said input component. The value of the input must be
@@ -46,7 +46,6 @@ import PropTypes from 'prop-types';
 //     - props.submit_on_change: (optional) if true, onChange will submit state
 //
 
-
 // onChange, onSubmit and doneEditing
 // these are very similar. The difference is:
 //
@@ -55,165 +54,176 @@ import PropTypes from 'prop-types';
 // onSubmit is onChange followed by doneEditing
 
 export default class OnOffInputContainer extends React.PureComponent {
+  _timeoutID;
 
-    _timeoutID;
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            mode: "off",
-            isManagingFocus: false,
-        };
-
-        this.on_component_id = "onOffFocusedChild"
-
-        this.getComponent = this.getComponent.bind(this);
-        this.getContainerStyle = this.getContainerStyle.bind(this);
-        this.getOnChange = this.getOnChange.bind(this);
-        this.onFocus = this.onFocus.bind(this);
-        this._onFocusWrapper = this._onFocusWrapper.bind(this);
-        this.onBlur = this.onBlur.bind(this);
-        this._onBlurWrapper = this._onBlurWrapper.bind(this);
-        this.onKeyPress = this.onKeyPress.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.doneEditing = this.doneEditing.bind(this);
-        this.getOffStateSummary = this.getOffStateSummary.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      mode: "off",
+      isManagingFocus: false
     };
 
-    getComponent(mode) {
-        switch (mode) {
-            case "on":
-                return <this.props.on_component value={this.props.on_component_value}
-                    onChange={this.getOnChange()}
-                    onSubmit={this.onSubmit}
-                    doneEditing={this.doneEditing}
-                    {...this.props.on_component_props} />
-            default:
-                return <this.props.off_component text={this.getOffStateSummary()}
-                    {...this.props.off_component_props} />
-        }
-    }
+    this.on_component_id = "onOffFocusedChild";
 
-    getOffStateSummary() {
-        var value_summary = "";
-        if (this.props.off_text) { // static off text
-            value_summary = this.props.off_text;
-        } else if (this.props.value_to_summary) { // callback to process input value into summary
-            value_summary = this.props.value_to_summary(this.props.on_component_value);
-        } else { // use raw input value
-            value_summary = this.props.on_component_value;
-        }
-        return value_summary;
-    }
+    this.getComponent = this.getComponent.bind(this);
+    this.getContainerStyle = this.getContainerStyle.bind(this);
+    this.getOnChange = this.getOnChange.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this._onFocusWrapper = this._onFocusWrapper.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this._onBlurWrapper = this._onBlurWrapper.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.doneEditing = this.doneEditing.bind(this);
+    this.getOffStateSummary = this.getOffStateSummary.bind(this);
+  }
 
-    getContainerStyle(mode, style) {
-        var container_style = "on_off_input_container "
-        if (style) {
-            container_style += style;
-        }
-        if (mode === "on" && this.props.on_container_additional_style) {
-            container_style += " " + this.props.on_container_additional_style;
-        }
-        return container_style;
-    }
-
-    // if the component has a "submit" callback, it can use onSubmit
-    // this will save the value and set mode to off
-    onSubmit(value) {
-        this.props.on_component_save(value);
-        this.doneEditing();
-    }
-
-    doneEditing() {
-        this.setState({ isManagingFocus: false });
-        this.onBlur();
-    }
-
-    getOnChange() {
-        if (this.props.submit_on_change) {
-            return (
-                (value) => {
-                    this.onSubmit(value);
-                }
-            )
-        } else {
-            return this.props.on_component_save;
-        }
-    }
-
-    onFocus() {
-        this.setState({ mode: "on" });
-    }
-
-    onBlur() {
-        this.setState({ mode: "off" });
-    }
-
-    onKeyPress(event) {
-        if (this.props.key_submit_cc &&
-            this.props.key_submit_cc.includes(event.charCode)) {
-            this.setState({ isManagingFocus: false });
-            this.onBlur();
-        }
-    }
-
-
-    render() {
+  getComponent(mode) {
+    switch (mode) {
+      case "on":
         return (
-            <div className={this.getContainerStyle(this.state.mode,
-                this.props.container_style)}
-                tabIndex="-1"
-                onClick={this._onFocusWrapper}
-                onFocus={this._onFocusWrapper}
-                onBlur={this._onBlurWrapper}
-                onKeyPress={this.onKeyPress}>
-                {this.getComponent(this.state.mode)}
-            </div>
-        )
+          <this.props.on_component
+            value={this.props.on_component_value}
+            onChange={this.getOnChange()}
+            onSubmit={this.onSubmit}
+            doneEditing={this.doneEditing}
+            {...this.props.on_component_props}
+          />
+        );
+      default:
+        return (
+          <this.props.off_component
+            text={this.getOffStateSummary()}
+            {...this.props.off_component_props}
+          />
+        );
     }
+  }
 
-    // The following wrappers are required because of the way react handles
-    // focus events. It basically waits to see if the blur event comes from
-    // a container's child, and if it does, the container doesn't loose focus
-    //
-    // code from (and more info):
-    // https://medium.com/@jessebeach/dealing-with-focus-and-blur-in-a-composite-widget-in-react-90d3c3b49a9b
-
-    _onFocusWrapper() {
-        // _onFocusWrapper called when the container or one of it's child gains focus
-        clearTimeout(this._timeoutID);
-        // clearing timeout prevents the Blur
-        if (!this.state.isManagingFocus) {
-            this.setState({
-                isManagingFocus: true,
-            });
-            this.onFocus();
-        }
+  getOffStateSummary() {
+    var value_summary = "";
+    if (this.props.off_text) {
+      // static off text
+      value_summary = this.props.off_text;
+    } else if (this.props.value_to_summary) {
+      // callback to process input value into summary
+      value_summary = this.props.value_to_summary(
+        this.props.on_component_value
+      );
+    } else {
+      // use raw input value
+      value_summary = this.props.on_component_value;
     }
+    return value_summary;
+  }
 
-    _onBlurWrapper() {
-        this._timeoutID = setTimeout(() => {
-            if (this.state.isManagingFocus) {
-                this.doneEditing();
-            }
-        }, 0);
+  getContainerStyle(mode, style) {
+    var container_style = "on_off_input_container ";
+    if (style) {
+      container_style += style;
     }
+    if (mode === "on" && this.props.on_container_additional_style) {
+      container_style += " " + this.props.on_container_additional_style;
+    }
+    return container_style;
+  }
 
+  // if the component has a "submit" callback, it can use onSubmit
+  // this will save the value and set mode to off
+  onSubmit(value) {
+    this.props.on_component_save(value);
+    this.doneEditing();
+  }
 
+  doneEditing() {
+    this.setState({ isManagingFocus: false });
+    this.onBlur();
+  }
+
+  getOnChange() {
+    if (this.props.submit_on_change) {
+      return value => {
+        this.onSubmit(value);
+      };
+    } else {
+      return this.props.on_component_save;
+    }
+  }
+
+  onFocus() {
+    this.setState({ mode: "on" });
+  }
+
+  onBlur() {
+    this.setState({ mode: "off" });
+  }
+
+  onKeyPress(event) {
+    if (
+      this.props.key_submit_cc &&
+      this.props.key_submit_cc.includes(event.charCode)
+    ) {
+      this.setState({ isManagingFocus: false });
+      this.onBlur();
+    }
+  }
+
+  render() {
+    return (
+      <div
+        className={this.getContainerStyle(
+          this.state.mode,
+          this.props.container_style
+        )}
+        tabIndex="-1"
+        onClick={this._onFocusWrapper}
+        onFocus={this._onFocusWrapper}
+        onBlur={this._onBlurWrapper}
+        onKeyPress={this.onKeyPress}
+      >
+        {this.getComponent(this.state.mode)}
+      </div>
+    );
+  }
+
+  // The following wrappers are required because of the way react handles
+  // focus events. It basically waits to see if the blur event comes from
+  // a container's child, and if it does, the container doesn't loose focus
+  //
+  // code from (and more info):
+  // https://medium.com/@jessebeach/dealing-with-focus-and-blur-in-a-composite-widget-in-react-90d3c3b49a9b
+
+  _onFocusWrapper() {
+    // _onFocusWrapper called when the container or one of it's child gains focus
+    clearTimeout(this._timeoutID);
+    // clearing timeout prevents the Blur
+    if (!this.state.isManagingFocus) {
+      this.setState({
+        isManagingFocus: true
+      });
+      this.onFocus();
+    }
+  }
+
+  _onBlurWrapper() {
+    this._timeoutID = setTimeout(() => {
+      if (this.state.isManagingFocus) {
+        this.doneEditing();
+      }
+    }, 0);
+  }
 }
-
 
 OnOffInputContainer.propTypes = {
-    on_component: PropTypes.func.isRequired,
-    off_component: PropTypes.func.isRequired,
+  on_component: PropTypes.func.isRequired,
+  off_component: PropTypes.func.isRequired,
 
-
-    on_component_save: PropTypes.func,
-    on_component_value: PropTypes.any,
-    on_component_props: PropTypes.object,
-    off_component_props: PropTypes.object,
-    container_style: PropTypes.string,
-    on_container_additional_style: PropTypes.string,
-    value_to_summary: PropTypes.func,
-    key_submit_cc: PropTypes.array,
-}
+  on_component_save: PropTypes.func,
+  on_component_value: PropTypes.any,
+  on_component_props: PropTypes.object,
+  off_component_props: PropTypes.object,
+  container_style: PropTypes.string,
+  on_container_additional_style: PropTypes.string,
+  value_to_summary: PropTypes.func,
+  key_submit_cc: PropTypes.array
+};

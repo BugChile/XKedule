@@ -1,18 +1,14 @@
-import React from "react"
+import React from "react";
 
-export default class WeekCardDayHeaders extends React.Component {
-
-  render() {
-      return(
-          <div className={"hover ".concat(this.props.day_cell_class)} key={this.props.card_key} onClick={()=> this.props.onClickDay(this.props.day)}>
-                             <div className="day_name">
-                                 {this.props.day_name}
-                             </div>
-                             <div className="day_date">
-                                 {this.props.day_date}
-                             </div>
-           </div>
-
-    )
-  }
-  }
+export default function WeekCardDayHeaders(props) {
+  return (
+    <div
+      className={"hover ".concat(props.day_cell_class)}
+      key={props.card_key}
+      onClick={() => props.onClickDay(props.day)}
+    >
+      <div className="day_name">{props.day_name}</div>
+      <div className="day_date">{props.day_date}</div>
+    </div>
+  );
+}

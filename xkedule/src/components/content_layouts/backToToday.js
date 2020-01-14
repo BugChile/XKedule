@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function backToToday(props) {
+export default function BackToToday(props) {
   return (
     <div
       onClick={props.onClickReturn}

@@ -1,19 +1,11 @@
 import React from "react";
 import TextLineInput from "../input_components/textLineInput";
+import { tagColors } from "../../js_helpers/constants";
 
 export default class NewTagTool extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.tagColors = [
-      "lapis",
-      "ocean",
-      "seafoam",
-      "blonde",
-      "tangerine",
-      "rose",
-      "lilac",
-      "violet"
-    ];
+    this.tagColors = tagColors;
     this.state = {
       picked_color: null,
       new_tag_name: "",

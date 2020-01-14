@@ -34,3 +34,36 @@ export const daysLowerCase = [
   "saturday",
   "sunday"
 ];
+
+export const daysCapital = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+];
+
+export const daysShortName = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+
+export const daysIntDict = {
+  Mo: 1,
+  Tu: 2,
+  We: 3,
+  Th: 4,
+  Fr: 5,
+  Sa: 6,
+  Su: 0
+};
+
+export const tagColors = [
+  "lapis",
+  "ocean",
+  "seafoam",
+  "blonde",
+  "tangerine",
+  "rose",
+  "lilac",
+  "violet"
+];

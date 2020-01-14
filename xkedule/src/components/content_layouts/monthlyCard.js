@@ -15,7 +15,7 @@ export default class MonthlyCard extends React.Component {
     super(props);
 
     this.state = {
-      tasks_per_cell: "",
+      tasks_per_cell: null,
       expanded_tasks: [],
       expanded_class: "expanded_month_cell hidden",
       expanded_top: 0,

@@ -12,7 +12,7 @@ const getGridPlacement = (event, span) => {
   return { gridRow: grid_start + "/" + grid_end, gridColumn: "span " + span };
 };
 
-export default function dailyTaskCard(props) {
+export default function DailyTaskCard(props) {
   const card_id = props.event.id.concat("_event_daily_card");
   return (
     <span
