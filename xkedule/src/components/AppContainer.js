@@ -1,7 +1,7 @@
-import App from "./App";
-import MenuBar from "./menu_bar/MenuBar";
-import Todo from "./todo/Todo";
-import React, { Component } from "react";
+import App from './App';
+import MenuBar from './menu_bar/MenuBar';
+import Todo from './todo/Todo';
+import React, { Component } from 'react';
 
 export default class AppContainer extends Component {
   constructor(props) {
@@ -12,16 +12,18 @@ export default class AppContainer extends Component {
   changeMode(mode) {
     this.setState({ mode });
   }
+
   render() {
     return (
-      <div className="app_container">
-        <div className="calendar_container">
+      <div className='app_container'>
+        <div className='calendar_container'>
           <MenuBar mode={this.state.mode} changeMode={this.changeMode} />
           <div
-            style={displayStyle(this.state.mode, "todo")}
-            className={"transitions"}
+            className={'transitions'}
+            id='todo_position'
+            style={displayStyle('todo', this.state.mode)}
           >
-            <Todo />
+            <Todo onClose={this.changeMode} />
           </div>
           <App
             events={this.props.events}
@@ -38,25 +40,26 @@ export default class AppContainer extends Component {
   }
 }
 
-const displayStyle = (boolean, currentMode) => {
-  const style = {
-    position: "absolute",
-    left: 60,
-    top: 0,
-    height: "100vh",
-    width: "calc(100vw -  60px)",
-    zIndex: -1000,
-    opacity: 0
-  };
+const displayStyle = (mode, currentMode) => {
   const final_style =
-    boolean === currentMode
+    mode === currentMode
       ? {
-          ...style,
-          zIndex: 1000,
-          backgroundColor: "#e4e4e4",
-          opacity: 1
+          ...container_style,
+          left: 60,
+          zIndex: '1000'
         }
-      : style;
+      : container_style;
 
   return final_style;
+};
+
+const container_style = {
+  position: 'absolute',
+  left: '-100vw',
+  top: 0,
+  height: '100vh',
+  width: 'calc(80vw)',
+  backgroundColor: '#e4e4e4',
+  zIndex: -1000,
+  boxShadow: '10px 10px 20px rgba(0, 0, 0, 0.5)'
 };
