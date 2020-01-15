@@ -23,6 +23,7 @@ export default class Todo extends Component {
         style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}
         className="todo_container"
       >
+        {/* https://www.bootdey.com/snippets/view/tickets-for-events#html */}
         {/* <div>To Do List</div> */}
         <div className="todos_container">
           {this.state.todo_list.map((item, index) => {
