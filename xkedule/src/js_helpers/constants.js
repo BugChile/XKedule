@@ -44,6 +44,20 @@ export const daysCapital = [
   "Friday",
   "Saturday"
 ];
+export const monthsShortName = [
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "may",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "oct",
+  "nov",
+  "dic"
+];
 
 export const daysShortName = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
@@ -66,4 +80,39 @@ export const tagColors = [
   "rose",
   "lilac",
   "violet"
+];
+
+export const exampleTodoList = [
+  {
+    date: new Date(),
+    text: "Todo do item 1"
+  },
+  {
+    date: new Date(),
+    text: "Todo do item 2"
+  },
+  {
+    date: new Date(),
+    text: "Todo do item 3"
+  },
+  {
+    date: new Date(),
+    text: "Todo do item 4"
+  },
+  {
+    date: new Date(),
+    text: "Todo do item 5"
+  },
+  {
+    date: new Date(),
+    text: "Todo do item 6"
+  },
+  {
+    date: new Date(),
+    text: "Todo do item 7"
+  },
+  {
+    date: new Date(),
+    text: "Todo do item 8"
+  }
 ];

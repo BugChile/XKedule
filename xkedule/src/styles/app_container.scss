@@ -6,20 +6,285 @@
 .todo_activated {
   position: relative;
   transition: all 0.5s;
-  top: 0;
+  right: 0;
 }
 .todo_deactivated {
   //   display: none;
-  position: absolute;
-  top: -100vh;
+  position: relative;
+  right: -300px;
   transition: all 0.5s;
 }
+
+.todo_container {
+  height: calc(100vh - 60px);
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  justify-content: space-between;
+}
+.todo_card::-webkit-scrollbar {
+  display: none !important;
+  -ms-overflow-style: none;
+}
+
+.todo_card {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 3px;
+  margin-top: 3px;
+  background-color: white;
+}
+.todos_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.todo_card:hover {
+  background-color: rgb(228, 228, 228);
+  cursor: pointer;
+}
+
+.notifications {
+  position: relative;
+  display: inline-block;
+  background-color: rgb(189, 80, 80);
+  padding: 0px 4px;
+  left: 15px;
+  border-radius: 100px;
+  top: -15px;
+  font-weight: bold;
+}
+
 .todo {
   position: absolute;
-  background-color: white;
   top: 0;
-  width: 100px;
-  max-height: 100px;
-  overflow-y: scroll;
-  right: 100px;
+  width: 200px;
+  right: 0px;
+}
+.btn-custom {
+  width: 50%;
+  font-weight: bold;
+}
+
+// another file
+
+@import url("https://fonts.googleapis.com/css?family=Oswald");
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #dadde6;
+  font-family: arial;
+}
+
+.fl-left {
+  float: left;
+}
+
+.fl-right {
+  float: right;
+}
+
+.app_container {
+  display: flex;
+}
+.calendar_container {
+  width: calc(50% - 100px);
+  // display: none;
+}
+.menu_container {
+  display: block;
+
+  position: absolute;
+  height: 100vh;
+  width: 60px;
+  background-color: $color-bg-linfInfo-dark-mode;
+  color: $bg-wheel;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+.transitions {
+  transform: all 1s;
+}
+.menu_item {
+  padding: 10px;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 0px 0px 10px 0px;
+  margin-bottom: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: $color-bg-linfInfo-dark-mode-selected;
+  }
+}
+.menu_active {
+  width: 60px;
+  height: 60px;
+  background-color: $color-bg-linfInfo-dark-mode-selected;
+}
+
+h1 {
+  text-transform: uppercase;
+  font-weight: 900;
+  border-left: 10px solid #fec500;
+  padding-left: 10px;
+  margin-bottom: 30px;
+}
+
+.row {
+  overflow: hidden;
+}
+
+.card {
+  display: table-row;
+  width: 45%;
+  background-color: #fff;
+  color: #989898;
+  margin-bottom: 10px;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  border-radius: 4px;
+  position: relative;
+}
+
+.date {
+  display: table-cell;
+  width: 25%;
+  position: relative;
+  text-align: center;
+  border-right: 2px dashed #dadde6;
+}
+
+.date:before,
+.date:after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: $color-bg-content;
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.date:after {
+  top: auto;
+  bottom: -15px;
+}
+
+.date time {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.date time span {
+  display: block;
+}
+
+.date time span:first-child {
+  color: #2b2b2b;
+  font-weight: 600;
+  font-size: 250%;
+}
+
+.date time span:last-child {
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: -10px;
+}
+
+.card-cont {
+  display: table-cell;
+  width: 100%;
+  font-size: 85%;
+  padding: 10px 10px 10px 10px;
+}
+
+.card-cont h3 {
+  color: #3c3c3c;
+  font-size: 130%;
+}
+
+.row:last-child .card:last-of-type .card-cont h3 {
+  text-decoration: line-through;
+}
+
+.card-cont > div {
+  display: table-row;
+}
+
+.card-cont .even-date i,
+.card-cont .even-info i,
+.card-cont .even-date time,
+.card-cont .even-info p {
+  display: table-cell;
+}
+
+.card-cont .even-date i,
+.card-cont .even-info i {
+  padding: 5% 5% 0 0;
+}
+
+.card-cont .even-info p {
+  padding: 0px 0px 0 0;
+}
+
+.card-cont .even-date time span {
+  display: block;
+}
+
+.card-cont button {
+  display: block;
+  text-decoration: none;
+  width: 80px;
+  height: 30px;
+  background-color: #213d5b;
+  color: #fff;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 2px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+.row:last-child .card:first-child .card-cont a {
+  background-color: #037fdd;
+}
+
+.row:last-child .card:last-child .card-cont a {
+  background-color: #f8504c;
+}
+
+@media screen and (max-width: 860px) {
+  .card {
+    display: block;
+    float: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .card + .card {
+    margin-left: 0;
+  }
+
+  .card-cont .even-date,
+  .card-cont .even-info {
+    font-size: 75%;
+  }
 }

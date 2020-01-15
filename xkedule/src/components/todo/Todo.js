@@ -1,32 +1,46 @@
-import React, { Component } from 'react';
-
+import React, { Component } from "react";
+import TodoCard from "./TodoCard";
+import { exampleTodoList } from "../../js_helpers/constants";
+import Plus from "../svgs/Plus";
 export default class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activated: this.props.activated
+      todo_list: exampleTodoList
     };
-    this.hide = this.hide.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
-  hide() {
-    this.setState(prevState => ({
-      activated: !prevState.activated
-    }));
+
+  removeItem(index) {
+    const new_list = [...this.state.todo_list];
+    new_list.splice(index, 1);
+    this.setState({ todo_list: new_list });
   }
+
   render() {
-    console.log(this.state);
     return (
-      <div className='todo'>
-        <button onClick={this.hide}>
-          {this.state.activated ? 'Hide' : 'ToDo'}
-        </button>
-        <div
-          className={
-            this.state.activated ? 'todo_activated' : 'todo_deactivated'
-          }
-        >
-          todo list todo list todo list todo list todo list todo list todo list
-          todo list
+      <div
+        style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}
+        className="todo_container"
+      >
+        {/* <div>To Do List</div> */}
+        <div className="todos_container">
+          {this.state.todo_list.map((item, index) => {
+            return (
+              <TodoCard
+                key={`todo_item_${index}`}
+                date={item.date}
+                text={item.text}
+                index={index}
+                onDone={this.removeItem}
+              />
+            );
+          })}
+
+          {/* document.getElementById("create_event_button").classList.add("cancel"); */}
+          <div className="create_event_button_todo" onClick={this.createEvent}>
+            <Plus />
+          </div>
         </div>
       </div>
     );

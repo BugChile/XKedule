@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { RRule } from 'rrule';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { RRule } from "rrule";
+import { connect } from "react-redux";
 
-import DailyCard from './content_layouts/dailyCard';
-import MonthlyCard from './content_layouts/monthlyCard';
-import WeeklyCard from './content_layouts/weeklyCard';
-import MainButton from './mainButton';
-import SwitchWeekMonth from './switchWeekMonth';
-import InfoCard from './content_layouts/infoCard';
-import CreationContainer from './creation_tools/creationContainer';
-import { toDataDate } from '../js_helpers/parsers';
-import { getRepeatsString } from '../js_helpers/rrule_helpers';
-import { setEventsWithRepeat } from '../store/actions';
-import './App.css';
-import Plus from './svgs/Plus';
+import DailyCard from "./content_layouts/dailyCard";
+import MonthlyCard from "./content_layouts/monthlyCard";
+import WeeklyCard from "./content_layouts/weeklyCard";
+import MainButton from "./mainButton";
+import SwitchWeekMonth from "./switchWeekMonth";
+import InfoCard from "./content_layouts/infoCard";
+import CreationContainer from "./creation_tools/creationContainer";
+import { toDataDate } from "../js_helpers/parsers";
+import { getRepeatsString } from "../js_helpers/rrule_helpers";
+import { setEventsWithRepeat } from "../store/actions";
+import "./App.css";
+import Plus from "./svgs/Plus";
 // development
 
 class App extends Component {
@@ -21,13 +21,13 @@ class App extends Component {
     super(props);
     this.state = {
       mode: this.props.mode,
-      creation_mode: 'idle',
+      creation_mode: "idle",
       editing_event_id: null, //id of the event that's being edited, if any, else null
       events: {},
       user_tags: {},
       dailyComponentScroll: new Date().getHours() * 60 - 120, // cambiar después
       infoDaily: null,
-      classesInfoCard: 'hidden event_info_card',
+      classesInfoCard: "hidden event_info_card",
       infoDailyTop: null,
       eventInfoCardLeft: null,
       eventInfoCardTop: null,
@@ -39,7 +39,7 @@ class App extends Component {
       loading_tags: true,
       linkComponent: null,
       main_button_function: null,
-      main_button_icon: 'expand',
+      main_button_icon: "expand",
       refresh_aux: null
     };
 
@@ -101,7 +101,7 @@ class App extends Component {
 
   changeMode(mode) {
     this.setState({ mode });
-    localStorage.setItem('mode', mode);
+    localStorage.setItem("mode", mode);
   }
 
   setEvents(events) {
@@ -110,7 +110,7 @@ class App extends Component {
     setEventsWithRepeat(eventsWithRepeat);
     this.setState({ events: parsedEvents, loading_events: false }, () => {
       switch (this.state.mode) {
-        case 'daily':
+        case "daily":
           this.shrinkContentContainer();
           break;
         default:
@@ -148,8 +148,8 @@ class App extends Component {
     for (var key in parsedEvents) {
       if (parsedEvents[key].rrule !== undefined) {
         // TODO fix HACK
-        if (parsedEvents[key].rrule === 'Never') {
-          parsedEvents[key].rrule = 'RRULE:FREQ=DAILY;INTERVAL=1';
+        if (parsedEvents[key].rrule === "Never") {
+          parsedEvents[key].rrule = "RRULE:FREQ=DAILY;INTERVAL=1";
         }
         ruleObject = RRule.fromString(parsedEvents[key].rrule);
         eventsWithRepeat = [
@@ -168,7 +168,7 @@ class App extends Component {
 
   hashEvents(events) {
     var hashed = {};
-    var hashed_date = '';
+    var hashed_date = "";
     for (var key in events) {
       hashed_date = events[key].date_start.toLocaleDateString();
       if (hashed_date in hashed) {
@@ -210,20 +210,20 @@ class App extends Component {
   }
 
   setSwitchWeekMonth(mode) {
-    if (mode === 'weekly') {
-      this.changeHTMLProperty('switch_to_week', 'color', '#FFFFFF');
-      this.changeHTMLProperty('switch_to_month', 'color', '#333333');
-      this.changeHTMLProperty('switch_week_month_button', 'left', '0px');
-    } else if (mode === 'monthly') {
-      this.changeHTMLProperty('switch_to_week', 'color', '#333333');
-      this.changeHTMLProperty('switch_to_month', 'color', '#FFFFFF');
-      this.changeHTMLProperty('switch_week_month_button', 'left', '70px');
+    if (mode === "weekly") {
+      this.changeHTMLProperty("switch_to_week", "color", "#FFFFFF");
+      this.changeHTMLProperty("switch_to_month", "color", "#333333");
+      this.changeHTMLProperty("switch_week_month_button", "left", "0px");
+    } else if (mode === "monthly") {
+      this.changeHTMLProperty("switch_to_week", "color", "#333333");
+      this.changeHTMLProperty("switch_to_month", "color", "#FFFFFF");
+      this.changeHTMLProperty("switch_week_month_button", "left", "70px");
     }
   }
 
   listenScrollEvent() {
     this.setState({
-      dailyComponentScroll: document.getElementById('content').scrollTop
+      dailyComponentScroll: document.getElementById("content").scrollTop
     });
   }
   clickEventDate(length, type) {
@@ -232,7 +232,7 @@ class App extends Component {
       aux_bool = null;
     }
     var date = this.state.aux_view_time;
-    if (type === 'prev') {
+    if (type === "prev") {
       switch (length) {
         case 2:
           date.setDate(this.state.aux_view_time.getDate() - 1);
@@ -270,9 +270,9 @@ class App extends Component {
     this.setState({ aux_view_time: date, refresh_aux: aux_bool });
   }
   clickEvent(event, card_id = null) {
-    const content_div = document.getElementById('content');
+    const content_div = document.getElementById("content");
     if (content_div) {
-      content_div.style['overflow-y'] = 'hidden';
+      content_div.style["overflow-y"] = "hidden";
     }
     const content_dimensions = content_div.getBoundingClientRect();
     const eventCardCoordinates = document
@@ -282,7 +282,7 @@ class App extends Component {
     var top = 0;
 
     switch (this.state.mode) {
-      case 'daily':
+      case "daily":
         left = eventCardCoordinates.left;
         top = Math.min(
           eventCardCoordinates.top + eventCardCoordinates.height + 5
@@ -309,18 +309,18 @@ class App extends Component {
           );
         }
     }
-    left += 'px';
-    top += 'px';
+    left += "px";
+    top += "px";
     this.setState({
       infoDaily: event,
-      classesInfoCard: 'event_info_card '.concat(this.state.mode),
+      classesInfoCard: "event_info_card ".concat(this.state.mode),
       eventInfoCardLeft: left,
       eventInfoCardTop: top,
       linkComponent: null
     });
   }
   onClickDay(day) {
-    this.setState({ aux_view_time: day, mode: 'daily' });
+    this.setState({ aux_view_time: day, mode: "daily" });
     this.closeEventForm();
     this.expand();
   }
@@ -333,12 +333,12 @@ class App extends Component {
   closeEvent() {
     this.setState({
       infoDaily: null,
-      classesInfoCard: 'hidden event_info_card',
+      classesInfoCard: "hidden event_info_card",
       InfoCardLinks: null
     });
-    const content_div = document.getElementById('content');
+    const content_div = document.getElementById("content");
     if (content_div) {
-      content_div.style['overflow-y'] = 'scroll';
+      content_div.style["overflow-y"] = "scroll";
     }
   }
   onClickReturn() {
@@ -358,98 +358,101 @@ class App extends Component {
 
   scrollDailyEvent() {
     document.getElementById(
-      'content'
+      "content"
     ).scrollTop = this.state.dailyComponentScroll;
   }
 
   expandContentContainer() {
-    document.getElementById('main_button_container').classList.add('reversed');
+    document.getElementById("main_button_container").classList.add("reversed");
     document
-      .getElementById('main_button_container')
-      .classList.add('main_button_container_expanded_width');
-    document.getElementById('content_container').style.width = '80%';
-    document.getElementById('content_container').style.left = '0px';
-    document.getElementById('creation_container').style.width = '80%';
+      .getElementById("main_button_container")
+      .classList.add("main_button_container_expanded_width");
+    document.getElementById("content_container").style.width = "80%";
+    document.getElementById("content_container").style.left = "60px";
+    document.getElementById("creation_container").style.width = "80%";
+    document.getElementById("creation_container").style.left = "60px";
   }
 
   shrinkContentContainer() {
     document
-      .getElementById('main_button_container')
-      .classList.remove('reversed');
+      .getElementById("main_button_container")
+      .classList.remove("reversed");
     document
-      .getElementById('main_button_container')
-      .classList.remove('main_button_container_expanded_width');
-    document.getElementById('content_container').style.width = '35%';
-    document.getElementById('content_container').style.left = '0px';
-    document.getElementById('creation_container').style.width = '35%';
+      .getElementById("main_button_container")
+      .classList.remove("main_button_container_expanded_width");
+    document.getElementById("content_container").style.width = "35%";
+    document.getElementById("content_container").style.left = "60px";
+    document.getElementById("creation_container").style.width =
+      "calc(35% - 100px)";
+    document.getElementById("creation_container").style.left = "60px";
   }
 
   showSmallCreationCard() {
-    document.getElementById('main_button_container').classList.add('full_loop');
-    if (this.state.mode === 'daily') {
+    document.getElementById("main_button_container").classList.add("full_loop");
+    if (this.state.mode === "daily") {
       document
-        .getElementById('creation_container')
-        .classList.add('creation_container_new_width');
+        .getElementById("creation_container")
+        .classList.add("creation_container_new_width");
       document.getElementById(
-        'creation_container'
+        "creation_container"
       ).style.width = `calc(35% + 415px)`;
       document
-        .getElementById('main_button_container')
-        .classList.add('main_button_container_new_width');
+        .getElementById("main_button_container")
+        .classList.add("main_button_container_new_width");
     } else {
-      document.getElementById('content_container').style.left = 'calc(-415px)';
+      document.getElementById("content_container").style.left = "-355px";
     }
   }
 
   hideSmallCreationCard() {
     document
-      .getElementById('main_button_container')
-      .classList.remove('full_loop');
-    if (this.state.mode === 'daily') {
+      .getElementById("main_button_container")
+      .classList.remove("full_loop");
+    if (this.state.mode === "daily") {
       document
-        .getElementById('creation_container')
-        .classList.remove('creation_container_new_width');
-      document.getElementById('creation_container').style.width = '35%';
+        .getElementById("creation_container")
+        .classList.remove("creation_container_new_width");
+      document.getElementById("creation_container").style.width = "35%";
       // document.getElementById("main_button_container").style.left = "calc(35% - 50px)";
       document
-        .getElementById('main_button_container')
-        .classList.remove('main_button_container_new_width');
+        .getElementById("main_button_container")
+        .classList.remove("main_button_container_new_width");
     } else {
-      document.getElementById('content_container').style.left = '0px';
+      document.getElementById("content_container").style.left = "60px";
     }
   }
 
   showLargeCreationCard() {
-    document.getElementById('main_button_container').classList.add('full_loop');
-    this.setMainButtonIcon('save');
-    if (this.state.mode === 'daily') {
-      document.getElementById('creation_container').style.width = '80%';
-      document.getElementById('main_button_container').style.left =
-        'calc(80% - 50px)';
-      document.getElementById('content_container').style.left = 'calc(-415px)';
+    document.getElementById("main_button_container").classList.add("full_loop");
+    this.setMainButtonIcon("save");
+    if (this.state.mode === "daily") {
+      document.getElementById("creation_container").style.width = "80%";
+      document.getElementById("main_button_container").style.left =
+        "calc(80% - 50px)";
+      document.getElementById("content_container").style.left = "-355px";
     } else {
-      document.getElementById('content_container').style.left = 'calc(-415px)';
+      document.getElementById("content_container").style.left = "-355px";
     }
   }
 
   hideLargeCreationCard() {
     document
-      .getElementById('main_button_container')
-      .classList.remove('full_loop');
-    this.setMainButtonIcon('expand');
-    if (this.state.mode === 'daily') {
-      document.getElementById('creation_container').style.width = '35%';
-      document.getElementById('main_button_container').style.left =
-        'calc(35% - 50px)';
-      document.getElementById('content_container').style.left = '0px';
+      .getElementById("main_button_container")
+      .classList.remove("full_loop");
+    this.setMainButtonIcon("expand");
+    if (this.state.mode === "daily") {
+      document.getElementById("creation_container").style.width = "35%";
+      document.getElementById("main_button_container").style.left =
+        "calc(35% - 50px)";
+      document.getElementById("content_container").style.left = "60px";
     } else {
-      document.getElementById('content_container').style.left = '0px';
+      document.getElementById("content_container").style.left = "60px";
     }
   }
 
   switchCard(mode, events, hashed_by_date) {
     switch (mode) {
-      case 'daily':
+      case "daily":
         return (
           <DailyCard
             events={events}
@@ -464,7 +467,7 @@ class App extends Component {
             clickEventDate={this.clickEventDate}
           />
         );
-      case 'weekly':
+      case "weekly":
         return (
           <WeeklyCard
             events={events}
@@ -478,7 +481,7 @@ class App extends Component {
             clickEventDate={this.clickEventDate}
           />
         );
-      case 'monthly':
+      case "monthly":
         return (
           <MonthlyCard
             events={events}
@@ -528,19 +531,19 @@ class App extends Component {
     );
 
     // Switch button for week and month
-    if (mode !== 'daily') {
+    if (mode !== "daily") {
       content_container_components.push(
         <SwitchWeekMonth
-          key='switch_week_month'
+          key="switch_week_month"
           switchWeekMonthCB={this.switchWeekMonth}
         />
       );
     }
     components.push(
       <div
-        id='content_container'
-        className='content_container'
-        key='content_container'
+        id="content_container"
+        className="content_container"
+        key="content_container"
       >
         {content_container_components}
       </div>
@@ -550,7 +553,7 @@ class App extends Component {
     components.push(
       <CreationContainer
         creation_mode={creation_mode}
-        key={'creation_container'}
+        key={"creation_container"}
         events={events}
         user_tags={user_tags}
         editing_event_id={editing_event_id}
@@ -567,7 +570,7 @@ class App extends Component {
     components.push(
       <MainButton
         function={this.state.main_button_function}
-        key='main_button'
+        key="main_button"
         icon_mode={this.state.main_button_icon}
       />
     );
@@ -578,54 +581,54 @@ class App extends Component {
   //CALLBACKS (should only call above functions)
 
   expand() {
-    if (this.state.mode === 'daily') {
-      this.changeMode('weekly');
+    if (this.state.mode === "daily") {
+      this.changeMode("weekly");
       this.expandContentContainer();
       this.switchWeekMonth();
     } else {
-      this.changeMode('daily');
+      this.changeMode("daily");
       this.shrinkContentContainer();
     }
     this.closeEvent();
   }
 
   switchWeekMonth() {
-    if (this.state.mode === 'monthly') {
-      this.changeMode('weekly');
-      this.setSwitchWeekMonth('weekly');
-    } else if (this.state.mode === 'weekly') {
-      this.changeMode('monthly');
-      this.setSwitchWeekMonth('monthly');
+    if (this.state.mode === "monthly") {
+      this.changeMode("weekly");
+      this.setSwitchWeekMonth("weekly");
+    } else if (this.state.mode === "weekly") {
+      this.changeMode("monthly");
+      this.setSwitchWeekMonth("monthly");
     }
     this.closeEvent();
   }
 
   createEvent() {
     if (
-      this.state.creation_mode === 'create_event' ||
-      this.state.creation_mode === 'edit_event'
+      this.state.creation_mode === "create_event" ||
+      this.state.creation_mode === "edit_event"
     ) {
       return this.closeEventForm();
     }
-    document.getElementById('create_event_button').classList.add('cancel');
-    this.setState({ creation_mode: 'create_event', editing_event_id: null });
-    this.setMainButtonIcon('save');
+    document.getElementById("create_event_button").classList.add("cancel");
+    this.setState({ creation_mode: "create_event", editing_event_id: null });
+    this.setMainButtonIcon("save");
     this.setMainButtonFunction(this.saveNewEvent);
     this.showSmallCreationCard();
   }
 
   editEvent(event) {
-    this.setState({ creation_mode: 'edit_event', editing_event_id: event.id });
-    document.getElementById('create_event_button').classList.add('cancel');
-    this.setMainButtonIcon('save');
+    this.setState({ creation_mode: "edit_event", editing_event_id: event.id });
+    document.getElementById("create_event_button").classList.add("cancel");
+    this.setMainButtonIcon("save");
     this.setMainButtonFunction(this.updateEvent);
     this.showSmallCreationCard();
   }
 
   closeEventForm() {
-    document.getElementById('create_event_button').classList.remove('cancel');
-    this.setState({ creation_mode: 'idle', editing_event_id: null });
-    this.setMainButtonIcon('expand');
+    document.getElementById("create_event_button").classList.remove("cancel");
+    this.setState({ creation_mode: "idle", editing_event_id: null });
+    this.setMainButtonIcon("expand");
     this.setMainButtonFunction(this.expand);
     this.hideSmallCreationCard();
   }
@@ -644,10 +647,10 @@ class App extends Component {
     );
 
     var to_save = this.getEventSaveForm(date_start, date_end);
-    const id = this.props.save_callback('events', to_save, this.props.uid);
+    const id = this.props.save_callback("events", to_save, this.props.uid);
     // change tag usage
     new_event_object.tag_ids.forEach(tag_id => {
-      this.changeTagUsage(this.state.user_tags[tag_id], 'increase');
+      this.changeTagUsage(this.state.user_tags[tag_id], "increase");
     });
     // check if save event is successful
 
@@ -695,7 +698,7 @@ class App extends Component {
 
     const to_save = this.getEventSaveForm(date_start, date_end);
     const id = this.props.update_callback(
-      'events',
+      "events",
       to_save,
       this.props.uid,
       this.state.editing_event_id
@@ -709,7 +712,7 @@ class App extends Component {
         ) === -1
     );
     additions.forEach(tag_id => {
-      this.changeTagUsage(this.state.user_tags[tag_id], 'increase');
+      this.changeTagUsage(this.state.user_tags[tag_id], "increase");
     });
     // deleted ones
     const deletions = this.state.events[
@@ -718,7 +721,7 @@ class App extends Component {
       tag_id => this.new_event_object.tag_ids.indexOf(tag_id) === -1
     );
     deletions.forEach(tag_id => {
-      this.changeTagUsage(this.state.user_tags[tag_id], 'decrease');
+      this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
     });
     // check if save event is successful
     // for some reason, it's necessary to set dates manually, if not date
@@ -758,13 +761,13 @@ class App extends Component {
   }
 
   deleteEvent(to_delete_event) {
-    this.props.delete_callback('events', this.props.uid, to_delete_event.id);
+    this.props.delete_callback("events", this.props.uid, to_delete_event.id);
     // change tag usage
 
     // aca esta el bug --> fixed, si tiene tags funciona
     if (this.new_event_object.tag_ids) {
       this.new_event_object.tag_ids.forEach(tag_id => {
-        this.changeTagUsage(this.state.user_tags[tag_id], 'decrease');
+        this.changeTagUsage(this.state.user_tags[tag_id], "decrease");
       });
     }
     // TODO add confirmation
@@ -785,7 +788,7 @@ class App extends Component {
   }
 
   saveNewTag(tag) {
-    const tag_id = this.props.save_callback('tags', tag, this.props.uid);
+    const tag_id = this.props.save_callback("tags", tag, this.props.uid);
 
     // add confirmation;
 
@@ -796,7 +799,7 @@ class App extends Component {
   }
 
   deleteTag(tag) {
-    this.props.delete_callback('tags', this.props.uid, tag.id);
+    this.props.delete_callback("tags", this.props.uid, tag.id);
 
     // add confirmation;
 
@@ -808,13 +811,13 @@ class App extends Component {
 
   changeTagUsage(tag, mode) {
     // increases/decreases actual uses by one
-    if (mode === 'increase') {
+    if (mode === "increase") {
       tag.actual_uses += 1;
     } else {
       tag.actual_uses -= 1;
     }
     const tag_id = this.props.update_callback(
-      'tags',
+      "tags",
       tag,
       this.props.uid,
       tag.id
@@ -850,17 +853,17 @@ class App extends Component {
     return this.state.loading === true ||
       this.state.loading_events === true ||
       this.state.loading_tags === true ? (
-      <div className='charging_events'>
+      <div className="charging_events">
         Please wait to get your information..
-        <div className='spinner'>
-          <div className='dot1'></div>
-          <div className='dot2'></div>
+        <div className="spinner">
+          <div className="dot1"></div>
+          <div className="dot2"></div>
         </div>
       </div>
     ) : (
       <div>
         {this.generateComponents()}
-        <div id='create_event_button' onClick={this.createEvent}>
+        <div id="create_event_button" onClick={this.createEvent}>
           <Plus />
         </div>
 
