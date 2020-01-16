@@ -13,6 +13,7 @@ import { hcEvents, hcUserTags, hcUserTodos } from './js_helpers/dev_data';
 import AppContainer from './components/AppContainer';
 
 const calendar_mode = localStorage.getItem('mode') || 'daily';
+const app_mode = localStorage.getItem('app_mode') || 'calendar';
 
 var db;
 let loadEvents;
