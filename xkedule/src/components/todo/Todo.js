@@ -1,7 +1,8 @@
-import React, { Component } from "react";
-import TodoCard from "./TodoCard";
-import Plus from "../svgs/Plus";
-import Ticket from "../svgs/Ticket";
+import React, { Component } from 'react';
+import TodoCard from './TodoCard';
+import Plus from '../svgs/Plus';
+import Ticket from '../svgs/Ticket';
+import TodoForm from '../creation_tools/todoForm';
 export default class Todo extends Component {
   constructor(props) {
     super(props);
@@ -13,12 +14,12 @@ export default class Todo extends Component {
   }
 
   onClose() {
-    document.getElementById("todo_position").style.left = "-100vw";
-    document.getElementById("todo_position").style.zIndex = "-1000";
+    document.getElementById('todo_position').style.left = '-100vw';
+    document.getElementById('todo_position').style.zIndex = '-1000';
   }
   open() {
-    document.getElementById("todo_position").style.left = 60;
-    document.getElementById("todo_position").style.zIndex = "1000";
+    document.getElementById('todo_position').style.left = 60;
+    document.getElementById('todo_position').style.zIndex = '1000';
   }
 
   createItemMode() {
@@ -43,14 +44,16 @@ export default class Todo extends Component {
     return (
       <div
         style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}
-        className="todo_container"
+        className='todo_container'
       >
-        <div className="text_bold_title title_todo" key="date_indicator1">
-          You can do <span className="color_text_todo">Anything</span> but you
-          can't do <span className="color_text_todo">Everything</span>
+        <div className='title_todo' key='date_indicator1'>
+          You can do{' '}
+          <span className='text_bold_title  color_text_todo'>Anything</span> but
+          you can't do{' '}
+          <span className='text_bold_title color_text_todo'>Everything</span>
         </div>
         {/* https://www.bootdey.com/snippets/view/tickets-for-events#html */}
-        <div className="todos_container">
+        <div className='todos_container'>
           {Object.keys(this.props.todos).length === 0 ? (
             <div>Cool! you have nothing left to do!</div>
           ) : null}
@@ -63,26 +66,30 @@ export default class Todo extends Component {
               />
             );
           })}
-          <div style={{ width: "45%" }}></div>
+          <div style={{ width: '45%' }}></div>
           <div
-            className="main_button_container_todo reversed"
+            className='main_button_container_todo reversed'
             onClick={() => {
               this.onClose();
-              this.props.onClose("calendar");
+              this.props.onClose('calendar');
             }}
           >
-            <div className="main_button linear_grad"></div>
+            <div className='main_button linear_grad'></div>
             <Ticket />
           </div>
           <div
             className={[
-              "create_event_button_todo",
-              this.state.create_active ? "cancel" : null
-            ].join(" ")}
+              'create_event_button_todo',
+              this.state.create_active ? 'cancel' : null
+            ].join(' ')}
             onClick={this.createItemMode}
           >
             <Plus />
           </div>
+          <TodoForm
+            cancel={() => this.setState({ create_active: false })}
+            create_active={this.state.create_active}
+          />
         </div>
       </div>
     );
@@ -93,7 +100,7 @@ const orderDict = dictionary => {
   const list = [];
   const new_dict = { ...dictionary };
   Object.keys(new_dict).map((key, index) => {
-    if (new_dict[key].date_limit.toString() !== "Invalid Date") {
+    if (new_dict[key].date_limit.toString() !== 'Invalid Date') {
       list.push(new_dict[key]);
       delete new_dict[key];
     }

@@ -32,6 +32,22 @@
   overflow-y: auto;
   justify-content: space-around;
 }
+.todo_create_event {
+  width: 350px;
+  // height: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+  position: absolute;
+  right: -100vw;
+  bottom: 130px;
+  z-index: 10000;
+  transition: all 0.5s;
+}
+
+.todo_shown {
+  right: calc(-20vw + 70px);
+}
 
 // .todos_container::-webkit-scrollbar-track {
 //   -webkit-box-shadow: inset 0 0 6px $shadow-scroll-bar;
@@ -97,7 +113,7 @@
 
 // another file
 
-@import url("https://fonts.googleapis.com/css?family=Oswald");
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 * {
   margin: 0;
   padding: 0;
@@ -159,6 +175,8 @@ body {
 .title_todo {
   padding: 60px 50px;
   width: 100%;
+  font-size: 30px;
+  font-weight: bold;
   height: 190px;
   text-align: center;
 }
@@ -184,13 +202,30 @@ h1 {
   overflow: hidden;
 }
 
+.diseable_date {
+  color: rgb(193, 193, 193);
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.todo_button_create {
+  background-color: $todo-blue;
+  padding: 8px;
+  color: white;
+  font-size: 15px;
+  border-radius: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
 .card {
   display: table-row;
   width: 45%;
   background-color: #fff;
   color: #989898;
   margin-bottom: 10px;
-  font-family: "Oswald", sans-serif;
+  font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
   border-radius: 4px;
   position: relative;
@@ -206,7 +241,7 @@ h1 {
 
 .date:before,
 .date:after {
-  content: "";
+  content: '';
   display: block;
   width: 20px;
   height: 20px;
