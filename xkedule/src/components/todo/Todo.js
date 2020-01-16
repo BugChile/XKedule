@@ -1,80 +1,85 @@
-import React, { Component } from 'react';
-import TodoCard from './TodoCard';
-import { exampleTodoList } from '../../js_helpers/constants';
-import Plus from '../svgs/Plus';
-import Ticket from '../svgs/Ticket';
+import React, { Component } from "react";
+import TodoCard from "./TodoCard";
+import Plus from "../svgs/Plus";
+import Ticket from "../svgs/Ticket";
 export default class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todo_list: exampleTodoList,
       create_active: false
     };
-    this.removeItem = this.removeItem.bind(this);
-    this.createItem = this.createItem.bind(this);
+    this.createItemMode = this.createItemMode.bind(this);
+    this.setTodos = this.setTodos.bind(this);
   }
 
   onClose() {
-    document.getElementById('todo_position').style.left = '-100vw';
-    document.getElementById('todo_position').style.zIndex = '-1000';
+    document.getElementById("todo_position").style.left = "-100vw";
+    document.getElementById("todo_position").style.zIndex = "-1000";
   }
   open() {
-    document.getElementById('todo_position').style.left = 60;
-    document.getElementById('todo_position').style.zIndex = '1000';
-  }
-  removeItem(index) {
-    const new_list = [...this.state.todo_list];
-    new_list.splice(index, 1);
-    this.setState({ todo_list: new_list });
+    document.getElementById("todo_position").style.left = 60;
+    document.getElementById("todo_position").style.zIndex = "1000";
   }
 
-  createItem() {
+  createItemMode() {
     this.setState(prevState => ({
       create_active: !prevState.create_active
     }));
   }
+
+  setTodos(todos) {
+    const parsedEvents = { ...todos };
+    for (var key in parsedEvents) {
+      parsedEvents[key].date_limit = new Date(parsedEvents[key].date_limit);
+    }
+    this.setState({ todos: parsedEvents });
+  }
+
+  UNSAFE_componentWillMount() {
+    this.setTodos(this.props.todos);
+  }
+
   render() {
     return (
       <div
         style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}
-        className='todo_container'
+        className="todo_container"
       >
-        <div className='text_bold_title title_todo' key='date_indicator1'>
-          This is your <span className='color_text_todo'>To Do</span> list
+        <div className="text_bold_title title_todo" key="date_indicator1">
+          You can do <span className="color_text_todo">Anything</span> but you
+          can't do <span className="color_text_todo">Everything</span>
         </div>
         {/* https://www.bootdey.com/snippets/view/tickets-for-events#html */}
-        <div className='todos_container'>
-          {this.state.todo_list.length === 0 ? (
-            <div>Cool! you have nothing</div>
+        <div className="todos_container">
+          {Object.keys(this.props.todos).length === 0 ? (
+            <div>Cool! you have nothing left to do!</div>
           ) : null}
-          {this.state.todo_list.map((item, index) => {
+          {orderDict(this.props.todos).map((item, index) => {
             return (
               <TodoCard
                 key={`todo_item_${index}`}
-                date={item.date}
-                text={item.text}
-                index={index}
-                onDone={this.removeItem}
+                todo={item}
+                onDone={this.props.removeItem}
               />
             );
           })}
-          <div style={{ width: '45%' }}></div>
+          <div style={{ width: "45%" }}></div>
           <div
-            className='main_button_container_todo reversed'
+            className="main_button_container_todo reversed"
             onClick={() => {
               this.onClose();
-              this.props.onClose('calendar');
+              this.props.onClose("calendar");
             }}
           >
-            <div className='main_button linear_grad'></div>
+            <div className="main_button linear_grad"></div>
             <Ticket />
           </div>
           <div
             className={[
-              'create_event_button_todo',
-              this.state.create_active ? 'cancel' : null
-            ].join(' ')}
-            onClick={this.createItem}
+              "create_event_button_todo",
+              this.state.create_active ? "cancel" : null
+            ].join(" ")}
+            onClick={this.createItemMode}
           >
             <Plus />
           </div>
@@ -83,3 +88,17 @@ export default class Todo extends Component {
     );
   }
 }
+
+const orderDict = dictionary => {
+  const list = [];
+  const new_dict = { ...dictionary };
+  Object.keys(new_dict).map((key, index) => {
+    if (new_dict[key].date_limit.toString() !== "Invalid Date") {
+      list.push(new_dict[key]);
+      delete new_dict[key];
+    }
+    return key;
+  });
+  Object.keys(new_dict).map((key, index) => list.push(new_dict[key]));
+  return list;
+};

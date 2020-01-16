@@ -9,7 +9,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./store";
 
-import { hcEvents, hcUserTags } from "./js_helpers/dev_data";
+import { hcEvents, hcUserTags, hcUserTodos } from "./js_helpers/dev_data";
 import AppContainer from "./components/AppContainer";
 
 const calendar_mode = localStorage.getItem("mode") || "daily";
@@ -17,6 +17,7 @@ const calendar_mode = localStorage.getItem("mode") || "daily";
 var db;
 let loadEvents;
 let loadTags;
+let loadTodos;
 let userUid;
 let saveCallback;
 let updateCallback;
@@ -69,20 +70,31 @@ function startApp(uid) {
       .collection("users")
       .doc(uid)
       .collection("tags")
+      .get(),
+    db
+      .collection("users")
+      .doc(uid)
+      .collection("todos")
       .get()
   ]).then(function(responses) {
     const fetched_events = responses[0];
     const fetched_tags = responses[1];
+    const fetched_todos = responses[2];
     var events = {};
     var tags = {};
+    var todos = {};
     fetched_events.forEach(function(_event) {
       events[_event.id] = _event.data();
     });
     fetched_tags.forEach(function(_tag) {
       tags[_tag.id] = _tag.data();
     });
+    fetched_todos.forEach(function(_item) {
+      todos[_item.id] = _item.data();
+    });
     loadEvents = events;
     loadTags = tags;
+    loadTodos = todos;
     userUid = uid;
     renderApp();
   });
@@ -94,6 +106,7 @@ function renderApp() {
       <AppContainer
         events={loadEvents}
         tags={loadTags}
+        todos={loadTodos}
         save_callback={saveCallback}
         update_callback={updateCallback}
         delete_callback={deleteCallback}
@@ -152,6 +165,7 @@ if (process.env.NODE_ENV === "production") {
   var index = 0;
   loadEvents = hcEvents;
   loadTags = hcUserTags;
+  loadTodos = hcUserTodos;
   userUid = "uid";
   saveCallback = (a, b, c) => {
     console.log("save placeholder");
