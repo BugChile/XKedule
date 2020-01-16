@@ -16,6 +16,7 @@ export default class Todo extends Component {
   onClose() {
     document.getElementById('todo_position').style.left = '-100vw';
     document.getElementById('todo_position').style.zIndex = '-1000';
+    this.setState({ create_active: false });
   }
   open() {
     document.getElementById('todo_position').style.left = 60;
@@ -31,7 +32,9 @@ export default class Todo extends Component {
   setTodos(todos) {
     const parsedEvents = { ...todos };
     for (var key in parsedEvents) {
-      parsedEvents[key].date_limit = new Date(parsedEvents[key].date_limit);
+      if (parsedEvents[key].date_limit) {
+        parsedEvents[key].date_limit = new Date(parsedEvents[key].date_limit);
+      }
     }
     this.setState({ todos: parsedEvents });
   }
@@ -89,6 +92,10 @@ export default class Todo extends Component {
           <TodoForm
             cancel={() => this.setState({ create_active: false })}
             create_active={this.state.create_active}
+            createItem={item => {
+              this.props.createItem(item);
+              this.createItemMode();
+            }}
           />
         </div>
       </div>
@@ -100,7 +107,7 @@ const orderDict = dictionary => {
   const list = [];
   const new_dict = { ...dictionary };
   Object.keys(new_dict).map((key, index) => {
-    if (new_dict[key].date_limit.toString() !== 'Invalid Date') {
+    if (new_dict[key].date_limit) {
       list.push(new_dict[key]);
       delete new_dict[key];
     }

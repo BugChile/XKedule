@@ -13,32 +13,36 @@ export default class TodoForm extends Component {
     this.state = {
       title: '',
       date_limit: new Date(),
-      time_limit: new Date(),
       todoTags: {},
       active_date: false
     };
     this.setTitle = this.setTitle.bind(this);
     this.setDateLimit = this.setDateLimit.bind(this);
-    this.setTimeLimit = this.setTimeLimit.bind(this);
     this.setTimeLimitHourMinute = this.setTimeLimitHourMinute.bind(this);
   }
 
   setTitle(title) {
     this.setState({ title });
   }
-  setTimeLimit(time_limit) {
-    this.setState({ time_limit });
-  }
+
   setDateLimit(date_limit) {
-    this.setState({ date_limit, active_date: true });
+    this.setState({ date_limit });
   }
 
   setTimeLimitHourMinute(time_limit_hour_minute) {
     // format: {hour: H, minute: m}, H and m are integers
-    var date_time_limit = new Date(this.state.time_limit.getTime());
+    var date_time_limit = new Date(this.state.date_limit.getTime());
     date_time_limit.setHours(time_limit_hour_minute.hour);
     date_time_limit.setMinutes(time_limit_hour_minute.minute);
-    this.setTimeLimit(date_time_limit);
+    this.setDateLimit(date_time_limit);
+  }
+  resetState() {
+    this.setState({
+      title: '',
+      date_limit: new Date(),
+      todoTags: {},
+      active_date: false
+    });
   }
   render() {
     return (
@@ -58,7 +62,7 @@ export default class TodoForm extends Component {
           </span>
         </div>
 
-        <div className=''>
+        <div>
           <div id='event_form' className='event_form' key='event_form'>
             <div className='event_form_input_gap'></div>
             <span> title: </span>
@@ -116,7 +120,7 @@ export default class TodoForm extends Component {
             {this.state.active_date ? <span> time: </span> : null}
             {this.state.active_date ? (
               <OnOffInputContainer
-                on_component_value={this.state.time_limit}
+                on_component_value={this.state.date_limit}
                 on_component_save={this.setTimeLimitHourMinute}
                 on_component={HourMinuteInput}
                 value_to_summary={dateToHourMinute}
@@ -149,14 +153,12 @@ export default class TodoForm extends Component {
           <span
             id='event_form_discard'
             className='right_aligned_text'
-            onClick={this.props.cancel}
+            onClick={() => {
+              this.props.createItem(this.state);
+              this.resetState();
+            }}
           >
-            <button
-              className='todo_button_create'
-              onClick={this.props.createEvent}
-            >
-              Create
-            </button>
+            <button className='todo_button_create'>Create</button>
           </span>
         </div>
       </div>
