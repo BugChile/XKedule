@@ -1,7 +1,7 @@
-import App from './App';
-import MenuBar from './menu_bar/MenuBar';
-import Todo from './todo/Todo';
-import React, { Component } from 'react';
+import App from "./App";
+import MenuBar from "./menu_bar/MenuBar";
+import Todo from "./todo/Todo";
+import React, { Component } from "react";
 
 export default class AppContainer extends Component {
   constructor(props) {
@@ -19,14 +19,19 @@ export default class AppContainer extends Component {
   }
 
   createItem(item) {
-    let new_item = { ...item };
+    let new_item = { ...item, date_limit: item.date_limit.getTime() };
     if (!item.active_date) {
-      delete new_item['date_limit'];
+      delete new_item["date_limit"];
     }
-    delete new_item['active_date'];
-    const id = this.props.save_callback('todos', new_item, this.props.uid);
+    delete new_item["active_date"];
+    const id = this.props.save_callback("todos", new_item, this.props.uid);
     this.setState(prevState => {
-      return { todos: { ...prevState.todos, [id]: { ...new_item, id } } };
+      return {
+        todos: {
+          ...prevState.todos,
+          [id]: { ...new_item, id }
+        }
+      };
     });
   }
 
@@ -34,7 +39,7 @@ export default class AppContainer extends Component {
     this.setState({ todos: this.props.todos });
   }
   removeItem(to_delete_todo) {
-    this.props.delete_callback('todos', this.props.uid, to_delete_todo.id);
+    this.props.delete_callback("todos", this.props.uid, to_delete_todo.id);
 
     let new_dict = Object.assign({}, this.state.todos);
     delete new_dict[to_delete_todo.id];
@@ -42,17 +47,17 @@ export default class AppContainer extends Component {
   }
   render() {
     return (
-      <div className='app_container'>
-        <div className='calendar_container'>
+      <div className="app_container">
+        <div className="calendar_container">
           <MenuBar
             mode={this.state.mode}
             changeMode={this.changeMode}
             notifications={Object.keys(this.state.todos).length}
           />
           <div
-            className={'transitions'}
-            id='todo_position'
-            style={displayStyle('todo', this.state.mode)}
+            className={"transitions"}
+            id="todo_position"
+            style={displayStyle("todo", this.state.mode)}
           >
             <Todo
               onClose={this.changeMode}
@@ -83,7 +88,7 @@ const displayStyle = (mode, currentMode) => {
       ? {
           ...container_style,
           left: 60,
-          zIndex: '1000'
+          zIndex: "1000"
         }
       : container_style;
 
@@ -91,12 +96,12 @@ const displayStyle = (mode, currentMode) => {
 };
 
 const container_style = {
-  position: 'absolute',
-  left: '-100vw',
+  position: "absolute",
+  left: "-100vw",
   top: 0,
-  height: '100vh',
-  width: 'calc(80vw)',
-  backgroundColor: '#e4e4e4',
+  height: "100vh",
+  width: "calc(80vw)",
+  backgroundColor: "#e4e4e4",
   zIndex: -1000,
-  boxShadow: '10px 10px 20px rgba(0, 0, 0, 0.5)'
+  boxShadow: "10px 10px 20px rgba(0, 0, 0, 0.5)"
 };
