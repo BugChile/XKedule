@@ -9,7 +9,12 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import { hcEvents, hcUserTags, hcUserTodos } from './js_helpers/dev_data';
+import {
+  hcEvents,
+  hcUserTags,
+  hcUserTodos,
+  hcUserNotes,
+} from './js_helpers/dev_data';
 import AppContainer from './components/AppContainer';
 
 const calendar_mode = localStorage.getItem('mode') || 'daily';
@@ -19,6 +24,7 @@ var db;
 let loadEvents;
 let loadTags;
 let loadTodos;
+let loadNotes;
 let userUid;
 let saveCallback;
 let updateCallback;
@@ -76,14 +82,21 @@ function startApp(uid) {
       .collection('users')
       .doc(uid)
       .collection('todos')
-      .get()
+      .get(),
+    db
+      .collection('users')
+      .doc(uid)
+      .collection('notes')
+      .get(),
   ]).then(function(responses) {
     const fetched_events = responses[0];
     const fetched_tags = responses[1];
     const fetched_todos = responses[2];
+    const fetched_notes = responses[3];
     var events = {};
     var tags = {};
     var todos = {};
+    var notes = {};
     fetched_events.forEach(function(_event) {
       events[_event.id] = _event.data();
     });
@@ -93,9 +106,13 @@ function startApp(uid) {
     fetched_todos.forEach(function(_item) {
       todos[_item.id] = _item.data();
     });
+    fetched_notes.forEach(function(_item) {
+      notes[_item.id] = _item.data();
+    });
     loadEvents = events;
     loadTags = tags;
     loadTodos = todos;
+    loadNotes = notes;
     userUid = uid;
     renderApp();
   });
@@ -108,15 +125,16 @@ function renderApp() {
         events={loadEvents}
         tags={loadTags}
         todos={loadTodos}
+        notes={loadNotes}
         save_callback={saveCallback}
         update_callback={updateCallback}
         delete_callback={deleteCallback}
         uid={userUid}
         calendar_mode={calendar_mode}
-        mode={'todo'}
+        mode={app_mode}
       />
     </Provider>,
-    document.getElementById('app_root')
+    document.getElementById('app_root'),
   );
 
   ReactDOM.render(<SearchContainer />, document.getElementById('search_box'));
@@ -126,7 +144,7 @@ if (process.env.NODE_ENV === 'production') {
   var config = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_API_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID
+    projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID,
   };
   firebase.initializeApp(config);
   db = firebase.firestore();
@@ -151,7 +169,7 @@ if (process.env.NODE_ENV === 'production') {
           db.collection('users')
             .doc(user.uid)
             .set({
-              name: user.displayName
+              name: user.displayName,
             });
           startApp(user.uid);
         })
@@ -167,6 +185,7 @@ if (process.env.NODE_ENV === 'production') {
   loadEvents = hcEvents;
   loadTags = hcUserTags;
   loadTodos = hcUserTodos;
+  loadNotes = hcUserNotes;
   userUid = 'uid';
   saveCallback = (a, b, c) => {
     console.log('save placeholder');

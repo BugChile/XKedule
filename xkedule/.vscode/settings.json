@@ -6,5 +6,6 @@
         "svgs",
         "todos",
         "unscrollable"
-    ]
+    ],
+    "editor.formatOnSave": true
 }
