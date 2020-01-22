@@ -75,7 +75,8 @@ a:visited {
 }
 
 .main_button_container,
-.main_button_container_todo {
+.main_button_container_todo,
+.main_button_container_notes {
   z-index: 30;
   position: absolute;
   top: 20px;
@@ -100,8 +101,22 @@ a:visited {
   }
 }
 
-.main_button_container_todo {
+.main_button_container_todo,
+.main_button_container_notes {
   left: calc(80vw - 50px);
+}
+
+.main_button_container_notes {
+  .main_button {
+    background: linear-gradient(
+      180deg,
+      $color-bg-linfInfo-dark-mode 0%,
+      $notes-green 100%
+    );
+  }
+}
+
+.main_button_container_todo {
   .main_button {
     background: linear-gradient(
       180deg,
@@ -285,7 +300,9 @@ a:visited {
   overflow-y: auto;
 }
 // .placeholder_button{
-#create_event_button {
+#create_event_button,
+.create_event_button_todo,
+.create_event_button_notes {
   position: absolute;
   right: 15px;
   bottom: 15px;
@@ -306,30 +323,26 @@ a:visited {
   transition: all 0.5s;
 }
 
-.create_event_button_todo {
-  position: absolute;
+.create_event_button_todo,
+.create_event_button_notes {
   left: calc(100vw - 135px);
-  bottom: 15px;
   z-index: 1100;
-  padding: 15px;
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;
+}
+.create_event_button_todo {
   background: linear-gradient(
     0deg,
     $todo-blue 0%,
     $color-bg-linfInfo-dark-mode 100%
   );
-  cursor: pointer;
-  -webkit-box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
-  -moz-box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
-  box-shadow: 0px 0px 8px 2px $color-black-opacity-strong;
-  svg {
-    height: 30px;
-    width: 30px;
-  }
-  transition: all 0.5s;
 }
+.create_event_button_notes {
+  background: linear-gradient(
+    0deg,
+    $notes-green 0%,
+    $color-bg-linfInfo-dark-mode 100%
+  );
+}
+
 .cancel {
   transform: rotate(45deg);
   transition: all 0.5s;

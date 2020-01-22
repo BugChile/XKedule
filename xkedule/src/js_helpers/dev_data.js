@@ -7597,4 +7597,64 @@ const hcUserTodos = {
   }
 };
 
-export { hcEvents, hcUserTags, hcUserTodos };
+
+const hcUserNotes = {
+  '1': {
+    id: '1',
+    name: 'Tarea1',
+    content: "Hola"
+  },
+  '2': {
+    id: '2',
+    name: 'Tarea2',
+    content: "Content2"
+  },
+  '3': {
+    id: '3',
+    name: 'Tarea3',
+    content: "Content2",
+    childs: {
+      '1': {
+        id: '1',
+        name: 'Tarea1',
+        content: "Hola"
+      },
+      '2': {
+        id: '2',
+        name: 'Tarea2',
+        content: "Content2"
+      },
+      '3': {
+        id: '3',
+        name: 'Tarea3',
+        content: "Content2",
+        childs: {
+          '1': {
+            id: '1',
+            name: 'Tarea1',
+            content: "Hola"
+          },
+          '2': {
+            id: '2',
+            name: 'Tarea2',
+            content: "Content2"
+          },
+    
+        }
+      },
+
+    }
+  },
+  '4': {
+    id: '4',
+    name: 'Tarea4',
+    content: "Content2"
+  },
+  '5': {
+    id: '5',
+    name: 'Tarea5',
+    content: "Content2"
+  }
+};
+
+export { hcEvents, hcUserTags, hcUserTodos, hcUserNotes };

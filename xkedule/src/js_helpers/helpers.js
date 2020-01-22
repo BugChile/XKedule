@@ -16,7 +16,7 @@ function isEmpty(obj) {
 function stringRange(start, end, digits) {
   var range = [];
   for (var i = start; i < end; i++) {
-    range.push(i.toString().padStart(digits, "0"));
+    range.push(i.toString().padStart(digits, '0'));
   }
   return range;
 }
@@ -95,7 +95,7 @@ function groupOverlaps(events) {
           _event.date_start,
           _event.date_end,
           group.overlap_start,
-          group.overlap_end
+          group.overlap_end,
         )
       ) {
         already_found = true;
@@ -124,12 +124,31 @@ function groupOverlaps(events) {
         overlap_end: _event.date_end,
         compare_index: 0,
         length: 1,
-        events: [_event]
+        events: [_event],
       });
     }
     already_found = false;
   });
   return grouped;
+}
+
+function clone(obj) {
+  let temp;
+  if (obj === null || typeof obj !== 'object' || 'isActiveClone' in obj)
+    return obj;
+
+  if (obj instanceof Date) temp = new obj.constructor();
+  //or new Date(obj);
+  else temp = obj.constructor();
+
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      obj['isActiveClone'] = null;
+      temp[key] = clone(obj[key]);
+      delete obj['isActiveClone'];
+    }
+  }
+  return temp;
 }
 
 export {
@@ -142,5 +161,6 @@ export {
   multiplyReducer,
   isEmpty,
   checkTodayFunction,
-  eventsFromHashed
+  eventsFromHashed,
+  clone,
 };

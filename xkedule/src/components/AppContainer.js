@@ -2,24 +2,26 @@ import App from "./App";
 import MenuBar from "./menu_bar/MenuBar";
 import Todo from "./todo/Todo";
 import React, { Component } from "react";
+import Notes from "./notes/Notes";
 
 export default class AppContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: null
+      todos: null,
+      notes: null
     };
     this.state = { mode: this.props.mode };
     this.changeMode = this.changeMode.bind(this);
-    this.removeItem = this.removeItem.bind(this);
-    this.createItem = this.createItem.bind(this);
+    this.removeTodo = this.removeTodo.bind(this);
+    this.createTodo = this.createTodo.bind(this);
   }
   changeMode(mode) {
     this.setState({ mode });
-    localStorage.setItem("mode", mode);
+    localStorage.setItem("app_mode", mode);
   }
 
-  createItem(item) {
+  createTodo(item) {
     let new_item = { ...item, date_limit: item.date_limit.getTime() };
     if (!item.active_date) {
       delete new_item["date_limit"];
@@ -36,16 +38,40 @@ export default class AppContainer extends Component {
     });
   }
 
-  UNSAFE_componentWillMount() {
-    this.setState({ todos: this.props.todos });
+  removeNote(to_delete_todo) {
+    this.props.delete_callback("notes", this.props.uid, to_delete_todo.id);
+
+    let new_dict = Object.assign({}, this.state.todos);
+    delete new_dict[to_delete_todo.id];
+    this.setState({ todos: new_dict });
   }
-  removeItem(to_delete_todo) {
+
+  createNote(note) {
+    let new_note = { ...note };
+    const id = this.props.save_callback("todos", new_note, this.props.uid);
+    this.setState(prevState => {
+      return {
+        notes: {
+          ...prevState.todos,
+          [id]: { ...new_note, id }
+        }
+      };
+    });
+  }
+
+  removeTodo(to_delete_todo) {
     this.props.delete_callback("todos", this.props.uid, to_delete_todo.id);
 
     let new_dict = Object.assign({}, this.state.todos);
     delete new_dict[to_delete_todo.id];
     this.setState({ todos: new_dict });
   }
+
+  UNSAFE_componentWillMount() {
+    this.setState({ todos: this.props.todos });
+    this.setState({ notes: this.props.notes });
+  }
+
   render() {
     return (
       <div className="app_container">
@@ -58,14 +84,27 @@ export default class AppContainer extends Component {
           <div
             className={"transitions"}
             id="todo_position"
-            style={displayStyle("todo", this.state.mode)}
+            style={displayStyle("todos", this.state.mode)}
           >
             <Todo
               onClose={this.changeMode}
               todos={this.state.todos}
               tags={this.props.tags}
-              removeItem={this.removeItem}
-              createItem={this.createItem}
+              removeTodo={this.removeTodo}
+              createTodo={this.createTodo}
+            />
+          </div>
+          <div
+            className={"transitions"}
+            id="notes_position"
+            style={displayStyle("notes", this.state.mode)}
+          >
+            <Notes
+              onClose={this.changeMode}
+              notes={this.state.notes}
+              tags={this.props.tags}
+              removeTodo={this.removeTodo}
+              createTodo={this.createTodo}
             />
           </div>
           <App
