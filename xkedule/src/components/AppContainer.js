@@ -16,6 +16,7 @@ export default class AppContainer extends Component {
   }
   changeMode(mode) {
     this.setState({ mode });
+    localStorage.setItem("mode", mode);
   }
 
   createItem(item) {

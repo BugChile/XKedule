@@ -101,7 +101,7 @@ class App extends Component {
 
   changeMode(mode) {
     this.setState({ mode });
-    localStorage.setItem("mode", mode);
+    localStorage.setItem("calendar_mode", mode);
   }
 
   setEvents(events) {
