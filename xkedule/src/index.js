@@ -18,7 +18,7 @@ import {
 import AppContainer from "./components/AppContainer";
 
 const calendar_mode = localStorage.getItem("calendar_mode") || "daily";
-const app_mode = localStorage.getItem("mode") || "calendar";
+const app_mode = localStorage.getItem("app_mode") || "calendar";
 
 var db;
 let loadEvents;

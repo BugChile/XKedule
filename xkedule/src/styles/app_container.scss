@@ -113,7 +113,7 @@
 
 // another file
 
-@import url('https://fonts.googleapis.com/css?family=Oswald');
+@import url("https://fonts.googleapis.com/css?family=Oswald");
 * {
   margin: 0;
   padding: 0;
@@ -231,7 +231,7 @@ h1 {
   background-color: #fff;
   color: #989898;
   margin-bottom: 10px;
-  font-family: 'Oswald', sans-serif;
+  font-family: "Oswald", sans-serif;
   text-transform: uppercase;
   border-radius: 4px;
   position: relative;
@@ -247,7 +247,7 @@ h1 {
 
 .date:before,
 .date:after {
-  content: '';
+  content: "";
   display: block;
   width: 20px;
   height: 20px;
@@ -374,4 +374,28 @@ h1 {
   // .container_info_tab {
   //   overflow: auto;
   // }
+}
+
+.hs {
+  // display: grid;
+  // grid-gap: calc(20px / 2);
+  // grid-template-columns: repeat(auto-fit, 200px) calc(80vw - 230px);
+  // grid-template-rows: minmax(150px, 1fr);
+  // width: 100%;
+  // overflow-x: scroll;
+  // scroll-snap-type: x proximity;
+  // padding-bottom: calc(0.75 * 20px);
+  // margin-bottom: calc(-0.5 * 20px);
+}
+.hide-scroll {
+  overflow-y: hidden;
+  margin-bottom: calc(-0.1 * 20px);
+}
+.item {
+  padding: calc(20px / 2 * 1.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
 }
