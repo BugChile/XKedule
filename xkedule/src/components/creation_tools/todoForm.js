@@ -14,7 +14,7 @@ export default class TodoForm extends Component {
       title: '',
       date_limit: new Date(),
       todoTags: {},
-      active_date: false
+      active_date: false,
     };
     this.setTitle = this.setTitle.bind(this);
     this.setDateLimit = this.setDateLimit.bind(this);
@@ -41,23 +41,16 @@ export default class TodoForm extends Component {
       title: '',
       date_limit: new Date(),
       todoTags: {},
-      active_date: false
+      active_date: false,
     });
   }
   render() {
     return (
       <div
-        className={[
-          'todo_create_event',
-          this.props.create_active ? 'todo_shown' : null
-        ].join(' ')}
+        className={['todo_create_event', this.props.create_active ? 'todo_shown' : null].join(' ')}
       >
         <div className='right_aligned_text'>
-          <span
-            id='event_form_discard'
-            className='right_aligned_text'
-            onClick={this.props.cancel}
-          >
+          <span id='event_form_discard' className='right_aligned_text' onClick={this.props.cancel}>
             Cancel
           </span>
         </div>
@@ -94,9 +87,7 @@ export default class TodoForm extends Component {
                 add date
               </div>
             )}
-            {this.state.active_date ? (
-              <div className='event_form_input_gap'></div>
-            ) : null}
+            {this.state.active_date ? <div className='event_form_input_gap'></div> : null}
             {this.state.active_date ? <span> date: </span> : null}
             {this.state.active_date ? (
               <OnOffInputContainer
@@ -108,15 +99,13 @@ export default class TodoForm extends Component {
                 container_style='event_form_big_input blue_tag event_form_on_off'
                 on_component_props={{
                   minDate: new Date(),
-                  className: 'input_calendar'
+                  className: 'input_calendar',
                 }}
                 submit_on_change
               />
             ) : null}
 
-            {this.state.active_date ? (
-              <div className='event_form_input_gap'></div>
-            ) : null}
+            {this.state.active_date ? <div className='event_form_input_gap'></div> : null}
             {this.state.active_date ? <span> time: </span> : null}
             {this.state.active_date ? (
               <OnOffInputContainer
@@ -154,8 +143,10 @@ export default class TodoForm extends Component {
             id='event_form_discard'
             className='right_aligned_text'
             onClick={() => {
-              this.props.createItem(this.state);
-              this.resetState();
+              if (this.state.title.length > 0) {
+                this.props.createItem(this.state);
+                this.resetState();
+              }
             }}
           >
             <button className='todo_button_create'>Create</button>
