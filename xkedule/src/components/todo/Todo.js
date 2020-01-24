@@ -7,7 +7,7 @@ export default class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      create_active: false
+      create_active: false,
     };
     this.createItemMode = this.createItemMode.bind(this);
     this.setTodos = this.setTodos.bind(this);
@@ -25,7 +25,7 @@ export default class Todo extends Component {
 
   createItemMode() {
     this.setState(prevState => ({
-      create_active: !prevState.create_active
+      create_active: !prevState.create_active,
     }));
   }
 
@@ -45,14 +45,9 @@ export default class Todo extends Component {
 
   render() {
     return (
-      <div
-        style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}
-        className='todo_container'
-      >
+      <div style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }} className='todo_container'>
         <div className='title_tab'>
-          Life is{' '}
-          <span className='text_bold_title  color_text_todo'>short</span>. Do
-          stuff that{' '}
+          Life is <span className='text_bold_title  color_text_todo'>short</span>. Do stuff that{' '}
           <span className='text_bold_title color_text_todo'>matter!</span>{' '}
         </div>
         {/* https://www.bootdey.com/snippets/view/tickets-for-events#html */}
@@ -62,11 +57,7 @@ export default class Todo extends Component {
           ) : null}
           {orderDict(this.props.todos).map((item, index) => {
             return (
-              <TodoCard
-                key={`todo_item_${index}`}
-                todo={item}
-                onDone={this.props.removeItem}
-              />
+              <TodoCard key={`todo_item_${index}`} todo={item} onDone={this.props.removeTodo} />
             );
           })}
           <div style={{ width: '45%' }}></div>
@@ -83,7 +74,7 @@ export default class Todo extends Component {
           <div
             className={[
               'create_event_button_todo',
-              this.state.create_active ? 'cancel' : null
+              this.state.create_active ? 'cancel' : null,
             ].join(' ')}
             onClick={this.createItemMode}
           >
@@ -93,7 +84,7 @@ export default class Todo extends Component {
             cancel={() => this.setState({ create_active: false })}
             create_active={this.state.create_active}
             createItem={item => {
-              this.props.createItem(item);
+              this.props.createTodo(item);
               this.createItemMode();
             }}
           />
