@@ -7598,60 +7598,60 @@ const hcUserTodos = {
 };
 
 const hcUserNotes = {
-  "0": {
-    id: "0",
+  a: {
+    id: "a",
     name: "Tarea0",
-    content: "Content2",
     children: {
-      "1": {
-        id: "1",
-        name: "Tarea01",
-        content: "Hola"
-      },
-      "2": {
-        id: "2",
-        name: "Tarea02",
-        content: "Content2"
-      },
-      "0": {
-        id: "0",
+
+      f: {
+        id: "f",
         name: "Tarea00",
-        content: "Content2",
         children: {
-          "1": {
-            id: "1",
+          i: {
+            id: "i",
             name: "Tarea001",
-            content: "Hola"
+            content: "Hola i "
           },
-          "2": {
-            id: "2",
+          j: {
+            id: "j",
             name: "Tarea002",
-            content: "Content2"
+            content: "Content2 j"
           }
         }
       }
+    ,
+      h: {
+        id: "h",
+        name: "Tarea01",
+        content: "Hola h"
+      },
+      g: {
+        id: "g",
+        name: "Tarea02",
+        content: "Content2 g"
+      },
     }
   },
-  "1": {
-    id: "1",
+  b: {
+    id: "b",
     name: "Tarea1",
-    content: "Hola"
+    content: "Hola b"
   },
-  "2": {
-    id: "2",
+  c: {
+    id: "c",
     name: "Tarea2",
-    content: "Content2"
+    content: "Content2 c"
   },
 
-  "4": {
-    id: "4",
+  d: {
+    id: "d",
     name: "Tarea4",
-    content: "Content2"
+    content: "Content2 d"
   },
-  "5": {
-    id: "5",
+  e: {
+    id: "e",
     name: "Tarea5",
-    content: "Content2"
+    content: "Content2 e"
   }
 };
 

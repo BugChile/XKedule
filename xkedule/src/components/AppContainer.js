@@ -3,6 +3,7 @@ import MenuBar from "./menu_bar/MenuBar";
 import Todo from "./todo/Todo";
 import React, { Component } from "react";
 import Notes from "./notes/Notes";
+import Notes2 from "./notes/Notes2";
 
 export default class AppContainer extends Component {
   constructor(props) {
@@ -99,12 +100,12 @@ export default class AppContainer extends Component {
             id="notes_position"
             style={displayStyle("notes", this.state.mode)}
           >
-            <Notes
-              onClose={this.changeMode}
+            <Notes2
+              // onClose={this.changeMode}
               notes={this.state.notes}
-              tags={this.props.tags}
-              removeTodo={this.removeTodo}
-              createTodo={this.createTodo}
+              // tags={this.props.tags}
+              // removeTodo={this.removeTodo}
+              // createTodo={this.createTodo}
             />
           </div>
           <App

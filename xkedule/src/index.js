@@ -1,50 +1,54 @@
 /*global firebase*/
 /*global chrome*/
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.scss';
-import SearchContainer from './components/search_box/search_container';
-import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-import store from './store';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.scss";
+import SearchContainer from "./components/search_box/search_container";
+import * as serviceWorker from "./serviceWorker";
+import { Provider } from "react-redux";
+import store from "./store";
 
-import { hcEvents, hcUserTags, hcUserTodos, hcUserNotes } from './js_helpers/dev_data';
-import AppContainer from './components/AppContainer';
-import { object } from 'prop-types';
+import {
+  hcEvents,
+  hcUserTags,
+  hcUserTodos,
+  hcUserNotes
+} from "./js_helpers/dev_data";
+import AppContainer from "./components/AppContainer";
 
-const calendar_mode = localStorage.getItem('calendar_mode') || 'daily';
-const app_mode = localStorage.getItem('app_mode') || 'calendar';
+const calendar_mode = localStorage.getItem("calendar_mode") || "daily";
+const app_mode = localStorage.getItem("app_mode") || "calendar";
 const local_dates = JSON.parse(
-  localStorage.getItem('updates_dates') ||
+  localStorage.getItem("updates_dates") ||
     JSON.stringify({
       updateAt_events: 1579808743868,
       updateAt_todos: 1579808743861,
       updateAt_tags: 1579808743862,
-      updateAt_notes: 1579808743863,
-    }),
+      updateAt_notes: 1579808743863
+    })
 );
 // function parseDict
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_API_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID,
+  projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID
 });
 
 Promise.all([
   firebase
     .firestore()
-    .collection('users')
-    .doc('JaoskLJezvXzh5wNniTk2OXDczE2')
-    .collection('dates')
-    .get(),
+    .collection("users")
+    .doc("JaoskLJezvXzh5wNniTk2OXDczE2")
+    .collection("dates")
+    .get()
 ]).then(function(responses) {
   const fetched_notes = responses[0];
   var notes = {};
   Object.keys(local_dates).forEach(function(mode) {
     if (fetched_notes[mode]) {
-      console.log('tiene modo');
+      console.log("tiene modo");
     } else {
       console.log(local_dates[mode]);
     }
@@ -64,7 +68,7 @@ let deleteCallback;
 
 function save_user_doc(doc_reference, json, uid) {
   var new_event_ref = db
-    .collection('users')
+    .collection("users")
     .doc(uid)
     .collection(doc_reference)
     .doc();
@@ -75,7 +79,7 @@ function save_user_doc(doc_reference, json, uid) {
 
 function update_user_doc(doc_reference, json, uid, event_id) {
   var updated_event_ref = db
-    .collection('users')
+    .collection("users")
     .doc(uid)
     .collection(doc_reference)
     .doc(event_id);
@@ -85,41 +89,41 @@ function update_user_doc(doc_reference, json, uid, event_id) {
 }
 
 function delete_user_doc(doc_reference, uid, event_id) {
-  db.collection('users')
+  db.collection("users")
     .doc(uid)
     .collection(doc_reference)
     .doc(event_id)
     .delete()
     .then(function() {
-      console.log('Document successfully deleted!');
+      console.log("Document successfully deleted!");
     })
     .catch(function(error) {
-      console.error('Error removing document: ', error);
+      console.error("Error removing document: ", error);
     });
 }
 
 function startApp(uid) {
   Promise.all([
     db
-      .collection('users')
+      .collection("users")
       .doc(uid)
-      .collection('events')
+      .collection("events")
       .get(),
     db
-      .collection('users')
+      .collection("users")
       .doc(uid)
-      .collection('tags')
+      .collection("tags")
       .get(),
     db
-      .collection('users')
+      .collection("users")
       .doc(uid)
-      .collection('todos')
+      .collection("todos")
       .get(),
     db
-      .collection('users')
+      .collection("users")
       .doc(uid)
-      .collection('notes')
-      .get(),
+      .collection("notes")
+      .get()
   ]).then(function(responses) {
     const fetched_events = responses[0];
     const fetched_tags = responses[1];
@@ -166,17 +170,17 @@ function renderApp() {
         mode={app_mode}
       />
     </Provider>,
-    document.getElementById('app_root'),
+    document.getElementById("app_root")
   );
 
-  ReactDOM.render(<SearchContainer />, document.getElementById('search_box'));
+  ReactDOM.render(<SearchContainer />, document.getElementById("search_box"));
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   var config = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_API_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID,
+    projectId: process.env.REACT_APP_FIREBASE_API_PROJECT_ID
   };
   firebase.initializeApp(config);
   db = firebase.firestore();
@@ -186,7 +190,7 @@ if (process.env.NODE_ENV === 'production') {
   updateCallback = update_user_doc;
   deleteCallback = delete_user_doc;
 
-  chrome.storage.sync.get(['uid'], async function(result) {
+  chrome.storage.sync.get(["uid"], async function(result) {
     // change this, only for quick testing
     if (result.uid) {
       startApp(result.uid);
@@ -198,10 +202,10 @@ if (process.env.NODE_ENV === 'production') {
           //   var token = result.credential.accessToken;
           var user = result.user;
           chrome.storage.sync.set({ uid: user.uid });
-          db.collection('users')
+          db.collection("users")
             .doc(user.uid)
             .set({
-              name: user.displayName,
+              name: user.displayName
             });
           startApp(user.uid);
         })
@@ -212,30 +216,30 @@ if (process.env.NODE_ENV === 'production') {
         });
     }
   });
-} else if (process.env.NODE_ENV === 'development') {
+} else if (process.env.NODE_ENV === "development") {
   var index = 0;
   loadEvents = hcEvents;
   loadTags = hcUserTags;
   loadTodos = hcUserTodos;
   loadNotes = hcUserNotes;
-  userUid = 'uid';
+  userUid = "uid";
   saveCallback = (a, b, c) => {
-    console.log('save placeholder');
+    console.log("save placeholder");
     index += 1;
     console.log(index);
     return `${index}`;
   };
   updateCallback = (a, b, c, d) => {
-    console.log('update placeholder');
+    console.log("update placeholder");
     return d;
   };
   deleteCallback = () => {
-    console.log('delete placeholder');
-    return '0';
+    console.log("delete placeholder");
+    return "0";
   };
   renderApp();
 } else {
-  const error = { code: 300, message: 'Invalid env.' };
+  const error = { code: 300, message: "Invalid env." };
   throw error;
 }
 // If you want your app to work offline and load faster, you can change
