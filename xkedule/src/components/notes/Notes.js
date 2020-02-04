@@ -1,200 +1,140 @@
-import React, { Component } from "react";
-import Plus from "../svgs/Plus";
-import Ticket from "../svgs/Ticket";
-import { clone } from "../../js_helpers/helpers";
-import MdEditor from "react-markdown-editor-lite";
-import MarkdownIt from "markdown-it";
+import React, { useState } from 'react';
+import Ticket from '../svgs/Ticket';
+import Plus from '../svgs/Plus';
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
 
-const MOCK_DATA =
-  "Hello.\n\n * This is markdown.\n * It is fun\n * Love it or leave it.";
+export default function Notes2(props) {
+  const [itemMode, setItemMode] = useState(false);
+  const [selectedNotePath, setSelectedNotePath] = useState(selectFirstNote(props.notes));
+  const mdParser = new MarkdownIt(/* Markdown-it options */);
 
-export default class Notes extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      create_active: false,
-      notes: null,
-      start: null,
-      keys_deep: []
-    };
-
-    this.mdParser = new MarkdownIt(/* Markdown-it options */);
-    this.createItemMode = this.createItemMode.bind(this);
+  function renderContent(keyGiven, index) {
+    const children = getChildren(index);
+    return Object.keys(children).map((key, index_) => {
+      return (
+        <div
+          key={`title${index_}`}
+          className={[
+            Object.keys(children).includes('children') === key ? 'folder_tab' : 'note_tab',
+            keyGiven === key ? 'tab_selected' : '',
+          ].join(' ')}
+          onClick={() => {
+            setSelectedNotePath([
+              ...selectedNotePath.slice(0, index),
+              ...selectFirstNote(children, index_),
+            ]);
+          }}
+        >
+          {children[key].name}
+        </div>
+      );
+    });
   }
-
-  handleEditorChange({ html, text }) {
-    console.log("handleEditorChange", html, text);
-  }
-
-  onClose() {
-    document.getElementById("notes_position").style.left = "-100vw";
-    document.getElementById("notes_position").style.zIndex = "-1000";
-    this.setState({ create_active: false });
-  }
-  open() {
-    document.getElementById("notes_position").style.left = 60;
-    document.getElementById("notes_position").style.zIndex = "1000";
-  }
-
-  createItemMode() {
-    this.setState(prevState => ({
-      create_active: !prevState.create_active
-    }));
-  }
-
-  componentDidMount() {
-    console.log(this.state.keys_deep);
-    console.log(this.state.start);
-    console.log(this.state.notes);
-  }
-
-  UNSAFE_componentWillMount() {
-    Object.keys(this.props.notes).forEach((key, index) => {
-      if (!this.state.start && index === 0) {
-        this.setState({ start: key });
-        this.getDeepContent(this.props.notes[key]);
+  function getChildren(indexGiven) {
+    let level = props.notes;
+    selectedNotePath.forEach((key, index) => {
+      if (index < indexGiven) {
+        if (Object.keys(level).includes('children')) {
+          level = level.children[key];
+        } else {
+          level = level[key];
+        }
+        if (Object.keys(level).includes('children')) {
+          level = level.children;
+        }
       }
     });
-    const new_notes = clone(this.props.notes);
-    this.setState({ notes: new_notes });
-  }
 
-  getDeepContent(object) {
-    if (typeof object == "object" && object["children"]) {
-      let new_deep = this.state.keys_deep;
-      new_deep.push("children");
-      this.setState({ keys_deep: new_deep });
-      this.getDeepContent(
-        object["children"][Object.keys(object["children"])[0]]
-      );
-    } else {
-      let new_deep = this.state.keys_deep;
-      new_deep.push("content");
-      this.setState({ keys_deep: new_deep });
-    }
-    return;
+    return level;
   }
-
-  renderContent(content, index) {
-    if (content === "content") {
-      return (
-        <MdEditor
-          value={MOCK_DATA}
-          style={{ width: "calc(80vw - 250px)" }}
-          renderHTML={text => this.mdParser.render(text)}
-          onChange={this.handleEditorChange}
-        />
-      );
-    }
-    var dict = this.state.notes[this.state.start];
-    for (let i = 0; i < index; i++) {
-      dict = dict[this.state.keys_deep[index]];
-    }
-    console.log(index);
-    console.log("index");
-    console.log("dict");
-    console.log(Object.keys(dict));
-    return (
-      <div>
-        {content} asd {index}
+  return (
+    <div style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }} className='notes_container'>
+      <div className='title_tab'>
+        Your mind is for <span className='text_bold_title  color_text_notes'>having ideas</span>,
+        not <span className='text_bold_title color_text_notes'>holding them.</span>{' '}
       </div>
-    );
-  }
-
-  render() {
-    return (
-      <div
-        style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}
-        className="notes_container"
-      >
-        <div className="title_tab">
-          Your mind is for{" "}
-          <span className="text_bold_title  color_text_notes">
-            having ideas
-          </span>
-          , not{" "}
-          <span className="text_bold_title color_text_notes">
-            holding them.
-          </span>{" "}
+      <div className='container_info_tab'>
+        <ul
+          className='hs'
+          style={{
+            display: 'grid',
+            gridGap: 'calc(20px / 2)',
+            gridTemplateColumns: `repeat(${selectedNotePath.length}, 200px) calc(80vw - 230px)`,
+            gridTemplateRows: '100%',
+            width: '100%',
+            height: 'calc(100vh - 200px)',
+            overflowX: 'auto',
+            scrollSnapType: 'x proximity',
+            paddingBottom: 'calc(0.75 * 20px)',
+            marginBottom: 'calc(-0.5 * 20px)',
+          }}
+        >
+          {selectedNotePath.map((key, index) => {
+            return (
+              <div key={`sad${key}${index}2`} className='item'>
+                {renderContent(key, index)}
+              </div>
+            );
+          })}
+          <div className='item'>
+            <MdEditor
+              value={getChildren(selectedNotePath.length).content}
+              style={{ width: 'calc(80vw - 250px)' }}
+              renderHTML={text => mdParser.render(text)}
+              //   onChange={handleEditorChange}
+            />
+          </div>
+        </ul>
+        <div
+          className='main_button_container_notes reversed'
+          onClick={() => {
+            props.onClose('calendar');
+          }}
+        >
+          <div className='main_button linear_grad'></div>
+          <Ticket />
         </div>
-        <div className="container_info_tab">
-          <ul
-            className="hs"
-            style={{
-              display: "grid",
-              gridGap: "calc(20px / 2)",
-              gridTemplateColumns: `repeat(${this.state.keys_deep.length}, 200px) calc(80vw - 230px)`,
-              gridTemplateRows: "100%",
-              width: "100%",
-              height: "calc(100vh - 200px)",
-              overflowX: "auto",
-              scrollSnapType: "x proximity",
-              paddingBottom: "calc(0.75 * 20px)",
-              marginBottom: "calc(-0.5 * 20px)"
-            }}
-          >
-            <div className="item">
-              {Object.keys(this.state.notes).map((key, index) => {
-                return (
-                  <div
-                    key={`sad${key}${index}`}
-                    style={Object.assign(
-                      {},
-                      this.state.start === key ? { fontWeight: "bold" } : {},
-                      this.state.notes[key]["children"]
-                        ? { backgroundColor: "red" }
-                        : {}
-                    )}
-                    onClick={() => {
-                      this.setState({ start: key, keys_deep: [] }, () => {
-                        this.getDeepContent(this.state.notes[key]);
-                      });
-                    }}
-                  >
-                    {this.state.notes[key].name}
-                  </div>
-                );
-              })}
-            </div>
-            {this.state.keys_deep.map((key, index) => {
-              return (
-                <div key={`sad${key}${index}2`} className="item">
-                  {this.renderContent(key, index)}
-                </div>
-              );
-            })}
-          </ul>
-          <div
-            className="main_button_container_notes reversed"
-            onClick={() => {
-              this.onClose();
-              this.props.onClose("calendar");
-            }}
-          >
-            <div className="main_button linear_grad"></div>
-            <Ticket />
-          </div>
-          <div
-            className={[
-              "create_event_button_notes",
-              this.state.create_active ? "cancel" : null
-            ].join(" ")}
-            onClick={this.createItemMode}
-          >
-            <Plus />
-          </div>
+        <div
+          className={['create_event_button_notes', itemMode ? 'cancel' : null].join(' ')}
+          onClick={() => setItemMode(!itemMode)}
+        >
+          <Plus />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-// class recursiveComponent extends Component {
-//   render() {
-//     return (
-//       <div>
+function parseNotesList(notes) {
+  const parsed_notes = [];
+  Object.keys(notes).forEach((key, index) => {
+    var children = [];
+    var content_note = {
+      id: notes[key].id,
+    };
+    if (Object.keys(notes[key]).includes('children')) {
+      children = parseNotesList(notes[key].children);
+    }
+    content_note['children'] = children;
+    parsed_notes.push(content_note);
+  });
+  return parsed_notes;
+}
 
-//       </div>
-//     )
-//   }
-// }
+function selectFirstNote(notes_not_parsed, index = 0) {
+  const parsedNotes = parseNotesList(notes_not_parsed);
+  if (parsedNotes.length === 0) {
+    return [];
+  }
+  if (parsedNotes[index].children.length > 0) {
+    return [parsedNotes[index].id, ...selectFirstNote(parsedNotes[0].children)];
+  }
+  return [parsedNotes[index].id];
+}
+
+function getListDirNotes(notes) {
+  return Object.keys(notes).map((key, index) => {
+    return notes[key].name;
+  });
+}

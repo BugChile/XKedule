@@ -113,7 +113,7 @@
 
 // another file
 
-@import url("https://fonts.googleapis.com/css?family=Oswald");
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 * {
   margin: 0;
   padding: 0;
@@ -231,7 +231,7 @@ h1 {
   background-color: #fff;
   color: #989898;
   margin-bottom: 10px;
-  font-family: "Oswald", sans-serif;
+  font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
   border-radius: 4px;
   position: relative;
@@ -247,7 +247,7 @@ h1 {
 
 .date:before,
 .date:after {
-  content: "";
+  content: '';
   display: block;
   width: 20px;
   height: 20px;
@@ -398,4 +398,20 @@ h1 {
   align-items: center;
   background: #fff;
   border-radius: 8px;
+}
+.tab_selected {
+  font-weight: bold;
+  background-color: rgb(232, 232, 232) !important;
+}
+.folder_tab,
+.note_tab {
+  padding: 10px;
+  background-color: rgb(250, 250, 250);
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 5px;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+  }
 }
