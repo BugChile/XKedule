@@ -7727,8 +7727,8 @@ const hcUserNotes = {
         id: 'h',
         name: 'Data Dictionnary',
         children: {
-          i: {
-            id: 'i',
+          z: {
+            id: 'z',
             name: 'TypeScript',
             content: '## Text ...',
           },
@@ -7746,6 +7746,23 @@ const hcUserNotes = {
     id: 'e',
     name: 'Single Note',
     content: '## Content..',
+  },
+
+  q: {
+    id: 'q',
+    name: 'Tests',
+    children: {
+      r: {
+        id: 'r',
+        name: 'Integration',
+        content: '## Text ...',
+      },
+      s: {
+        id: 's',
+        name: 'Unit',
+        content: '## Text ...',
+      },
+    },
   },
 };
 

@@ -4,11 +4,10 @@ import Plus from '../svgs/Plus';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 
-export default function Notes2(props) {
+export default function Notes(props) {
   const [itemMode, setItemMode] = useState(false);
   const [selectedNotePath, setSelectedNotePath] = useState(selectFirstNote(props.notes));
   const mdParser = new MarkdownIt(/* Markdown-it options */);
-
   function renderContent(keyGiven, index) {
     const children = getChildren(index);
     return Object.keys(children).map((key, index_) => {
@@ -35,14 +34,10 @@ export default function Notes2(props) {
     let level = props.notes;
     selectedNotePath.forEach((key, index) => {
       if (index < indexGiven) {
-        if (Object.keys(level).includes('children')) {
-          level = level.children[key];
-        } else {
-          level = level[key];
-        }
-        if (Object.keys(level).includes('children')) {
-          level = level.children;
-        }
+        console.log(key);
+        console.log(selectedNotePath);
+
+        level = level[key];
       }
     });
 
@@ -60,7 +55,9 @@ export default function Notes2(props) {
           style={{
             display: 'grid',
             gridGap: 'calc(20px / 2)',
-            gridTemplateColumns: `repeat(${selectedNotePath.length}, 200px) calc(80vw - 230px)`,
+            gridTemplateColumns: `repeat(${
+              selectedNotePath.filter(element => element != 'children').length
+            }, 200px) calc(80vw - 230px)`,
             gridTemplateRows: '100%',
             width: '100%',
             height: 'calc(100vh - 200px)',
@@ -71,11 +68,14 @@ export default function Notes2(props) {
           }}
         >
           {selectedNotePath.map((key, index) => {
-            return (
-              <div key={`sad${key}${index}2`} className='item'>
-                {renderContent(key, index)}
-              </div>
-            );
+            if (key !== 'children') {
+              return (
+                <div key={`sad${key}${index}2`} className='item'>
+                  {renderContent(key, index)}
+                </div>
+              );
+            }
+            return null;
           })}
           <div className='item'>
             <MdEditor
@@ -128,7 +128,7 @@ function selectFirstNote(notes_not_parsed, index = 0) {
     return [];
   }
   if (parsedNotes[index].children.length > 0) {
-    return [parsedNotes[index].id, ...selectFirstNote(parsedNotes[0].children)];
+    return [parsedNotes[index].id, 'children', ...selectFirstNote(parsedNotes[index].children)];
   }
   return [parsedNotes[index].id];
 }
